@@ -74,10 +74,10 @@ namespace ImageAnalyze
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
             ReadInitImage();
-            AnalyzeRGB(image);
+            AnalyzeRGB(bitmap);
             //InitChart();
         }
-        Bitmap image = null;
+        Bitmap bitmap = null;
         private void ReadInitImage()
         {
 
@@ -96,10 +96,10 @@ namespace ImageAnalyze
                 {
                     try
                     {
-                        image = (Bitmap)Image.FromFile(filename);
+                        bitmap = (Bitmap)Image.FromFile(filename);
                         //var image1 = Image.FromFile(filename);
                         //image = new Bitmap(image1);
-                        pB_Init.Image = image.Clone() as Image;
+                        pB_Init.Image = bitmap.Clone() as Image;
                     }
                     catch
                     {
@@ -111,28 +111,28 @@ namespace ImageAnalyze
 
         private void btn_Threshod_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = Threshoding(image);
+            pictureBox2.Image = Threshoding(bitmap);
             GC.Collect();
 
         }
         //反色
         private void btn_Complementary_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = Complementary(image);
+            pictureBox2.Image = Complementary(bitmap);
             GC.Collect();
         }
 
         private void btn_Gray_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = ImageToGrey(image);
+            pictureBox2.Image = ImageToGrey(bitmap);
             GC.Collect();
         }
 
         private void btn_Histogram_Click(object sender, EventArgs e)
         {
-            if (image != null)
+            if (bitmap != null)
             {
-                Histogramcs hs = new Histogramcs(image);
+                Histogramcs hs = new Histogramcs(bitmap);
                 hs.ShowDialog();
             }
         }
@@ -140,13 +140,13 @@ namespace ImageAnalyze
         private void button1_Click(object sender, EventArgs e)
         {
 
-            pictureBox2.Image = ImageToGrey2(image);
+            pictureBox2.Image = ImageToGrey2(bitmap);
             GC.Collect();
         }
 
         private void btn_Frequency_Click(object sender, EventArgs e)
         {
-            pictureBox3.Image = Fourier.BitmapFFT(image);
+            pictureBox3.Image = Fourier.FFT(bitmap);
         }
     }
 }
