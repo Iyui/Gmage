@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend11 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend12 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.pB_Init = new System.Windows.Forms.PictureBox();
@@ -49,7 +49,9 @@
             this.btn_SelectImage = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btn_Frequency = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -70,6 +72,8 @@
             this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -85,8 +89,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(1066, 624);
-            this.splitContainer1.SplitterDistance = 508;
+            this.splitContainer1.Size = new System.Drawing.Size(930, 764);
+            this.splitContainer1.SplitterDistance = 443;
             this.splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -102,9 +106,10 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.pictureBox3);
             this.splitContainer2.Panel2.Controls.Add(this.ct_InitChart);
-            this.splitContainer2.Size = new System.Drawing.Size(508, 624);
-            this.splitContainer2.SplitterDistance = 551;
+            this.splitContainer2.Size = new System.Drawing.Size(443, 764);
+            this.splitContainer2.SplitterDistance = 404;
             this.splitContainer2.TabIndex = 0;
             // 
             // pB_Init
@@ -113,20 +118,20 @@
             this.pB_Init.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pB_Init.Location = new System.Drawing.Point(0, 0);
             this.pB_Init.Name = "pB_Init";
-            this.pB_Init.Size = new System.Drawing.Size(508, 551);
+            this.pB_Init.Size = new System.Drawing.Size(443, 404);
             this.pB_Init.TabIndex = 0;
             this.pB_Init.TabStop = false;
             // 
             // ct_InitChart
             // 
-            chartArea11.Name = "ChartArea1";
-            this.ct_InitChart.ChartAreas.Add(chartArea11);
+            chartArea1.Name = "ChartArea1";
+            this.ct_InitChart.ChartAreas.Add(chartArea1);
             this.ct_InitChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend11.Name = "Legend1";
-            this.ct_InitChart.Legends.Add(legend11);
+            legend1.Name = "Legend1";
+            this.ct_InitChart.Legends.Add(legend1);
             this.ct_InitChart.Location = new System.Drawing.Point(0, 0);
             this.ct_InitChart.Name = "ct_InitChart";
-            this.ct_InitChart.Size = new System.Drawing.Size(508, 69);
+            this.ct_InitChart.Size = new System.Drawing.Size(443, 356);
             this.ct_InitChart.TabIndex = 0;
             this.ct_InitChart.Text = "chart1";
             // 
@@ -142,7 +147,7 @@
             // 
             // splitContainer3.Panel2
             // 
-            this.splitContainer3.Panel2.Controls.Add(this.button5);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Frequency);
             this.splitContainer3.Panel2.Controls.Add(this.button4);
             this.splitContainer3.Panel2.Controls.Add(this.button1);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Histogram);
@@ -152,8 +157,8 @@
             this.splitContainer3.Panel2.Controls.Add(this.button3);
             this.splitContainer3.Panel2.Controls.Add(this.button2);
             this.splitContainer3.Panel2.Controls.Add(this.btn_SelectImage);
-            this.splitContainer3.Size = new System.Drawing.Size(554, 624);
-            this.splitContainer3.SplitterDistance = 475;
+            this.splitContainer3.Size = new System.Drawing.Size(483, 764);
+            this.splitContainer3.SplitterDistance = 414;
             this.splitContainer3.TabIndex = 0;
             // 
             // splitContainer4
@@ -169,9 +174,10 @@
             // 
             // splitContainer4.Panel2
             // 
+            this.splitContainer4.Panel2.Controls.Add(this.pictureBox1);
             this.splitContainer4.Panel2.Controls.Add(this.chart2);
-            this.splitContainer4.Size = new System.Drawing.Size(475, 624);
-            this.splitContainer4.SplitterDistance = 546;
+            this.splitContainer4.Size = new System.Drawing.Size(414, 764);
+            this.splitContainer4.SplitterDistance = 406;
             this.splitContainer4.TabIndex = 0;
             // 
             // pictureBox2
@@ -180,20 +186,20 @@
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(475, 546);
+            this.pictureBox2.Size = new System.Drawing.Size(414, 406);
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
             // 
             // chart2
             // 
-            chartArea12.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea12);
+            chartArea2.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea2);
             this.chart2.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend12.Name = "Legend1";
-            this.chart2.Legends.Add(legend12);
+            legend2.Name = "Legend1";
+            this.chart2.Legends.Add(legend2);
             this.chart2.Location = new System.Drawing.Point(0, 0);
             this.chart2.Name = "chart2";
-            this.chart2.Size = new System.Drawing.Size(475, 74);
+            this.chart2.Size = new System.Drawing.Size(414, 354);
             this.chart2.TabIndex = 1;
             this.chart2.Text = "chart2";
             // 
@@ -284,20 +290,41 @@
             this.button4.Text = "时域变换";
             this.button4.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // btn_Frequency
             // 
-            this.button5.Location = new System.Drawing.Point(2, 215);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(67, 23);
-            this.button5.TabIndex = 10;
-            this.button5.Text = "频域变换";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btn_Frequency.Location = new System.Drawing.Point(2, 215);
+            this.btn_Frequency.Name = "btn_Frequency";
+            this.btn_Frequency.Size = new System.Drawing.Size(67, 23);
+            this.btn_Frequency.TabIndex = 10;
+            this.btn_Frequency.Text = "频域变换";
+            this.btn_Frequency.UseVisualStyleBackColor = true;
+            this.btn_Frequency.Click += new System.EventHandler(this.btn_Frequency_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(414, 354);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pictureBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox3.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(443, 356);
+            this.pictureBox3.TabIndex = 2;
+            this.pictureBox3.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1066, 624);
+            this.ClientSize = new System.Drawing.Size(930, 764);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = "图像分析及处理";
@@ -321,6 +348,8 @@
             this.splitContainer4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -343,8 +372,10 @@
         private System.Windows.Forms.Button btn_Complementary;
         private System.Windows.Forms.Button btn_Histogram;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btn_Frequency;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

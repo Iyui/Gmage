@@ -144,7 +144,9 @@ namespace ImageAnalyze
             GC.Collect();
         }
 
-
-
+        private void btn_Frequency_Click(object sender, EventArgs e)
+        {
+            pictureBox3.Image = Fourier.BitmapFFT(image);
+        }
     }
 }
