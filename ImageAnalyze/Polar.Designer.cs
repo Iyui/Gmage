@@ -1,6 +1,6 @@
 ﻿namespace ImageAnalyze
 {
-    partial class Histogramcs
+    partial class PolarCoordinate
     {
         /// <summary>
         /// Required designer variable.
@@ -30,15 +30,15 @@
         {
             this.SuspendLayout();
             // 
-            // Histogramcs
+            // PolarCoordinate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(361, 342);
-            this.Name = "Histogramcs";
-            this.Text = "histogramcs";
-            this.Load += new System.EventHandler(this.histogramcs_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.histogramcs_Paint);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Name = "PolarCoordinate";
+            this.Text = "Polar";
+            this.Load += new System.EventHandler(this.PolarCoordinate_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.PolarCoordinate_Paint);
             this.ResumeLayout(false);
 
         }

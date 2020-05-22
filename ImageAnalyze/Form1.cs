@@ -16,6 +16,11 @@ namespace ImageAnalyze
     {
         #region 变量
         int[][] initRGB;
+
+        public int Threshold { get => (int)nud_Threshold.Value; }
+
+        Bitmap initBitmap = null;
+
         #endregion
 
         public Form1()
@@ -53,7 +58,7 @@ namespace ImageAnalyze
             var G = initRGB[2];
             var B = initRGB[3];
 
-            GeneralChart(ct_InitChart, "R", X, R);
+            //GeneralChart(ct_InitChart, "R", X, R);
             //GeneralChart(ct_InitChart, "G", X, G);
             //GeneralChart(ct_InitChart, "B", X, B);
         }
@@ -73,14 +78,16 @@ namespace ImageAnalyze
 
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
+
             ReadInitImage();
-            AnalyzeRGB(bitmap);
+            //AnalyzeRGB(initBitmap);
             //InitChart();
         }
-        Bitmap bitmap = null;
+
+
+        
         private void ReadInitImage()
         {
-
             OpenFileDialog oi = new OpenFileDialog
             {
                 //oi.InitialDirectory = "c:\\";
@@ -96,10 +103,10 @@ namespace ImageAnalyze
                 {
                     try
                     {
-                        bitmap = (Bitmap)Image.FromFile(filename);
+                        initBitmap = (Bitmap)Image.FromFile(filename);
                         //var image1 = Image.FromFile(filename);
                         //image = new Bitmap(image1);
-                        pB_Init.Image = bitmap.Clone() as Image;
+                        pB_Init.Image = initBitmap.Clone() as Image;
                     }
                     catch
                     {
@@ -111,28 +118,28 @@ namespace ImageAnalyze
 
         private void btn_Threshod_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = Threshoding(bitmap);
+            pictureBox2.Image = Threshoding(initBitmap,Threshold);
             GC.Collect();
 
         }
         //反色
         private void btn_Complementary_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = Complementary(bitmap);
+            pictureBox2.Image = Complementary(initBitmap);
             GC.Collect();
         }
 
         private void btn_Gray_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = ImageToGrey(bitmap);
+            pictureBox2.Image = ImageToGrey(initBitmap);
             GC.Collect();
         }
 
         private void btn_Histogram_Click(object sender, EventArgs e)
         {
-            if (bitmap != null)
+            if (initBitmap != null)
             {
-                Histogramcs hs = new Histogramcs(bitmap);
+                Histogramcs hs = new Histogramcs(initBitmap);
                 hs.ShowDialog();
             }
         }
@@ -140,13 +147,52 @@ namespace ImageAnalyze
         private void button1_Click(object sender, EventArgs e)
         {
 
-            pictureBox2.Image = ImageToGrey2(bitmap);
+            pictureBox2.Image = ImageToGrey2(initBitmap);
             GC.Collect();
         }
 
         private void btn_Frequency_Click(object sender, EventArgs e)
         {
-            pictureBox3.Image = Fourier.FFT(bitmap);
+            try
+            {
+                pictureBox2.Image = Fourier.FFT(initBitmap);
+            }
+            catch { };
+        }
+
+        private void btn_Gaussian_Click(object sender, EventArgs e)
+        {
+            Gauss convolution = new Gauss();
+            pictureBox2.Image = convolution.Smooth(initBitmap);
+        }
+
+        private void btn_Robert_Click(object sender, EventArgs e)
+        {
+            pictureBox2.Image = EdgeDetector.Robert(initBitmap, Threshold);
+        }
+
+        private void btn_Smoothed_Click(object sender, EventArgs e)
+        {
+            pictureBox2.Image = EdgeDetector.Smoothed(initBitmap);
+        }
+
+        private void btn_Salt_Click(object sender, EventArgs e)
+        {
+            pictureBox2.Image = Gauss.AddSalt(initBitmap);
+        }
+
+        private void btn_GaussNoise_Click(object sender, EventArgs e)
+        {
+            pictureBox2.Image = Gauss.Goss_noise(initBitmap);
+        }
+
+        private void btn_Polar_Click(object sender, EventArgs e)
+        {
+            if (initBitmap != null)
+            {
+                PolarCoordinate hs = new PolarCoordinate(initBitmap);
+                hs.ShowDialog();
+            }
         }
     }
 }

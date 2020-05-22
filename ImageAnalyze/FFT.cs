@@ -17,15 +17,17 @@ namespace ImageAnalyze
         public static Bitmap FFT(Bitmap inputImage)
         {
             System.Drawing.Image sizeImage = (System.Drawing.Image)(new Bitmap(inputImage, 512, 512));
-            inputImage.Dispose();
+            //inputImage.Dispose();
             inputImage = (Bitmap)(sizeImage);
             inputImage = ColorToGrayscale(inputImage);
             ComplexImage finalImg = ComplexImage.FromBitmap(inputImage);
             finalImg.ForwardFourierTransform();
+            var data = finalImg.Data;
             return finalImg.ToBitmap();
+      
         }
 
-        //Bitmap ColorToGrayscale(Bitmap bmp) returns a bitmap which is 8bbp and grayscale copy of bmp.
+        //8位灰度图
         private static Bitmap ColorToGrayscale(Bitmap bmp)
         {
             int w = bmp.Width,

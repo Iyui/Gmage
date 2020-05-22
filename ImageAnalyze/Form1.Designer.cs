@@ -28,112 +28,54 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.pB_Init = new System.Windows.Forms.PictureBox();
-            this.ct_InitChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.sC_Compare = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.btn_Frequency = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.btn_Histogram = new System.Windows.Forms.Button();
             this.btn_Complementary = new System.Windows.Forms.Button();
             this.btn_Threshod = new System.Windows.Forms.Button();
             this.btn_Gray = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.btn_SelectImage = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.btn_Frequency = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pB_Init)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ct_InitChart)).BeginInit();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pB_Init = new System.Windows.Forms.PictureBox();
+            this.btn_GaussBlur = new System.Windows.Forms.Button();
+            this.btn_Robert = new System.Windows.Forms.Button();
+            this.btn_Smoothed = new System.Windows.Forms.Button();
+            this.nud_Threshold = new System.Windows.Forms.NumericUpDown();
+            this.btn_Salt = new System.Windows.Forms.Button();
+            this.btn_GaussNoise = new System.Windows.Forms.Button();
+            this.btn_Polar = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.sC_Compare)).BeginInit();
+            this.sC_Compare.Panel1.SuspendLayout();
+            this.sC_Compare.Panel2.SuspendLayout();
+            this.sC_Compare.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
-            this.splitContainer4.Panel1.SuspendLayout();
-            this.splitContainer4.Panel2.SuspendLayout();
-            this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pB_Init)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_Threshold)).BeginInit();
             this.SuspendLayout();
             // 
-            // splitContainer1
+            // sC_Compare
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
+            this.sC_Compare.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sC_Compare.Location = new System.Drawing.Point(0, 0);
+            this.sC_Compare.Name = "sC_Compare";
             // 
-            // splitContainer1.Panel1
+            // sC_Compare.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            this.sC_Compare.Panel1.Controls.Add(this.pB_Init);
             // 
-            // splitContainer1.Panel2
+            // sC_Compare.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(930, 764);
-            this.splitContainer1.SplitterDistance = 443;
-            this.splitContainer1.TabIndex = 0;
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.pB_Init);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.pictureBox3);
-            this.splitContainer2.Panel2.Controls.Add(this.ct_InitChart);
-            this.splitContainer2.Size = new System.Drawing.Size(443, 764);
-            this.splitContainer2.SplitterDistance = 404;
-            this.splitContainer2.TabIndex = 0;
-            // 
-            // pB_Init
-            // 
-            this.pB_Init.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pB_Init.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pB_Init.Location = new System.Drawing.Point(0, 0);
-            this.pB_Init.Name = "pB_Init";
-            this.pB_Init.Size = new System.Drawing.Size(443, 404);
-            this.pB_Init.TabIndex = 0;
-            this.pB_Init.TabStop = false;
-            // 
-            // ct_InitChart
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.ct_InitChart.ChartAreas.Add(chartArea1);
-            this.ct_InitChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.ct_InitChart.Legends.Add(legend1);
-            this.ct_InitChart.Location = new System.Drawing.Point(0, 0);
-            this.ct_InitChart.Name = "ct_InitChart";
-            this.ct_InitChart.Size = new System.Drawing.Size(443, 356);
-            this.ct_InitChart.TabIndex = 0;
-            this.ct_InitChart.Text = "chart1";
+            this.sC_Compare.Panel2.Controls.Add(this.splitContainer3);
+            this.sC_Compare.Size = new System.Drawing.Size(910, 687);
+            this.sC_Compare.SplitterDistance = 433;
+            this.sC_Compare.TabIndex = 0;
             // 
             // splitContainer3
             // 
@@ -143,10 +85,17 @@
             // 
             // splitContainer3.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.splitContainer4);
+            this.splitContainer3.Panel1.Controls.Add(this.pictureBox2);
             // 
             // splitContainer3.Panel2
             // 
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Polar);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_GaussNoise);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Salt);
+            this.splitContainer3.Panel2.Controls.Add(this.nud_Threshold);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Smoothed);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Robert);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_GaussBlur);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Frequency);
             this.splitContainer3.Panel2.Controls.Add(this.button4);
             this.splitContainer3.Panel2.Controls.Add(this.button1);
@@ -154,58 +103,43 @@
             this.splitContainer3.Panel2.Controls.Add(this.btn_Complementary);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Threshod);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Gray);
-            this.splitContainer3.Panel2.Controls.Add(this.button3);
-            this.splitContainer3.Panel2.Controls.Add(this.button2);
             this.splitContainer3.Panel2.Controls.Add(this.btn_SelectImage);
-            this.splitContainer3.Size = new System.Drawing.Size(483, 764);
-            this.splitContainer3.SplitterDistance = 414;
+            this.splitContainer3.Size = new System.Drawing.Size(473, 687);
+            this.splitContainer3.SplitterDistance = 397;
             this.splitContainer3.TabIndex = 0;
             // 
-            // splitContainer4
+            // btn_Frequency
             // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.btn_Frequency.Location = new System.Drawing.Point(3, 186);
+            this.btn_Frequency.Name = "btn_Frequency";
+            this.btn_Frequency.Size = new System.Drawing.Size(67, 23);
+            this.btn_Frequency.TabIndex = 10;
+            this.btn_Frequency.Text = "频域变换";
+            this.btn_Frequency.UseVisualStyleBackColor = true;
+            this.btn_Frequency.Click += new System.EventHandler(this.btn_Frequency_Click);
             // 
-            // splitContainer4.Panel1
+            // button4
             // 
-            this.splitContainer4.Panel1.Controls.Add(this.pictureBox2);
+            this.button4.Location = new System.Drawing.Point(3, 157);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(67, 23);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "时域变换";
+            this.button4.UseVisualStyleBackColor = true;
             // 
-            // splitContainer4.Panel2
+            // button1
             // 
-            this.splitContainer4.Panel2.Controls.Add(this.pictureBox1);
-            this.splitContainer4.Panel2.Controls.Add(this.chart2);
-            this.splitContainer4.Size = new System.Drawing.Size(414, 764);
-            this.splitContainer4.SplitterDistance = 406;
-            this.splitContainer4.TabIndex = 0;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(414, 406);
-            this.pictureBox2.TabIndex = 1;
-            this.pictureBox2.TabStop = false;
-            // 
-            // chart2
-            // 
-            chartArea2.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea2);
-            this.chart2.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.chart2.Legends.Add(legend2);
-            this.chart2.Location = new System.Drawing.Point(0, 0);
-            this.chart2.Name = "chart2";
-            this.chart2.Size = new System.Drawing.Size(414, 354);
-            this.chart2.TabIndex = 1;
-            this.chart2.Text = "chart2";
+            this.button1.Location = new System.Drawing.Point(2, 70);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(67, 23);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "灰度2";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btn_Histogram
             // 
-            this.btn_Histogram.Location = new System.Drawing.Point(2, 157);
+            this.btn_Histogram.Location = new System.Drawing.Point(3, 426);
             this.btn_Histogram.Name = "btn_Histogram";
             this.btn_Histogram.Size = new System.Drawing.Size(67, 23);
             this.btn_Histogram.TabIndex = 7;
@@ -243,24 +177,6 @@
             this.btn_Gray.UseVisualStyleBackColor = true;
             this.btn_Gray.Click += new System.EventHandler(this.btn_Gray_Click);
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(3, 273);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(67, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "高通滤波";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(2, 244);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(67, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "低通滤波";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
             // btn_SelectImage
             // 
             this.btn_SelectImage.Location = new System.Drawing.Point(3, 12);
@@ -271,102 +187,138 @@
             this.btn_SelectImage.UseVisualStyleBackColor = true;
             this.btn_SelectImage.Click += new System.EventHandler(this.btn_SelectImage_Click);
             // 
-            // button1
+            // pictureBox2
             // 
-            this.button1.Location = new System.Drawing.Point(2, 70);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(67, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "灰度2";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(397, 687);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 1;
+            this.pictureBox2.TabStop = false;
             // 
-            // button4
+            // pB_Init
             // 
-            this.button4.Location = new System.Drawing.Point(2, 186);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(67, 23);
-            this.button4.TabIndex = 9;
-            this.button4.Text = "时域变换";
-            this.button4.UseVisualStyleBackColor = true;
+            this.pB_Init.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pB_Init.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pB_Init.Location = new System.Drawing.Point(0, 0);
+            this.pB_Init.Name = "pB_Init";
+            this.pB_Init.Size = new System.Drawing.Size(433, 687);
+            this.pB_Init.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pB_Init.TabIndex = 1;
+            this.pB_Init.TabStop = false;
             // 
-            // btn_Frequency
+            // btn_GaussBlur
             // 
-            this.btn_Frequency.Location = new System.Drawing.Point(2, 215);
-            this.btn_Frequency.Name = "btn_Frequency";
-            this.btn_Frequency.Size = new System.Drawing.Size(67, 23);
-            this.btn_Frequency.TabIndex = 10;
-            this.btn_Frequency.Text = "频域变换";
-            this.btn_Frequency.UseVisualStyleBackColor = true;
-            this.btn_Frequency.Click += new System.EventHandler(this.btn_Frequency_Click);
+            this.btn_GaussBlur.Location = new System.Drawing.Point(3, 213);
+            this.btn_GaussBlur.Name = "btn_GaussBlur";
+            this.btn_GaussBlur.Size = new System.Drawing.Size(67, 23);
+            this.btn_GaussBlur.TabIndex = 11;
+            this.btn_GaussBlur.Text = "高斯模糊";
+            this.btn_GaussBlur.UseVisualStyleBackColor = true;
+            this.btn_GaussBlur.Click += new System.EventHandler(this.btn_Gaussian_Click);
             // 
-            // pictureBox1
+            // btn_Robert
             // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(414, 354);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.btn_Robert.Location = new System.Drawing.Point(4, 243);
+            this.btn_Robert.Name = "btn_Robert";
+            this.btn_Robert.Size = new System.Drawing.Size(67, 23);
+            this.btn_Robert.TabIndex = 12;
+            this.btn_Robert.Tag = "robert算子";
+            this.btn_Robert.Text = "边缘检测R";
+            this.btn_Robert.UseVisualStyleBackColor = true;
+            this.btn_Robert.Click += new System.EventHandler(this.btn_Robert_Click);
             // 
-            // pictureBox3
+            // btn_Smoothed
             // 
-            this.pictureBox3.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.pictureBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox3.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(443, 356);
-            this.pictureBox3.TabIndex = 2;
-            this.pictureBox3.TabStop = false;
+            this.btn_Smoothed.Location = new System.Drawing.Point(6, 272);
+            this.btn_Smoothed.Name = "btn_Smoothed";
+            this.btn_Smoothed.Size = new System.Drawing.Size(67, 23);
+            this.btn_Smoothed.TabIndex = 13;
+            this.btn_Smoothed.Tag = "smoothed算子";
+            this.btn_Smoothed.Text = "边缘检测S";
+            this.btn_Smoothed.UseVisualStyleBackColor = true;
+            this.btn_Smoothed.Click += new System.EventHandler(this.btn_Smoothed_Click);
+            // 
+            // nud_Threshold
+            // 
+            this.nud_Threshold.Location = new System.Drawing.Point(5, 475);
+            this.nud_Threshold.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nud_Threshold.Name = "nud_Threshold";
+            this.nud_Threshold.Size = new System.Drawing.Size(64, 21);
+            this.nud_Threshold.TabIndex = 14;
+            this.nud_Threshold.Value = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
+            // 
+            // btn_Salt
+            // 
+            this.btn_Salt.Location = new System.Drawing.Point(6, 301);
+            this.btn_Salt.Name = "btn_Salt";
+            this.btn_Salt.Size = new System.Drawing.Size(67, 23);
+            this.btn_Salt.TabIndex = 15;
+            this.btn_Salt.Tag = "";
+            this.btn_Salt.Text = "椒盐噪声";
+            this.btn_Salt.UseVisualStyleBackColor = true;
+            this.btn_Salt.Click += new System.EventHandler(this.btn_Salt_Click);
+            // 
+            // btn_GaussNoise
+            // 
+            this.btn_GaussNoise.Location = new System.Drawing.Point(6, 330);
+            this.btn_GaussNoise.Name = "btn_GaussNoise";
+            this.btn_GaussNoise.Size = new System.Drawing.Size(67, 23);
+            this.btn_GaussNoise.TabIndex = 16;
+            this.btn_GaussNoise.Tag = "";
+            this.btn_GaussNoise.Text = "高斯噪声";
+            this.btn_GaussNoise.UseVisualStyleBackColor = true;
+            this.btn_GaussNoise.Click += new System.EventHandler(this.btn_GaussNoise_Click);
+            // 
+            // btn_Polar
+            // 
+            this.btn_Polar.Location = new System.Drawing.Point(3, 359);
+            this.btn_Polar.Name = "btn_Polar";
+            this.btn_Polar.Size = new System.Drawing.Size(67, 23);
+            this.btn_Polar.TabIndex = 17;
+            this.btn_Polar.Tag = "";
+            this.btn_Polar.Text = "极坐标";
+            this.btn_Polar.UseVisualStyleBackColor = true;
+            this.btn_Polar.Click += new System.EventHandler(this.btn_Polar_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(930, 764);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(910, 687);
+            this.Controls.Add(this.sC_Compare);
             this.Name = "Form1";
             this.Text = "图像分析及处理";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pB_Init)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ct_InitChart)).EndInit();
+            this.sC_Compare.Panel1.ResumeLayout(false);
+            this.sC_Compare.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.sC_Compare)).EndInit();
+            this.sC_Compare.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
-            this.splitContainer4.Panel1.ResumeLayout(false);
-            this.splitContainer4.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
-            this.splitContainer4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pB_Init)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_Threshold)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.PictureBox pB_Init;
-        private System.Windows.Forms.DataVisualization.Charting.Chart ct_InitChart;
+        private System.Windows.Forms.SplitContainer sC_Compare;
         private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.SplitContainer splitContainer4;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btn_SelectImage;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btn_Gray;
         private System.Windows.Forms.Button btn_Threshod;
         private System.Windows.Forms.Button btn_Complementary;
@@ -374,8 +326,15 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btn_Frequency;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pB_Init;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button btn_GaussBlur;
+        private System.Windows.Forms.Button btn_Smoothed;
+        private System.Windows.Forms.Button btn_Robert;
+        private System.Windows.Forms.NumericUpDown nud_Threshold;
+        private System.Windows.Forms.Button btn_GaussNoise;
+        private System.Windows.Forms.Button btn_Salt;
+        private System.Windows.Forms.Button btn_Polar;
     }
 }
 

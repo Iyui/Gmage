@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EdgeDetector.cs" />
     <Compile Include="FFT.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -69,6 +70,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GaussianBlur.cs" />
     <Compile Include="histogramcs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +78,12 @@
       <DependentUpon>histogramcs.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageProcess.cs" />
+    <Compile Include="Polar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Polar.Designer.cs">
+      <DependentUpon>Polar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -83,6 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="histogramcs.resx">
       <DependentUpon>histogramcs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Polar.resx">
+      <DependentUpon>Polar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
