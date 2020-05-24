@@ -7,7 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 namespace ImageAnalyze
 {
     public partial class PolarCoordinate : Form
@@ -16,7 +18,8 @@ namespace ImageAnalyze
         private Bitmap bmpHist;
         public PolarCoordinate(Bitmap bmp)
         {
-            InitializeComponent();
+         
+                InitializeComponent();
             bmpHist = bmp;
         }
 
@@ -59,17 +62,17 @@ namespace ImageAnalyze
             float r = radius * (value - min) / (max - min);
             // 计算GDI+坐标
             PointF pt = new PointF();
-            pt.X = (float)(r * Math.Cos(angle * Math.PI / 180) + center.X);
-            pt.Y = (float)(r * Math.Sin(angle * Math.PI / 180) + center.Y);
+            pt.X = (float)(r * Math.Cos(angle * Math.PI / 180)*100 + center.X);
+            pt.Y = (float)(r * Math.Sin(angle * Math.PI / 180)*1000 + center.Y);
             return pt;
         }
 
         private void Polar(int x, int y, out float r, out float theta)
         {
-            if (x < (int)center.X)
-                x = x - (int)center.X;
-            if (y < (int)center.Y)
-                y = y - (int)center.Y;
+            //if (x < (int)center.X)
+            //    x = x - (int)center.X;
+            //if (y < (int)center.Y)
+            //    y = y - (int)center.Y;
             r = (float)Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
             if(x==0)
@@ -86,19 +89,21 @@ namespace ImageAnalyze
         private void PolarCoordinate_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            Brush curPen = Brushes.Black;
+            SolidBrush mysbrush ;
             for (int i = 0; i < polarList.Count; i++)
             {
-                g.FillEllipse(curPen, values[i].Angle, values[i].Value, 2, 2);
+                mysbrush = new SolidBrush(Color.FromArgb((int)polarList[i][2], (int)polarList[i][3], (int)polarList[i][4]));
+                g.FillEllipse(mysbrush, values[i].Value, values[i].Angle*100, 2, 2);
+                //Emgu.CV.LogPolar
             }
         }
         List<float[]>  polarList = new List<float[]>();
         private void PolarCoordinate_Load(object sender, EventArgs e)
         {
-            center = new PointF(
-               this.Width / 2,
-                this.Height / 2
-               );
+            //center = new PointF(
+            //   this.Width / 2,
+            //    this.Height / 2
+            //   );
             radius = Math.Min(Width, Height) / 2;
             float[] polar = new float[5];
             polarList = new List<float[]>();
@@ -113,8 +118,8 @@ namespace ImageAnalyze
                     values.Add(new PolarValue(theta, r));
 
                     var p = getMappedPoint(theta, r);
-
-                 //0:r,1:角度，2、3、4：R G B
+                    polar = new float[5];
+                    //0:r,1:角度，2、3、4：R G B
                     polar[0] = p.X;// + midWidth;
                     polar[1] = p.Y;// + midHeight;
                     polar[2] = c.R;

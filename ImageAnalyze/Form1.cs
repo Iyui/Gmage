@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.IO;
 using static ImageAnalyze.ImageProcess;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 namespace ImageAnalyze
 {
     public partial class Form1 : Form
@@ -85,7 +88,7 @@ namespace ImageAnalyze
         }
 
 
-        
+        string  filename ="";
         private void ReadInitImage()
         {
             OpenFileDialog oi = new OpenFileDialog
@@ -97,7 +100,7 @@ namespace ImageAnalyze
             };
             if (oi.ShowDialog() == DialogResult.OK)
             {
-                var filename = oi.FileName;
+                filename = oi.FileName;
                 var Format = new string[] { ".jpg", ".bmp" };
                 if (Format.Contains(Path.GetExtension(filename).ToLower()))
                 {
@@ -190,8 +193,18 @@ namespace ImageAnalyze
         {
             if (initBitmap != null)
             {
-                PolarCoordinate hs = new PolarCoordinate(initBitmap);
-                hs.ShowDialog();
+                //PolarCoordinate hs = new PolarCoordinate(initBitmap);
+                //hs.ShowDialog();
+                var img = new Image<Bgr, byte>(filename);
+
+                var img2 = new Image<Bgr, byte>(filename);
+    
+                CvInvoke.LogPolar(img, img2, new PointF(
+              img.Width / 2,
+              img.Height / 2
+               ), 100);
+
+                pictureBox2.Image = img2.ToBitmap();
             }
         }
     }
