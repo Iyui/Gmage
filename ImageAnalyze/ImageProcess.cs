@@ -136,7 +136,6 @@ namespace ImageAnalyze
 
             //亮度增强
             CvInvoke.EqualizeHist(Grayimg, Grayimg);
-
             //在这一步就已经识别出来了,返回的是人脸所在的位置和大小
             var facesDetected = face.DetectMultiScale(Grayimg, 1.1, 10, new Size(50, 50));
 

@@ -22,7 +22,6 @@ namespace ImageAnalyze
         public CutBackground()
         {
             InitializeComponent();
-            // this.model = model;
         }
 
         private void CutBackground_Load(object sender, EventArgs e)

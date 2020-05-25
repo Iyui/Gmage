@@ -17,15 +17,15 @@ namespace ImageAnalyze
     {
         public static Bitmap FFT(Bitmap inputImage)
         {
-            System.Drawing.Image sizeImage = (System.Drawing.Image)(new Bitmap(inputImage, 512, 512));
+            System.Drawing.Image sizeImage = new Bitmap(inputImage, 512, 512);
             //inputImage.Dispose();
             inputImage = (Bitmap)(sizeImage);
             inputImage = ColorToGrayscale(inputImage);
             ComplexImage finalImg = ComplexImage.FromBitmap(inputImage);
             finalImg.ForwardFourierTransform();
-            var data = finalImg.Data;
+            //var data = finalImg.Data;
             return finalImg.ToBitmap();
-      
+
         }
 
         //8位灰度图

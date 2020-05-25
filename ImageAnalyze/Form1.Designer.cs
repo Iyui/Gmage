@@ -74,8 +74,8 @@
             // sC_Compare.Panel2
             // 
             this.sC_Compare.Panel2.Controls.Add(this.splitContainer3);
-            this.sC_Compare.Size = new System.Drawing.Size(910, 687);
-            this.sC_Compare.SplitterDistance = 433;
+            this.sC_Compare.Size = new System.Drawing.Size(937, 687);
+            this.sC_Compare.SplitterDistance = 445;
             this.sC_Compare.TabIndex = 0;
             // 
             // pB_Init
@@ -84,7 +84,7 @@
             this.pB_Init.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pB_Init.Location = new System.Drawing.Point(0, 0);
             this.pB_Init.Name = "pB_Init";
-            this.pB_Init.Size = new System.Drawing.Size(433, 687);
+            this.pB_Init.Size = new System.Drawing.Size(445, 687);
             this.pB_Init.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pB_Init.TabIndex = 1;
             this.pB_Init.TabStop = false;
@@ -117,8 +117,8 @@
             this.splitContainer3.Panel2.Controls.Add(this.btn_Threshod);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Gray);
             this.splitContainer3.Panel2.Controls.Add(this.btn_SelectImage);
-            this.splitContainer3.Size = new System.Drawing.Size(473, 687);
-            this.splitContainer3.SplitterDistance = 397;
+            this.splitContainer3.Size = new System.Drawing.Size(488, 687);
+            this.splitContainer3.SplitterDistance = 394;
             this.splitContainer3.TabIndex = 0;
             // 
             // pictureBox2
@@ -127,16 +127,16 @@
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(397, 687);
+            this.pictureBox2.Size = new System.Drawing.Size(394, 687);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
             // 
             // btn_BackGround
             // 
-            this.btn_BackGround.Location = new System.Drawing.Point(5, 388);
+            this.btn_BackGround.Location = new System.Drawing.Point(6, 388);
             this.btn_BackGround.Name = "btn_BackGround";
-            this.btn_BackGround.Size = new System.Drawing.Size(67, 23);
+            this.btn_BackGround.Size = new System.Drawing.Size(82, 23);
             this.btn_BackGround.TabIndex = 18;
             this.btn_BackGround.Tag = "";
             this.btn_BackGround.Text = "桌面捕捉";
@@ -145,9 +145,9 @@
             // 
             // btn_Polar
             // 
-            this.btn_Polar.Location = new System.Drawing.Point(3, 330);
+            this.btn_Polar.Location = new System.Drawing.Point(6, 330);
             this.btn_Polar.Name = "btn_Polar";
-            this.btn_Polar.Size = new System.Drawing.Size(67, 23);
+            this.btn_Polar.Size = new System.Drawing.Size(82, 23);
             this.btn_Polar.TabIndex = 17;
             this.btn_Polar.Tag = "";
             this.btn_Polar.Text = "极坐标";
@@ -158,7 +158,7 @@
             // 
             this.btn_GaussNoise.Location = new System.Drawing.Point(6, 301);
             this.btn_GaussNoise.Name = "btn_GaussNoise";
-            this.btn_GaussNoise.Size = new System.Drawing.Size(67, 23);
+            this.btn_GaussNoise.Size = new System.Drawing.Size(82, 23);
             this.btn_GaussNoise.TabIndex = 16;
             this.btn_GaussNoise.Tag = "";
             this.btn_GaussNoise.Text = "高斯噪声";
@@ -169,7 +169,7 @@
             // 
             this.btn_Salt.Location = new System.Drawing.Point(6, 272);
             this.btn_Salt.Name = "btn_Salt";
-            this.btn_Salt.Size = new System.Drawing.Size(67, 23);
+            this.btn_Salt.Size = new System.Drawing.Size(82, 23);
             this.btn_Salt.TabIndex = 15;
             this.btn_Salt.Tag = "";
             this.btn_Salt.Text = "椒盐噪声";
@@ -178,14 +178,14 @@
             // 
             // nud_Threshold
             // 
-            this.nud_Threshold.Location = new System.Drawing.Point(5, 475);
+            this.nud_Threshold.Location = new System.Drawing.Point(6, 475);
             this.nud_Threshold.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.nud_Threshold.Name = "nud_Threshold";
-            this.nud_Threshold.Size = new System.Drawing.Size(64, 21);
+            this.nud_Threshold.Size = new System.Drawing.Size(80, 21);
             this.nud_Threshold.TabIndex = 14;
             this.nud_Threshold.Value = new decimal(new int[] {
             80,
@@ -197,7 +197,7 @@
             // 
             this.btn_Smoothed.Location = new System.Drawing.Point(6, 243);
             this.btn_Smoothed.Name = "btn_Smoothed";
-            this.btn_Smoothed.Size = new System.Drawing.Size(67, 23);
+            this.btn_Smoothed.Size = new System.Drawing.Size(82, 23);
             this.btn_Smoothed.TabIndex = 13;
             this.btn_Smoothed.Tag = "smoothed算子";
             this.btn_Smoothed.Text = "边缘检测S";
@@ -208,7 +208,7 @@
             // 
             this.btn_Robert.Location = new System.Drawing.Point(4, 214);
             this.btn_Robert.Name = "btn_Robert";
-            this.btn_Robert.Size = new System.Drawing.Size(67, 23);
+            this.btn_Robert.Size = new System.Drawing.Size(82, 23);
             this.btn_Robert.TabIndex = 12;
             this.btn_Robert.Tag = "robert算子";
             this.btn_Robert.Text = "边缘检测R";
@@ -217,9 +217,9 @@
             // 
             // btn_GaussBlur
             // 
-            this.btn_GaussBlur.Location = new System.Drawing.Point(3, 184);
+            this.btn_GaussBlur.Location = new System.Drawing.Point(6, 184);
             this.btn_GaussBlur.Name = "btn_GaussBlur";
-            this.btn_GaussBlur.Size = new System.Drawing.Size(67, 23);
+            this.btn_GaussBlur.Size = new System.Drawing.Size(82, 23);
             this.btn_GaussBlur.TabIndex = 11;
             this.btn_GaussBlur.Text = "高斯模糊";
             this.btn_GaussBlur.UseVisualStyleBackColor = true;
@@ -227,19 +227,19 @@
             // 
             // btn_Frequency
             // 
-            this.btn_Frequency.Location = new System.Drawing.Point(3, 157);
+            this.btn_Frequency.Location = new System.Drawing.Point(6, 157);
             this.btn_Frequency.Name = "btn_Frequency";
-            this.btn_Frequency.Size = new System.Drawing.Size(67, 23);
+            this.btn_Frequency.Size = new System.Drawing.Size(82, 23);
             this.btn_Frequency.TabIndex = 10;
-            this.btn_Frequency.Text = "频域变换";
+            this.btn_Frequency.Text = "Fourier变换";
             this.btn_Frequency.UseVisualStyleBackColor = true;
             this.btn_Frequency.Click += new System.EventHandler(this.btn_Frequency_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(2, 70);
+            this.button1.Location = new System.Drawing.Point(6, 70);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(67, 23);
+            this.button1.Size = new System.Drawing.Size(82, 23);
             this.button1.TabIndex = 8;
             this.button1.Text = "灰度2";
             this.button1.UseVisualStyleBackColor = true;
@@ -247,9 +247,9 @@
             // 
             // btn_Histogram
             // 
-            this.btn_Histogram.Location = new System.Drawing.Point(3, 426);
+            this.btn_Histogram.Location = new System.Drawing.Point(6, 426);
             this.btn_Histogram.Name = "btn_Histogram";
-            this.btn_Histogram.Size = new System.Drawing.Size(67, 23);
+            this.btn_Histogram.Size = new System.Drawing.Size(82, 23);
             this.btn_Histogram.TabIndex = 7;
             this.btn_Histogram.Text = "直方图";
             this.btn_Histogram.UseVisualStyleBackColor = true;
@@ -257,9 +257,9 @@
             // 
             // btn_Complementary
             // 
-            this.btn_Complementary.Location = new System.Drawing.Point(2, 128);
+            this.btn_Complementary.Location = new System.Drawing.Point(6, 128);
             this.btn_Complementary.Name = "btn_Complementary";
-            this.btn_Complementary.Size = new System.Drawing.Size(67, 23);
+            this.btn_Complementary.Size = new System.Drawing.Size(82, 23);
             this.btn_Complementary.TabIndex = 6;
             this.btn_Complementary.Text = "反色";
             this.btn_Complementary.UseVisualStyleBackColor = true;
@@ -267,9 +267,9 @@
             // 
             // btn_Threshod
             // 
-            this.btn_Threshod.Location = new System.Drawing.Point(2, 99);
+            this.btn_Threshod.Location = new System.Drawing.Point(6, 99);
             this.btn_Threshod.Name = "btn_Threshod";
-            this.btn_Threshod.Size = new System.Drawing.Size(67, 23);
+            this.btn_Threshod.Size = new System.Drawing.Size(82, 23);
             this.btn_Threshod.TabIndex = 5;
             this.btn_Threshod.Text = "二值化";
             this.btn_Threshod.UseVisualStyleBackColor = true;
@@ -277,9 +277,9 @@
             // 
             // btn_Gray
             // 
-            this.btn_Gray.Location = new System.Drawing.Point(2, 41);
+            this.btn_Gray.Location = new System.Drawing.Point(6, 41);
             this.btn_Gray.Name = "btn_Gray";
-            this.btn_Gray.Size = new System.Drawing.Size(67, 23);
+            this.btn_Gray.Size = new System.Drawing.Size(82, 23);
             this.btn_Gray.TabIndex = 4;
             this.btn_Gray.Text = "灰度化";
             this.btn_Gray.UseVisualStyleBackColor = true;
@@ -287,9 +287,9 @@
             // 
             // btn_SelectImage
             // 
-            this.btn_SelectImage.Location = new System.Drawing.Point(3, 12);
+            this.btn_SelectImage.Location = new System.Drawing.Point(6, 12);
             this.btn_SelectImage.Name = "btn_SelectImage";
-            this.btn_SelectImage.Size = new System.Drawing.Size(67, 23);
+            this.btn_SelectImage.Size = new System.Drawing.Size(82, 23);
             this.btn_SelectImage.TabIndex = 0;
             this.btn_SelectImage.Text = "选择图片";
             this.btn_SelectImage.UseVisualStyleBackColor = true;
@@ -297,9 +297,9 @@
             // 
             // btn_FaceRecognition
             // 
-            this.btn_FaceRecognition.Location = new System.Drawing.Point(5, 359);
+            this.btn_FaceRecognition.Location = new System.Drawing.Point(6, 359);
             this.btn_FaceRecognition.Name = "btn_FaceRecognition";
-            this.btn_FaceRecognition.Size = new System.Drawing.Size(67, 23);
+            this.btn_FaceRecognition.Size = new System.Drawing.Size(82, 23);
             this.btn_FaceRecognition.TabIndex = 19;
             this.btn_FaceRecognition.Tag = "";
             this.btn_FaceRecognition.Text = "面部识别";
@@ -310,7 +310,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(910, 687);
+            this.ClientSize = new System.Drawing.Size(937, 687);
             this.Controls.Add(this.sC_Compare);
             this.Name = "Form1";
             this.Text = "图像分析及处理";

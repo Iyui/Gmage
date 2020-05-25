@@ -99,7 +99,7 @@
             this.频谱ToolStripMenuItem.Name = "频谱ToolStripMenuItem";
             this.频谱ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.频谱ToolStripMenuItem.Tag = "5";
-            this.频谱ToolStripMenuItem.Text = "频谱";
+            this.频谱ToolStripMenuItem.Text = "Fourier变换";
             // 
             // 高斯模糊ToolStripMenuItem
             // 

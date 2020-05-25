@@ -22,7 +22,7 @@ namespace ImageAnalyze
 
         public int Threshold { get => (int)nud_Threshold.Value; }
 
-        Bitmap initBitmap = null;
+        Bitmap initBitmap = new Bitmap(1, 1);
 
         #endregion
 
