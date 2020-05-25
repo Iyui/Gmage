@@ -31,64 +31,13 @@ namespace ImageAnalyze
             InitializeComponent();
         }
 
-        private void AnalyzeRGB(Bitmap bitmap)
-        {
-            initRGB = new int[5][];
-            for (int i = 0; i < 5; i++)
-                initRGB[i] = new int[bitmap.Height * bitmap.Width];
-            int m = 0;
-            for (int i = 0; i < bitmap.Height; i++)
-            {
-                for (int j = 0; j < bitmap.Width; j++)
-                {
-                    //获取当前点的Color对象
-                    Color c = bitmap.GetPixel(j, i);
-                    //计算转化过灰度图之后的rgb值（套用已有的计算公式）
-                    int rgb = Gray(c);
-                    initRGB[0][m] = m++;
-                    initRGB[1][i * j] = rgb;
-                    initRGB[1][i * j] = c.R;
-                    initRGB[2][i * j] = c.G;
-                    initRGB[3][i * j] = c.B;
-                }
-            }
-        }
-
-        private void InitChart()
-        {
-            var X = initRGB[0];
-            var R = initRGB[1];
-            var G = initRGB[2];
-            var B = initRGB[3];
-
-            //GeneralChart(ct_InitChart, "R", X, R);
-            //GeneralChart(ct_InitChart, "G", X, G);
-            //GeneralChart(ct_InitChart, "B", X, B);
-        }
-
-        private void GeneralChart(Chart chart, string name, int[] x, int[] y, SeriesChartType seriesChartType = SeriesChartType.Spline)
-        {
-            chart.Series.Add(name);
-            chart.Series[name].ChartType = seriesChartType;
-            chart.Series[name].Points.DataBindXY(x, y);
-            //chart.ChartAreas[0].AxisX.Enabled = AxisEnabled.True;
-            //chart.ChartAreas[0].AxisX.LabelStyle.Enabled = false;
-            //chart.ChartAreas[0].AxisX.MajorTickMark.Size = 0;
-            chart.ChartAreas[0].AxisX.ScaleView.Size = 256;
-            //chart.ChartAreas[0].AxisX.ScrollBar.ButtonStyle = ScrollBarButtonStyles.All;
-            //chart.ChartAreas[0].AxisX.ScrollBar.IsPositionedInside = true;
-        }
-
+  
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
-
             ReadInitImage();
-            //AnalyzeRGB(initBitmap);
-            //InitChart();
         }
 
 
-        string  filename ="";
         private void ReadInitImage()
         {
             OpenFileDialog oi = new OpenFileDialog
@@ -100,7 +49,7 @@ namespace ImageAnalyze
             };
             if (oi.ShowDialog() == DialogResult.OK)
             {
-                filename = oi.FileName;
+                var filename = oi.FileName;
                 var Format = new string[] { ".jpg", ".bmp" };
                 if (Format.Contains(Path.GetExtension(filename).ToLower()))
                 {
@@ -121,6 +70,7 @@ namespace ImageAnalyze
 
         private void btn_Threshod_Click(object sender, EventArgs e)
         {
+            CutBackground.model = 3;
             pictureBox2.Image = Threshoding(initBitmap,Threshold);
             GC.Collect();
 
@@ -128,12 +78,14 @@ namespace ImageAnalyze
         //反色
         private void btn_Complementary_Click(object sender, EventArgs e)
         {
+            CutBackground.model = 4;
             pictureBox2.Image = Complementary(initBitmap);
             GC.Collect();
         }
 
         private void btn_Gray_Click(object sender, EventArgs e)
         {
+            CutBackground.model = 1;
             pictureBox2.Image = ImageToGrey(initBitmap);
             GC.Collect();
         }
@@ -149,63 +101,66 @@ namespace ImageAnalyze
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            CutBackground.model = 2;
             pictureBox2.Image = ImageToGrey2(initBitmap);
-            GC.Collect();
         }
 
         private void btn_Frequency_Click(object sender, EventArgs e)
         {
             try
             {
-                pictureBox2.Image = Fourier.FFT(initBitmap);
+            CutBackground.model = 5;
+                pictureBox2.Image = FFT(initBitmap);
             }
             catch { };
         }
 
         private void btn_Gaussian_Click(object sender, EventArgs e)
         {
-            Gauss convolution = new Gauss();
-            pictureBox2.Image = convolution.Smooth(initBitmap);
+            CutBackground.model = 6;
+            pictureBox2.Image = GaussBlur(initBitmap);
         }
 
         private void btn_Robert_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = EdgeDetector.Robert(initBitmap, Threshold);
+            CutBackground.model = 7;
+            pictureBox2.Image = EdgeDetector_Robert(initBitmap, Threshold);
         }
 
         private void btn_Smoothed_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = EdgeDetector.Smoothed(initBitmap);
+            CutBackground.model = 8;
+            pictureBox2.Image = EdgeDetector_Smoothed(initBitmap);
         }
 
         private void btn_Salt_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = Gauss.AddSalt(initBitmap);
+            CutBackground.model = 9;
+            pictureBox2.Image = SaltNoise(initBitmap);
         }
 
         private void btn_GaussNoise_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = Gauss.Goss_noise(initBitmap);
+            CutBackground.model = 10;
+            pictureBox2.Image = GaussNoise(initBitmap);
         }
 
         private void btn_Polar_Click(object sender, EventArgs e)
         {
-            if (initBitmap != null)
-            {
-                //PolarCoordinate hs = new PolarCoordinate(initBitmap);
-                //hs.ShowDialog();
-                var img = new Image<Bgr, byte>(filename);
+            CutBackground.model = 11;
+            pictureBox2.Image = Polar(initBitmap);
+        }
 
-                var img2 = new Image<Bgr, byte>(filename);
-    
-                CvInvoke.LogPolar(img, img2, new PointF(
-              img.Width / 2,
-              img.Height / 2
-               ), 100);
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CutBackground cb = new CutBackground();
+            cb.Show();
+        }
 
-                pictureBox2.Image = img2.ToBitmap();
-            }
+        private void btn_FaceRecognition_Click(object sender, EventArgs e)
+        {
+            CutBackground.model = 12;
+            pictureBox2.Image = Recognite_Face(initBitmap);
         }
     }
 }

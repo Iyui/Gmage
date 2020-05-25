@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Drawing.Imaging;
 using AForge.Imaging;
 using System.IO;
+
 namespace ImageAnalyze
 {
     public class Fourier

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 namespace ImageAnalyze
 {
     public class ImageProcess
@@ -27,7 +30,7 @@ namespace ImageAnalyze
                     cBitmap.SetPixel(i, j, Color.FromArgb(cR, cG, cB));
                 }
             }
-            
+
             return cBitmap;
         }
 
@@ -58,7 +61,7 @@ namespace ImageAnalyze
 
         public static int Gray2(Color c)
         {
-            return (int)(c.R + c.G+ c.B)/3;
+            return (int)(c.R + c.G + c.B) / 3;
         }
 
         /// <summary>
@@ -104,8 +107,128 @@ namespace ImageAnalyze
             }
             return tBitmap;
         }
+        /// <summary>
+        /// 面部识别
+        /// </summary>
+        /// <param name="img"></param>
+        /// <param name="Grayimg"></param>
+        /// <param name="save"></param>
+        /// <returns></returns>
+        public static Bitmap Recognite_Face(Bitmap bitmap)
+        {
 
- 
+            //如果支持用显卡,则用显卡运算
+            CvInvoke.UseOpenCL = CvInvoke.HaveOpenCLCompatibleGpuDevice;
 
+            //构建级联分类器,利用已经训练好的数据,识别人脸
+            //var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
+            var face = new CascadeClassifier("lbpcascade_animeface.xml");
+
+            // var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
+
+            //加载要识别的图片
+            //var img = new Image<Bgr, byte>("0.png");
+            //var img2 = new Image<Gray, byte>(img.ToBitmap());
+            Image<Bgr, byte> img = new Image<Bgr, byte>(bitmap);
+            var Grayimg = new Image<Gray, byte>(bitmap);
+            //把图片从彩色转灰度
+            CvInvoke.CvtColor(img, Grayimg, ColorConversion.Bgr2Gray);
+
+            //亮度增强
+            CvInvoke.EqualizeHist(Grayimg, Grayimg);
+
+            //在这一步就已经识别出来了,返回的是人脸所在的位置和大小
+            var facesDetected = face.DetectMultiScale(Grayimg, 1.1, 10, new Size(50, 50));
+
+            //循环把人脸部分切出来并保存
+            // CutandSave(facesDetected);
+            return ShowCut(facesDetected, img);
+
+
+            ////释放资源退出
+            //img.Dispose();
+            //Grayimg.Dispose();
+            //face.Dispose();
+
+            //return;
+        }
+
+        private static Bitmap ShowCut(Rectangle[] facesDetected, Image<Bgr, byte> bitmap)
+        {
+            Bitmap rectg = bitmap.ToBitmap();
+            foreach (var item in facesDetected)
+            {
+                var bmpRect = new Bitmap(item.Width, item.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                var g = Graphics.FromImage(bmpRect);
+                rectg = DrawRectangle(rectg, item.X, item.Y, item.Width, item.Height);
+            }
+            return rectg;
+        }
+
+        /// <summary>
+        /// 画矩形
+        /// </summary>
+        /// <param name="x">左上角的坐标</param>
+        /// <param name="y">右下角的坐标</param>
+        private static Bitmap DrawRectangle(Bitmap image, int x, int y, int width, int height)
+        {
+            var g = Graphics.FromImage(image);
+            var pen = new Pen(Color.Red);
+            g.DrawRectangle(pen, x, y, width, height);
+            return image;
+        }
+
+        /// <summary>
+        /// 椒盐噪声
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap SaltNoise(Bitmap initBitmap)
+        {
+            return Gauss.AddSalt(initBitmap);
+        }
+
+        /// <summary>
+        /// 高斯噪声
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap GaussNoise(Bitmap initBitmap)
+        {
+            return Gauss.Goss_noise(initBitmap);
+        }
+
+        public static Bitmap GaussBlur(Bitmap initBitmap)
+        {
+            Gauss convolution = new Gauss();
+            return convolution.Smooth(initBitmap);
+        }
+
+        public static Bitmap EdgeDetector_Robert(Bitmap initBitmap, int Threshold = 80)
+        {
+            return EdgeDetector.Robert(initBitmap, Threshold);
+        }
+
+        public static Bitmap EdgeDetector_Smoothed(Bitmap initBitmap)
+        {
+            return EdgeDetector.Smoothed(initBitmap);
+        }
+
+        public static Bitmap FFT(Bitmap initBitmap)
+        {
+            return Fourier.FFT(initBitmap);
+        }
+        public static Bitmap Polar(Bitmap initBitmap, int M = 100)
+        {
+            var img = new Image<Bgr, byte>(initBitmap);
+
+            var img2 = new Image<Bgr, byte>(initBitmap);
+
+            CvInvoke.LogPolar(img, img2, new PointF(
+          img.Width / 2,
+          img.Height / 2
+                   ), M);
+            return img2.ToBitmap();
+        }
     }
 }
