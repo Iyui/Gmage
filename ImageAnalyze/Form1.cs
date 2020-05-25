@@ -50,7 +50,7 @@ namespace ImageAnalyze
             if (oi.ShowDialog() == DialogResult.OK)
             {
                 var filename = oi.FileName;
-                var Format = new string[] { ".jpg", ".bmp" };
+                var Format = new string[] { ".jpg", ".bmp" ,".jpeg" };
                 if (Format.Contains(Path.GetExtension(filename).ToLower()))
                 {
                     try
