@@ -7,14 +7,14 @@ using System.Drawing;
 using System.Drawing.Imaging;
 namespace ImageAnalyze
 {
-    public class Gauss
+    public class Noise
     {
         private double[,] GaussianBlur;//声明私有的高斯模糊卷积核函数         
 
         /// <summary>
         /// 构造卷积（Convolution）类函数
         /// </summary>
-        public Gauss()
+        public Noise()
         {            //初始化高斯模糊卷积核            
             int k = 273;
             GaussianBlur = new double[5, 5]{{(double)1/k,(double)4/k,(double)7/k,(double)4/k,(double)1/k},
@@ -166,10 +166,9 @@ namespace ImageAnalyze
         /// <param name="Pa"></param>
         /// <param name="Pb"></param>
         /// <returns></returns>
-        public static Bitmap AddSalt(Bitmap bitmap, double Pa=-1000, double Pb=1)
+        public static Bitmap AddSalt(Bitmap bitmap, double Pa=0.001, double Pb=0.001)
         {
             Bitmap Saltpic = new Bitmap(bitmap.Width, bitmap.Height);
-            double P = Pb / (1 - Pa);//概率Pb 
             int width = Saltpic.Width;
             int height = Saltpic.Height;
             Random rand = new Random();
@@ -182,12 +181,12 @@ namespace ImageAnalyze
                     double probility = rand.NextDouble();
                     if (probility < Pa)
                     {
-                        noise = 255;//有Pa概率 噪声设为最大值  
+                        noise = 255;//有Pa的几率添加椒噪声
                     }
                     else
                     {
                         double temp = rand.NextDouble();
-                        if (temp < P)//有1 - Pa的几率到达这里，再乘以 P ，刚好等于Pb  
+                        if (temp < Pb)//有Pb的几率添加盐噪声
                             noise = 0;
                     }
                     Color color;

@@ -82,7 +82,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GaussianBlur.cs" />
+    <Compile Include="Noise.cs" />
     <Compile Include="histogramcs.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -263,7 +263,7 @@ namespace ImageAnalyze
         /// <returns></returns>
         public static Bitmap SaltNoise(Bitmap initBitmap)
         {
-            return Gauss.AddSalt(initBitmap);
+            return Noise.AddSalt(initBitmap);
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace ImageAnalyze
         /// <returns></returns>
         public static Bitmap GaussNoise(Bitmap initBitmap)
         {
-            return Gauss.Goss_noise(initBitmap);
+            return Noise.Goss_noise(initBitmap);
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace ImageAnalyze
         /// <returns></returns>
         public static Bitmap GaussBlur(Bitmap initBitmap)
         {
-            Gauss convolution = new Gauss();
+            Noise convolution = new Noise();
             return convolution.Smooth(initBitmap);
         }
 
