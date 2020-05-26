@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Drawing.Imaging;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
@@ -12,7 +13,7 @@ namespace ImageAnalyze
     public class ImageProcess
     {
         /// <summary>
-        /// 反色
+        /// 反色 像素法
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
@@ -35,7 +36,26 @@ namespace ImageAnalyze
         }
 
         /// <summary>
-        /// 灰度化
+        /// 反色 指针法
+        /// </summary>
+        /// <param name="initbitmap"></param>
+        /// <returns></returns>
+        public static Bitmap Complementary(Bitmap initbitmap)
+        {
+            Bitmap src = new Bitmap(Image.FromHbitmap(initbitmap.GetHbitmap())); // 加载图像
+            BitmapData srcdat = src.LockBits(new Rectangle(Point.Empty, src.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
+            unsafe // 不安全代码
+            {
+                byte* pix = (byte*)srcdat.Scan0; // 像素首地址
+                for (int i = 0; i < srcdat.Stride * srcdat.Height; i++)
+                    pix[i] = (byte)(255 - pix[i]);
+            }
+            src.UnlockBits(srcdat); // 解锁
+            return src;
+        }
+
+        /// <summary>
+        /// 灰度化c.R * .3 + c.G * .59 + c.B * .11 像素法
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
@@ -54,6 +74,35 @@ namespace ImageAnalyze
             return cBitmap;
         }
 
+        /// <summary>
+        /// 灰度化 指针法
+        /// </summary>
+        /// <param name="initbitmap"></param>
+        /// <returns></returns>
+        public static Bitmap ImageToGrey(Bitmap initbitmap)
+        {
+            Bitmap src = new Bitmap(Image.FromHbitmap(initbitmap.GetHbitmap())); // 加载图像
+            BitmapData srcdat = src.LockBits(new Rectangle(Point.Empty, src.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
+            byte temp = 0;
+            unsafe // 不安全代码
+            {
+                byte* pix = (byte*)srcdat.Scan0; // 像素首地址
+                for (int i = 0; i < srcdat.Height; i++)
+                {
+                    for (int j = 0; j < srcdat.Width; j++)
+                    {
+                        temp = (byte)(pix[2] * .3 + pix[1] * .59 + pix[0] * .11);
+                        pix[0] = pix[1] = pix[2];
+                        pix += 3;
+                    }
+                    pix += srcdat.Stride - srcdat.Width*3;
+                }
+            }
+
+            src.UnlockBits(srcdat); // 解锁
+            return src;
+        }
+
         public static int Gray(Color c)
         {
             return (int)(c.R * .3 + c.G * .59 + c.B * .11);
@@ -65,7 +114,7 @@ namespace ImageAnalyze
         }
 
         /// <summary>
-        /// 灰度化
+        /// 灰度化 (c.R + c.G + c.B) / 3
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
@@ -85,7 +134,7 @@ namespace ImageAnalyze
         }
 
         /// <summary>
-        /// 二值化
+        /// 二值化 像素法
         /// </summary>
         /// <param name="img"></param>
         /// <param name="threshold">阈值</param>
@@ -107,6 +156,36 @@ namespace ImageAnalyze
             }
             return tBitmap;
         }
+
+        /// <summary>
+        /// 二值化 指针法
+        /// </summary>
+        /// <param name="initbitmap"></param>
+        /// <returns></returns>
+        public static Bitmap Threshoding(Bitmap initbitmap, int threshold = 128)
+        {
+            Bitmap src = new Bitmap(Image.FromHbitmap(initbitmap.GetHbitmap())); // 加载图像
+            BitmapData srcdat = src.LockBits(new Rectangle(Point.Empty, src.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
+            unsafe // 不安全代码
+            {
+                byte* pix = (byte*)srcdat.Scan0; // 像素首地址
+                for (int i = 0; i < srcdat.Height; i++)
+                {
+                    for (int j = 0; j < srcdat.Width; j++)
+                    {
+                        if (pix[2] * .3 + pix[1] * .59 + pix[0] * .11 > threshold)
+                            pix[0] = pix[1] = pix[2] = 255;
+                        else
+                            pix[0] = pix[1] = pix[2] = 0;
+                        pix += 3;
+                    }
+                    pix += srcdat.Stride - srcdat.Width * 3;
+                }
+            }
+            src.UnlockBits(srcdat); // 解锁
+            return src;
+        }
+
         /// <summary>
         /// 面部识别
         /// </summary>
@@ -197,22 +276,42 @@ namespace ImageAnalyze
             return Gauss.Goss_noise(initBitmap);
         }
 
+        /// <summary>
+        /// 高斯平滑
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
         public static Bitmap GaussBlur(Bitmap initBitmap)
         {
             Gauss convolution = new Gauss();
             return convolution.Smooth(initBitmap);
         }
 
+        /// <summary>
+        /// 边缘检测Robert算子
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <param name="Threshold"></param>
+        /// <returns></returns>
         public static Bitmap EdgeDetector_Robert(Bitmap initBitmap, int Threshold = 80)
         {
             return EdgeDetector.Robert(initBitmap, Threshold);
         }
-
+        /// <summary>
+        /// 边缘检测Smoothed
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
         public static Bitmap EdgeDetector_Smoothed(Bitmap initBitmap)
         {
             return EdgeDetector.Smoothed(initBitmap);
         }
 
+        /// <summary>
+        /// 傅里叶变换 频率谱
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
         public static Bitmap FFT(Bitmap initBitmap)
         {
             return Fourier.FFT(initBitmap);

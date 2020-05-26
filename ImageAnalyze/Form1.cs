@@ -18,8 +18,7 @@ namespace ImageAnalyze
     public partial class Form1 : Form
     {
         #region 变量
-        int[][] initRGB;
-
+  
         public int Threshold { get => (int)nud_Threshold.Value; }
 
         Bitmap initBitmap = new Bitmap(1, 1);
