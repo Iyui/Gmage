@@ -40,18 +40,18 @@ namespace ImageAnalyze
         /// </summary>
         /// <param name="initbitmap"></param>
         /// <returns></returns>
-        public static Bitmap Complementary(Bitmap initbitmap)
+        public static Bitmap ComplementaryP(Bitmap initbitmap)
         {
-            Bitmap src = new Bitmap(Image.FromHbitmap(initbitmap.GetHbitmap())); // 加载图像
-            BitmapData srcdat = src.LockBits(new Rectangle(Point.Empty, src.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            BitmapData bitmapdat = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
             unsafe // 不安全代码
             {
-                byte* pix = (byte*)srcdat.Scan0; // 像素首地址
-                for (int i = 0; i < srcdat.Stride * srcdat.Height; i++)
+                byte* pix = (byte*)bitmapdat.Scan0; // 像素首地址
+                for (int i = 0; i < bitmapdat.Stride * bitmapdat.Height; i++)
                     pix[i] = (byte)(255 - pix[i]);
             }
-            src.UnlockBits(srcdat); // 解锁
-            return src;
+            bitmap.UnlockBits(bitmapdat); // 解锁
+            return bitmap;
         }
 
         /// <summary>
@@ -59,48 +59,47 @@ namespace ImageAnalyze
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
-        public static Bitmap ImageToGrey(Image img)
+        public static Bitmap ImageToGrey(Bitmap initbitmap)
         {
-            Bitmap cBitmap = new Bitmap(img);
-            for (int i = 0; i < cBitmap.Width; i++)
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            for (int i = 0; i < bitmap.Width; i++)
             {
-                for (int j = 0; j < cBitmap.Height; j++)
+                for (int j = 0; j < bitmap.Height; j++)
                 {
-                    Color c = cBitmap.GetPixel(i, j);
+                    Color c = bitmap.GetPixel(i, j);
                     int gray = Gray(c);
-                    cBitmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
+                    bitmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
                 }
             }
-            return cBitmap;
+            return bitmap;
         }
-
         /// <summary>
         /// 灰度化 指针法
         /// </summary>
         /// <param name="initbitmap"></param>
         /// <returns></returns>
-        public static Bitmap ImageToGrey(Bitmap initbitmap)
+        public static Bitmap ImageToGreyP(Bitmap initbitmap)
         {
-            Bitmap src = new Bitmap(Image.FromHbitmap(initbitmap.GetHbitmap())); // 加载图像
-            BitmapData srcdat = src.LockBits(new Rectangle(Point.Empty, src.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            BitmapData bitmapdat = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
             byte temp = 0;
             unsafe // 不安全代码
             {
-                byte* pix = (byte*)srcdat.Scan0; // 像素首地址
-                for (int i = 0; i < srcdat.Height; i++)
+                byte* pix = (byte*)bitmapdat.Scan0; // 像素首地址
+                for (int i = 0; i < bitmapdat.Height; i++)
                 {
-                    for (int j = 0; j < srcdat.Width; j++)
+                    for (int j = 0; j < bitmapdat.Width; j++)
                     {
-                        temp = (byte)(pix[2] * .3 + pix[1] * .59 + pix[0] * .11);
-                        pix[0] = pix[1] = pix[2];
+                        temp = (byte)(pix[2] * .3 + pix[1] * .59 + pix[0] * .11 );
+                        pix[0] = pix[1] = pix[2] = temp;
                         pix += 3;
                     }
-                    pix += srcdat.Stride - srcdat.Width*3;
+                    pix += bitmapdat.Stride - bitmapdat.Width*3;
                 }
             }
 
-            src.UnlockBits(srcdat); // 解锁
-            return src;
+            bitmap.UnlockBits(bitmapdat); // 解锁
+            return bitmap;
         }
 
         public static int Gray(Color c)
@@ -118,19 +117,19 @@ namespace ImageAnalyze
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
-        public static Bitmap ImageToGrey2(Image img)
+        public static Bitmap ImageToGrey2(Bitmap initbitmap)
         {
-            Bitmap cBitmap = new Bitmap(img);
-            for (int i = 0; i < cBitmap.Width; i++)
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            for (int i = 0; i < bitmap.Width; i++)
             {
-                for (int j = 0; j < cBitmap.Height; j++)
+                for (int j = 0; j < bitmap.Height; j++)
                 {
-                    Color c = cBitmap.GetPixel(i, j);
+                    Color c = bitmap.GetPixel(i, j);
                     int gray = Gray2(c);
-                    cBitmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
+                    bitmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
                 }
             }
-            return cBitmap;
+            return bitmap;
         }
 
         /// <summary>
@@ -139,22 +138,22 @@ namespace ImageAnalyze
         /// <param name="img"></param>
         /// <param name="threshold">阈值</param>
         /// <returns></returns>
-        public static Bitmap Threshoding(Image img, int threshold = 128)
+        public static Bitmap Threshoding(Bitmap initbitmap, int threshold = 128)
         {
-            Bitmap tBitmap = new Bitmap(img);
-            for (int i = 0; i < tBitmap.Width; i++)
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            for (int i = 0; i < bitmap.Width; i++)
             {
-                for (int j = 0; j < tBitmap.Height; j++)
+                for (int j = 0; j < bitmap.Height; j++)
                 {
-                    Color c = tBitmap.GetPixel(i, j);
+                    Color c = bitmap.GetPixel(i, j);
                     int rgb = (int)(c.R * .3 + c.G * .59 + c.B * .11);
                     if (rgb < threshold)
-                        tBitmap.SetPixel(i, j, Color.FromArgb(0, 0, 0));
+                        bitmap.SetPixel(i, j, Color.FromArgb(0, 0, 0));
                     else
-                        tBitmap.SetPixel(i, j, Color.FromArgb(255, 255, 255));
+                        bitmap.SetPixel(i, j, Color.FromArgb(255, 255, 255));
                 }
             }
-            return tBitmap;
+            return bitmap;
         }
 
         /// <summary>
@@ -162,16 +161,16 @@ namespace ImageAnalyze
         /// </summary>
         /// <param name="initbitmap"></param>
         /// <returns></returns>
-        public static Bitmap Threshoding(Bitmap initbitmap, int threshold = 128)
+        public static Bitmap ThreshodingP(Bitmap initbitmap, int threshold = 128)
         {
-            Bitmap src = new Bitmap(Image.FromHbitmap(initbitmap.GetHbitmap())); // 加载图像
-            BitmapData srcdat = src.LockBits(new Rectangle(Point.Empty, src.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
+            Bitmap bitmap = new Bitmap(Image.FromHbitmap(initbitmap.GetHbitmap())); // 加载图像
+            BitmapData bitmapdat = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
             unsafe // 不安全代码
             {
-                byte* pix = (byte*)srcdat.Scan0; // 像素首地址
-                for (int i = 0; i < srcdat.Height; i++)
+                byte* pix = (byte*)bitmapdat.Scan0; // 像素首地址
+                for (int i = 0; i < bitmapdat.Height; i++)
                 {
-                    for (int j = 0; j < srcdat.Width; j++)
+                    for (int j = 0; j < bitmapdat.Width; j++)
                     {
                         if (pix[2] * .3 + pix[1] * .59 + pix[0] * .11 > threshold)
                             pix[0] = pix[1] = pix[2] = 255;
@@ -179,11 +178,11 @@ namespace ImageAnalyze
                             pix[0] = pix[1] = pix[2] = 0;
                         pix += 3;
                     }
-                    pix += srcdat.Stride - srcdat.Width * 3;
+                    pix += bitmapdat.Stride - bitmapdat.Width * 3;
                 }
             }
-            src.UnlockBits(srcdat); // 解锁
-            return src;
+            bitmap.UnlockBits(bitmapdat); // 解锁
+            return bitmap;
         }
 
         /// <summary>
@@ -263,7 +262,7 @@ namespace ImageAnalyze
         /// <returns></returns>
         public static Bitmap SaltNoise(Bitmap initBitmap)
         {
-            return Noise.AddSalt(initBitmap);
+            return Noise.SaltP(initBitmap);
         }
 
         /// <summary>
@@ -285,6 +284,17 @@ namespace ImageAnalyze
         {
             Noise convolution = new Noise();
             return convolution.Smooth(initBitmap);
+        }
+
+        /// <summary>
+        /// 高斯平滑 指针法
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap GaussBlurP(Bitmap initBitmap)
+        {
+            Noise convolution = new Noise();
+            return convolution.GaussSmooth(initBitmap);
         }
 
         /// <summary>

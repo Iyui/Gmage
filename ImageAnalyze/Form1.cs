@@ -78,14 +78,14 @@ namespace ImageAnalyze
         private void btn_Complementary_Click(object sender, EventArgs e)
         {
             CutBackground.model = 4;
-            pictureBox2.Image = Complementary(initBitmap);
+            pictureBox2.Image = ComplementaryP(initBitmap);
             GC.Collect();
         }
 
         private void btn_Gray_Click(object sender, EventArgs e)
         {
             CutBackground.model = 1;
-            pictureBox2.Image = ImageToGrey(initBitmap);
+            pictureBox2.Image = ImageToGreyP(initBitmap);
             GC.Collect();
         }
 
@@ -116,8 +116,8 @@ namespace ImageAnalyze
 
         private void btn_Gaussian_Click(object sender, EventArgs e)
         {
-            CutBackground.model = 6;
-            pictureBox2.Image = GaussBlur(initBitmap);
+            CutBackground.model = 6;       
+            pictureBox2.Image = GaussBlurP(initBitmap);
         }
 
         private void btn_Robert_Click(object sender, EventArgs e)
@@ -160,6 +160,11 @@ namespace ImageAnalyze
         {
             CutBackground.model = 12;
             pictureBox2.Image = Recognite_Face(initBitmap);
+        }
+
+        private int Interval(int tick)
+        {
+            return Environment.TickCount - tick;
         }
     }
 }

@@ -54,7 +54,7 @@ namespace ImageAnalyze
                 default:
                     break;
                 case 1:
-                    b = ImageToGrey(b);
+                    b = ImageToGreyP(b);
                     break;
                 case 2:
                     b = ImageToGrey2(b);
@@ -63,7 +63,7 @@ namespace ImageAnalyze
                     b = Threshoding(b);
                     break;
                 case 4:
-                    b = Complementary(b);
+                    b = ComplementaryP(b);
                     break;
                 case 5:
                     b = FFT(b);
