@@ -60,7 +60,7 @@ namespace ImageAnalyze
                     b = ImageToGrey2(b);
                     break;
                 case 3:
-                    b = Threshoding(b);
+                    b = Thresholding(b);
                     break;
                 case 4:
                     b = ComplementaryP(b);

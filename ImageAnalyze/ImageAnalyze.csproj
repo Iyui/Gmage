@@ -74,19 +74,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EdgeDetector.cs" />
-    <Compile Include="FFT.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Process\EdgeDetector.cs" />
+    <Compile Include="Process\FFT.cs" />
+    <Compile Include="Filter\Filter.cs" />
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Noise.cs" />
-    <Compile Include="histogramcs.cs">
+    <Compile Include="Noise\Noise.cs" />
+    <Compile Include="Process\histogramcs.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="histogramcs.Designer.cs">
+    <Compile Include="Process\histogramcs.Designer.cs">
       <DependentUpon>histogramcs.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageProcess.cs" />
@@ -96,16 +97,34 @@
     <Compile Include="BackGround.Designer.cs">
       <DependentUpon>BackGround.cs</DependentUpon>
     </Compile>
+    <Compile Include="Noise\Probability.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Noise\Probability.Designer.cs">
+      <DependentUpon>Probability.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Process\Threshold.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Process\Threshold.Designer.cs">
+      <DependentUpon>Threshold.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="histogramcs.resx">
+    <EmbeddedResource Include="Process\histogramcs.resx">
       <DependentUpon>histogramcs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BackGround.resx">
       <DependentUpon>BackGround.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Noise\Probability.resx">
+      <DependentUpon>Probability.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Process\Threshold.resx">
+      <DependentUpon>Threshold.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

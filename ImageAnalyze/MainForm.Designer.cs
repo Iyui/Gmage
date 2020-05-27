@@ -1,6 +1,6 @@
 ﻿namespace ImageAnalyze
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -32,11 +32,12 @@
             this.pB_Init = new System.Windows.Forms.PictureBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.btn_MedianFilter = new System.Windows.Forms.Button();
+            this.btn_FaceRecognition = new System.Windows.Forms.Button();
             this.btn_BackGround = new System.Windows.Forms.Button();
             this.btn_Polar = new System.Windows.Forms.Button();
             this.btn_GaussNoise = new System.Windows.Forms.Button();
             this.btn_Salt = new System.Windows.Forms.Button();
-            this.nud_Threshold = new System.Windows.Forms.NumericUpDown();
             this.btn_Smoothed = new System.Windows.Forms.Button();
             this.btn_Robert = new System.Windows.Forms.Button();
             this.btn_GaussBlur = new System.Windows.Forms.Button();
@@ -47,7 +48,7 @@
             this.btn_Threshod = new System.Windows.Forms.Button();
             this.btn_Gray = new System.Windows.Forms.Button();
             this.btn_SelectImage = new System.Windows.Forms.Button();
-            this.btn_FaceRecognition = new System.Windows.Forms.Button();
+            this.btn_Save = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.sC_Compare)).BeginInit();
             this.sC_Compare.Panel1.SuspendLayout();
             this.sC_Compare.Panel2.SuspendLayout();
@@ -58,7 +59,6 @@
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_Threshold)).BeginInit();
             this.SuspendLayout();
             // 
             // sC_Compare
@@ -75,7 +75,7 @@
             // 
             this.sC_Compare.Panel2.Controls.Add(this.splitContainer3);
             this.sC_Compare.Size = new System.Drawing.Size(937, 687);
-            this.sC_Compare.SplitterDistance = 445;
+            this.sC_Compare.SplitterDistance = 444;
             this.sC_Compare.TabIndex = 0;
             // 
             // pB_Init
@@ -84,7 +84,7 @@
             this.pB_Init.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pB_Init.Location = new System.Drawing.Point(0, 0);
             this.pB_Init.Name = "pB_Init";
-            this.pB_Init.Size = new System.Drawing.Size(445, 687);
+            this.pB_Init.Size = new System.Drawing.Size(444, 687);
             this.pB_Init.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pB_Init.TabIndex = 1;
             this.pB_Init.TabStop = false;
@@ -101,12 +101,13 @@
             // 
             // splitContainer3.Panel2
             // 
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Save);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_MedianFilter);
             this.splitContainer3.Panel2.Controls.Add(this.btn_FaceRecognition);
             this.splitContainer3.Panel2.Controls.Add(this.btn_BackGround);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Polar);
             this.splitContainer3.Panel2.Controls.Add(this.btn_GaussNoise);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Salt);
-            this.splitContainer3.Panel2.Controls.Add(this.nud_Threshold);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Smoothed);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Robert);
             this.splitContainer3.Panel2.Controls.Add(this.btn_GaussBlur);
@@ -117,7 +118,7 @@
             this.splitContainer3.Panel2.Controls.Add(this.btn_Threshod);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Gray);
             this.splitContainer3.Panel2.Controls.Add(this.btn_SelectImage);
-            this.splitContainer3.Size = new System.Drawing.Size(488, 687);
+            this.splitContainer3.Size = new System.Drawing.Size(489, 687);
             this.splitContainer3.SplitterDistance = 394;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -132,9 +133,31 @@
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
             // 
+            // btn_MedianFilter
+            // 
+            this.btn_MedianFilter.Location = new System.Drawing.Point(6, 388);
+            this.btn_MedianFilter.Name = "btn_MedianFilter";
+            this.btn_MedianFilter.Size = new System.Drawing.Size(82, 23);
+            this.btn_MedianFilter.TabIndex = 20;
+            this.btn_MedianFilter.Tag = "";
+            this.btn_MedianFilter.Text = "中值滤波";
+            this.btn_MedianFilter.UseVisualStyleBackColor = true;
+            this.btn_MedianFilter.Click += new System.EventHandler(this.btn_MedianFilter_Click);
+            // 
+            // btn_FaceRecognition
+            // 
+            this.btn_FaceRecognition.Location = new System.Drawing.Point(6, 359);
+            this.btn_FaceRecognition.Name = "btn_FaceRecognition";
+            this.btn_FaceRecognition.Size = new System.Drawing.Size(82, 23);
+            this.btn_FaceRecognition.TabIndex = 19;
+            this.btn_FaceRecognition.Tag = "";
+            this.btn_FaceRecognition.Text = "面部识别";
+            this.btn_FaceRecognition.UseVisualStyleBackColor = true;
+            this.btn_FaceRecognition.Click += new System.EventHandler(this.btn_FaceRecognition_Click);
+            // 
             // btn_BackGround
             // 
-            this.btn_BackGround.Location = new System.Drawing.Point(6, 388);
+            this.btn_BackGround.Location = new System.Drawing.Point(6, 417);
             this.btn_BackGround.Name = "btn_BackGround";
             this.btn_BackGround.Size = new System.Drawing.Size(82, 23);
             this.btn_BackGround.TabIndex = 18;
@@ -175,23 +198,6 @@
             this.btn_Salt.Text = "椒盐噪声";
             this.btn_Salt.UseVisualStyleBackColor = true;
             this.btn_Salt.Click += new System.EventHandler(this.btn_Salt_Click);
-            // 
-            // nud_Threshold
-            // 
-            this.nud_Threshold.Location = new System.Drawing.Point(6, 475);
-            this.nud_Threshold.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nud_Threshold.Name = "nud_Threshold";
-            this.nud_Threshold.Size = new System.Drawing.Size(80, 21);
-            this.nud_Threshold.TabIndex = 14;
-            this.nud_Threshold.Value = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
             // 
             // btn_Smoothed
             // 
@@ -247,7 +253,7 @@
             // 
             // btn_Histogram
             // 
-            this.btn_Histogram.Location = new System.Drawing.Point(6, 426);
+            this.btn_Histogram.Location = new System.Drawing.Point(6, 446);
             this.btn_Histogram.Name = "btn_Histogram";
             this.btn_Histogram.Size = new System.Drawing.Size(82, 23);
             this.btn_Histogram.TabIndex = 7;
@@ -295,25 +301,25 @@
             this.btn_SelectImage.UseVisualStyleBackColor = true;
             this.btn_SelectImage.Click += new System.EventHandler(this.btn_SelectImage_Click);
             // 
-            // btn_FaceRecognition
+            // btn_Save
             // 
-            this.btn_FaceRecognition.Location = new System.Drawing.Point(6, 359);
-            this.btn_FaceRecognition.Name = "btn_FaceRecognition";
-            this.btn_FaceRecognition.Size = new System.Drawing.Size(82, 23);
-            this.btn_FaceRecognition.TabIndex = 19;
-            this.btn_FaceRecognition.Tag = "";
-            this.btn_FaceRecognition.Text = "面部识别";
-            this.btn_FaceRecognition.UseVisualStyleBackColor = true;
-            this.btn_FaceRecognition.Click += new System.EventHandler(this.btn_FaceRecognition_Click);
+            this.btn_Save.Location = new System.Drawing.Point(6, 518);
+            this.btn_Save.Name = "btn_Save";
+            this.btn_Save.Size = new System.Drawing.Size(82, 23);
+            this.btn_Save.TabIndex = 21;
+            this.btn_Save.Text = "保存";
+            this.btn_Save.UseVisualStyleBackColor = true;
+            this.btn_Save.Click += new System.EventHandler(this.btn_Save_Click);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(937, 687);
             this.Controls.Add(this.sC_Compare);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "图像分析及处理";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.sC_Compare.Panel1.ResumeLayout(false);
             this.sC_Compare.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sC_Compare)).EndInit();
@@ -324,7 +330,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_Threshold)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -345,12 +350,13 @@
         private System.Windows.Forms.Button btn_GaussBlur;
         private System.Windows.Forms.Button btn_Smoothed;
         private System.Windows.Forms.Button btn_Robert;
-        private System.Windows.Forms.NumericUpDown nud_Threshold;
         private System.Windows.Forms.Button btn_GaussNoise;
         private System.Windows.Forms.Button btn_Salt;
         private System.Windows.Forms.Button btn_Polar;
         private System.Windows.Forms.Button btn_BackGround;
         private System.Windows.Forms.Button btn_FaceRecognition;
+        private System.Windows.Forms.Button btn_MedianFilter;
+        private System.Windows.Forms.Button btn_Save;
     }
 }
 

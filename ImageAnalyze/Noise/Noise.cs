@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
-namespace ImageAnalyze
+namespace ImageAnalyze.Noise
 {
     public class Noise
     {
@@ -16,14 +16,13 @@ namespace ImageAnalyze
         /// 构造卷积（Convolution）类函数
         /// </summary>
         public Noise()
-        {            //初始化高斯模糊卷积核            
-           
+        {
+            //初始化高斯模糊卷积核            
             GaussianBlur = new double[5, 5]{{(double)1/k,(double)4/k,(double)7/k,(double)4/k,(double)1/k},
                 {(double)4/k,(double)16/k,(double)26/k,(double)16/k,(double)4/k},
                 {(double)7/k,(double)26/k,(double)41/k,(double)26/k,(double)7/k},
                 {(double)4/k,(double)16/k,(double)26/k,(double)16/k,(double)4/k},
                 {(double)1/k,(double)4/k,(double)7/k,(double)4/k,(double)1/k}};
-
         }
 
         /// <summary>
@@ -153,7 +152,7 @@ namespace ImageAnalyze
         /// <param name="u">数学期望</param>
         /// <param name="a">方差</param>
         /// <returns></returns>
-        public static Bitmap Goss_noise(Bitmap bitmap, double u=0.5, double a=0.1)
+        public static Bitmap Goss_noise(Bitmap bitmap, double u = 0.5, double a = 0.1)
         {
             int width = bitmap.Width;
             int height = bitmap.Height;
@@ -218,7 +217,7 @@ namespace ImageAnalyze
         /// <param name="Pa"></param>
         /// <param name="Pb"></param>
         /// <returns></returns>
-        public static Bitmap AddSalt(Bitmap initbitmap, double Pa=0.001, double Pb=0.001)
+        public static Bitmap AddSalt(Bitmap initbitmap, double Pa = 0.001, double Pb = 0.001)
         {
             Bitmap bitmap = new Bitmap(initbitmap.Width, initbitmap.Height);
             int width = bitmap.Width;
@@ -265,7 +264,7 @@ namespace ImageAnalyze
         /// </summary>
         /// <param name="initbitmap"></param>
         /// <returns></returns>
-        public static Bitmap SaltP(Bitmap initbitmap, double Pa = 0.001, double Pb = 0.001)
+        public static Bitmap SaltP(Bitmap initbitmap, double Pa, double Pb)
         {
             Bitmap bitmap = initbitmap.Clone() as Bitmap; // 加载图像
             BitmapData bitmapdat = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图

@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using static ImageAnalyze.Noise.Noise;
 namespace ImageAnalyze
 {
     public class ImageProcess
@@ -17,22 +18,22 @@ namespace ImageAnalyze
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
-        public static Bitmap Complementary(Image img)
+        public static Bitmap Complementary(Bitmap initbitmap)
         {
-            Bitmap cBitmap = new Bitmap(img);
-            for (int i = 0; i < cBitmap.Width; i++)
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            for (int i = 0; i < bitmap.Width; i++)
             {
-                for (int j = 0; j < cBitmap.Height; j++)
+                for (int j = 0; j < bitmap.Height; j++)
                 {
-                    Color c = cBitmap.GetPixel(i, j);
+                    Color c = bitmap.GetPixel(i, j);
                     int cR = 255 - c.R;
                     int cG = 255 - c.G;
                     int cB = 255 - c.B;
-                    cBitmap.SetPixel(i, j, Color.FromArgb(cR, cG, cB));
+                    bitmap.SetPixel(i, j, Color.FromArgb(cR, cG, cB));
                 }
             }
 
-            return cBitmap;
+            return bitmap;
         }
 
         /// <summary>
@@ -138,7 +139,7 @@ namespace ImageAnalyze
         /// <param name="img"></param>
         /// <param name="threshold">阈值</param>
         /// <returns></returns>
-        public static Bitmap Threshoding(Bitmap initbitmap, int threshold = 128)
+        public static Bitmap Thresholding(Bitmap initbitmap, int threshold = 128)
         {
             Bitmap bitmap = initbitmap.Clone() as Bitmap;
             for (int i = 0; i < bitmap.Width; i++)
@@ -161,9 +162,9 @@ namespace ImageAnalyze
         /// </summary>
         /// <param name="initbitmap"></param>
         /// <returns></returns>
-        public static Bitmap ThreshodingP(Bitmap initbitmap, int threshold = 128)
+        public static Bitmap ThresholdingP(Bitmap initbitmap, int threshold = 128)
         {
-            Bitmap bitmap = new Bitmap(Image.FromHbitmap(initbitmap.GetHbitmap())); // 加载图像
+            Bitmap bitmap = initbitmap.Clone() as Bitmap; // 加载图像
             BitmapData bitmapdat = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
             unsafe // 不安全代码
             {
@@ -260,9 +261,9 @@ namespace ImageAnalyze
         /// </summary>
         /// <param name="initBitmap"></param>
         /// <returns></returns>
-        public static Bitmap SaltNoise(Bitmap initBitmap)
+        public static Bitmap SaltNoise(Bitmap initBitmap, double Pa = 0.001, double Pb = 0.001)
         {
-            return Noise.SaltP(initBitmap);
+            return SaltP(initBitmap,Pa,Pb);
         }
 
         /// <summary>
@@ -272,7 +273,7 @@ namespace ImageAnalyze
         /// <returns></returns>
         public static Bitmap GaussNoise(Bitmap initBitmap)
         {
-            return Noise.Goss_noise(initBitmap);
+            return Goss_noise(initBitmap);
         }
 
         /// <summary>
@@ -282,7 +283,7 @@ namespace ImageAnalyze
         /// <returns></returns>
         public static Bitmap GaussBlur(Bitmap initBitmap)
         {
-            Noise convolution = new Noise();
+            Noise.Noise convolution = new Noise.Noise();
             return convolution.Smooth(initBitmap);
         }
 
@@ -293,7 +294,7 @@ namespace ImageAnalyze
         /// <returns></returns>
         public static Bitmap GaussBlurP(Bitmap initBitmap)
         {
-            Noise convolution = new Noise();
+            Noise.Noise convolution = new Noise.Noise();
             return convolution.GaussSmooth(initBitmap);
         }
 
@@ -338,5 +339,11 @@ namespace ImageAnalyze
                    ), M);
             return img2.ToBitmap();
         }
+
+        public static Bitmap MedianFilter(Bitmap initBitmap)
+        {
+            return Filter.Filter.MedianFilter(initBitmap);
+        }
+
     }
 }

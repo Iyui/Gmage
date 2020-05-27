@@ -15,19 +15,23 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 namespace ImageAnalyze
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         #region 变量
-  
-        public int Threshold { get => (int)nud_Threshold.Value; }
 
-        Bitmap initBitmap = new Bitmap(1, 1);
+       public Image ResultImage
+        {
+            set=> pictureBox2.Image=value; get=>pictureBox2.Image;
+        }
+
+           Bitmap initBitmap = new Bitmap(1, 1);
 
         #endregion
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
+            ResultImage = initBitmap.Clone() as Bitmap;
         }
 
   
@@ -70,22 +74,26 @@ namespace ImageAnalyze
         private void btn_Threshod_Click(object sender, EventArgs e)
         {
             CutBackground.model = 3;
-            pictureBox2.Image = Threshoding(initBitmap,Threshold);
-            GC.Collect();
-
+            Process.Threshold ptd = new Process.Threshold(this, MousePosition)
+            {
+                InitBitmap = initBitmap.Clone() as Bitmap,
+                Model = 3,
+            };
+            ResultImage = ThresholdingP(initBitmap);
+            ptd.ShowDialog();
         }
         //反色
         private void btn_Complementary_Click(object sender, EventArgs e)
         {
             CutBackground.model = 4;
-            pictureBox2.Image = ComplementaryP(initBitmap);
+            ResultImage = ComplementaryP(initBitmap);
             GC.Collect();
         }
 
         private void btn_Gray_Click(object sender, EventArgs e)
         {
             CutBackground.model = 1;
-            pictureBox2.Image = ImageToGreyP(initBitmap);
+            ResultImage = ImageToGreyP(initBitmap);
             GC.Collect();
         }
 
@@ -101,7 +109,7 @@ namespace ImageAnalyze
         private void button1_Click(object sender, EventArgs e)
         {
             CutBackground.model = 2;
-            pictureBox2.Image = ImageToGrey2(initBitmap);
+            ResultImage = ImageToGrey2(initBitmap);
         }
 
         private void btn_Frequency_Click(object sender, EventArgs e)
@@ -109,45 +117,67 @@ namespace ImageAnalyze
             try
             {
             CutBackground.model = 5;
-                pictureBox2.Image = FFT(initBitmap);
+                ResultImage = FFT(initBitmap);
             }
             catch { };
         }
 
         private void btn_Gaussian_Click(object sender, EventArgs e)
         {
-            CutBackground.model = 6;       
-            pictureBox2.Image = GaussBlurP(initBitmap);
+            CutBackground.model = 6;
+            ResultImage = GaussBlurP(initBitmap);
         }
 
         private void btn_Robert_Click(object sender, EventArgs e)
         {
             CutBackground.model = 7;
-            pictureBox2.Image = EdgeDetector_Robert(initBitmap, Threshold);
+            Process.Threshold ptd = new Process.Threshold(this, MousePosition)
+            {
+                InitBitmap = initBitmap.Clone() as Bitmap,
+                Model = 7,
+            };
+            ResultImage = EdgeDetector_Robert(initBitmap);
+            ptd.ShowDialog();
         }
 
         private void btn_Smoothed_Click(object sender, EventArgs e)
         {
             CutBackground.model = 8;
-            pictureBox2.Image = EdgeDetector_Smoothed(initBitmap);
+            ResultImage = EdgeDetector_Smoothed(initBitmap);
         }
 
         private void btn_Salt_Click(object sender, EventArgs e)
         {
             CutBackground.model = 9;
-            pictureBox2.Image = SaltNoise(initBitmap);
+            Probability py = new Probability(this, MousePosition)
+            {
+                InitBitmap = initBitmap,
+            };
+            SetImageCallback(SaltNoise(initBitmap));
+            py.ShowDialog();
+        }
+
+        public void SetImageCallback(Bitmap bitmap)
+        {
+            ResultImage = bitmap;
         }
 
         private void btn_GaussNoise_Click(object sender, EventArgs e)
         {
             CutBackground.model = 10;
-            pictureBox2.Image = GaussNoise(initBitmap);
+            ResultImage = GaussNoise(initBitmap);
         }
 
         private void btn_Polar_Click(object sender, EventArgs e)
         {
             CutBackground.model = 11;
-            pictureBox2.Image = Polar(initBitmap);
+            Process.Threshold ptd = new Process.Threshold(this, MousePosition)
+            {
+                InitBitmap = initBitmap.Clone() as Bitmap,
+                Model = 11,
+            };
+            ResultImage = Polar(initBitmap);
+            ptd.ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -159,12 +189,39 @@ namespace ImageAnalyze
         private void btn_FaceRecognition_Click(object sender, EventArgs e)
         {
             CutBackground.model = 12;
-            pictureBox2.Image = Recognite_Face(initBitmap);
+            ResultImage = Recognite_Face(initBitmap);
         }
+
+       
 
         private int Interval(int tick)
         {
             return Environment.TickCount - tick;
+        }
+
+        private void btn_MedianFilter_Click(object sender, EventArgs e)
+        {
+            ResultImage = MedianFilter(initBitmap);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            btn_SelectImage.Focus();
+        }
+
+        private void btn_Save_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "位图 (*.bmp) | *.bmp|JPEG (*.jpg,*.jpeg) | *.jpg;*.jpeg|PNG (*.png) | *.png",//设置文件类型
+                FileName = Guid.NewGuid().ToString(),//设置默认文件名
+                AddExtension = true//设置自动在文件名中添加扩展名
+            };
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                ResultImage.Save(sfd.FileName);
+                MessageBox.Show("保存成功");
+            }
         }
     }
 }
