@@ -32,6 +32,9 @@
             this.pB_Init = new System.Windows.Forms.PictureBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.btn_BFT = new System.Windows.Forms.Button();
+            this.btn_Contrast = new System.Windows.Forms.Button();
+            this.btn_Lighten = new System.Windows.Forms.Button();
             this.btn_Sharpen = new System.Windows.Forms.Button();
             this.btn_Save = new System.Windows.Forms.Button();
             this.btn_MedianFilter = new System.Windows.Forms.Button();
@@ -46,12 +49,9 @@
             this.btn_Frequency = new System.Windows.Forms.Button();
             this.btn_Histogram = new System.Windows.Forms.Button();
             this.btn_Complementary = new System.Windows.Forms.Button();
-            this.btn_Threshod = new System.Windows.Forms.Button();
+            this.btn_Binarization = new System.Windows.Forms.Button();
             this.btn_Gray = new System.Windows.Forms.Button();
             this.btn_SelectImage = new System.Windows.Forms.Button();
-            this.btn_Lighten = new System.Windows.Forms.Button();
-            this.btn_Contrast = new System.Windows.Forms.Button();
-            this.btn_BFT = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.sC_Compare)).BeginInit();
             this.sC_Compare.Panel1.SuspendLayout();
             this.sC_Compare.Panel2.SuspendLayout();
@@ -121,7 +121,7 @@
             this.splitContainer3.Panel2.Controls.Add(this.btn_Frequency);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Histogram);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Complementary);
-            this.splitContainer3.Panel2.Controls.Add(this.btn_Threshod);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Binarization);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Gray);
             this.splitContainer3.Panel2.Controls.Add(this.btn_SelectImage);
             this.splitContainer3.Size = new System.Drawing.Size(489, 687);
@@ -138,6 +138,39 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
+            // 
+            // btn_BFT
+            // 
+            this.btn_BFT.Location = new System.Drawing.Point(6, 566);
+            this.btn_BFT.Name = "btn_BFT";
+            this.btn_BFT.Size = new System.Drawing.Size(82, 23);
+            this.btn_BFT.TabIndex = 25;
+            this.btn_BFT.Text = "傅里叶逆变换";
+            this.btn_BFT.UseVisualStyleBackColor = true;
+            this.btn_BFT.Visible = false;
+            this.btn_BFT.Click += new System.EventHandler(this.btn_BFT_Click);
+            // 
+            // btn_Contrast
+            // 
+            this.btn_Contrast.Location = new System.Drawing.Point(6, 231);
+            this.btn_Contrast.Name = "btn_Contrast";
+            this.btn_Contrast.Size = new System.Drawing.Size(82, 23);
+            this.btn_Contrast.TabIndex = 24;
+            this.btn_Contrast.Tag = "";
+            this.btn_Contrast.Text = "对比度";
+            this.btn_Contrast.UseVisualStyleBackColor = true;
+            this.btn_Contrast.Click += new System.EventHandler(this.btn_Contrast_Click);
+            // 
+            // btn_Lighten
+            // 
+            this.btn_Lighten.Location = new System.Drawing.Point(6, 202);
+            this.btn_Lighten.Name = "btn_Lighten";
+            this.btn_Lighten.Size = new System.Drawing.Size(82, 23);
+            this.btn_Lighten.TabIndex = 23;
+            this.btn_Lighten.Tag = "";
+            this.btn_Lighten.Text = "亮度";
+            this.btn_Lighten.UseVisualStyleBackColor = true;
+            this.btn_Lighten.Click += new System.EventHandler(this.btn_Lighten_Click);
             // 
             // btn_Sharpen
             // 
@@ -173,7 +206,7 @@
             // 
             // btn_FaceRecognition
             // 
-            this.btn_FaceRecognition.Location = new System.Drawing.Point(6, 600);
+            this.btn_FaceRecognition.Location = new System.Drawing.Point(6, 608);
             this.btn_FaceRecognition.Name = "btn_FaceRecognition";
             this.btn_FaceRecognition.Size = new System.Drawing.Size(82, 23);
             this.btn_FaceRecognition.TabIndex = 19;
@@ -184,7 +217,7 @@
             // 
             // btn_BackGround
             // 
-            this.btn_BackGround.Location = new System.Drawing.Point(6, 637);
+            this.btn_BackGround.Location = new System.Drawing.Point(6, 652);
             this.btn_BackGround.Name = "btn_BackGround";
             this.btn_BackGround.Size = new System.Drawing.Size(82, 23);
             this.btn_BackGround.TabIndex = 18;
@@ -288,15 +321,15 @@
             this.btn_Complementary.UseVisualStyleBackColor = true;
             this.btn_Complementary.Click += new System.EventHandler(this.btn_Complementary_Click);
             // 
-            // btn_Threshod
+            // btn_Binarization
             // 
-            this.btn_Threshod.Location = new System.Drawing.Point(6, 115);
-            this.btn_Threshod.Name = "btn_Threshod";
-            this.btn_Threshod.Size = new System.Drawing.Size(82, 23);
-            this.btn_Threshod.TabIndex = 5;
-            this.btn_Threshod.Text = "二值化";
-            this.btn_Threshod.UseVisualStyleBackColor = true;
-            this.btn_Threshod.Click += new System.EventHandler(this.btn_Threshod_Click);
+            this.btn_Binarization.Location = new System.Drawing.Point(6, 115);
+            this.btn_Binarization.Name = "btn_Binarization";
+            this.btn_Binarization.Size = new System.Drawing.Size(82, 23);
+            this.btn_Binarization.TabIndex = 5;
+            this.btn_Binarization.Text = "二值化";
+            this.btn_Binarization.UseVisualStyleBackColor = true;
+            this.btn_Binarization.Click += new System.EventHandler(this.btn_Threshod_Click);
             // 
             // btn_Gray
             // 
@@ -317,39 +350,6 @@
             this.btn_SelectImage.Text = "选择图片";
             this.btn_SelectImage.UseVisualStyleBackColor = true;
             this.btn_SelectImage.Click += new System.EventHandler(this.btn_SelectImage_Click);
-            // 
-            // btn_Lighten
-            // 
-            this.btn_Lighten.Location = new System.Drawing.Point(6, 202);
-            this.btn_Lighten.Name = "btn_Lighten";
-            this.btn_Lighten.Size = new System.Drawing.Size(82, 23);
-            this.btn_Lighten.TabIndex = 23;
-            this.btn_Lighten.Tag = "";
-            this.btn_Lighten.Text = "亮度";
-            this.btn_Lighten.UseVisualStyleBackColor = true;
-            this.btn_Lighten.Click += new System.EventHandler(this.btn_Lighten_Click);
-            // 
-            // btn_Contrast
-            // 
-            this.btn_Contrast.Location = new System.Drawing.Point(6, 231);
-            this.btn_Contrast.Name = "btn_Contrast";
-            this.btn_Contrast.Size = new System.Drawing.Size(82, 23);
-            this.btn_Contrast.TabIndex = 24;
-            this.btn_Contrast.Tag = "";
-            this.btn_Contrast.Text = "对比度";
-            this.btn_Contrast.UseVisualStyleBackColor = true;
-            this.btn_Contrast.Click += new System.EventHandler(this.btn_Contrast_Click);
-            // 
-            // btn_BFT
-            // 
-            this.btn_BFT.Location = new System.Drawing.Point(6, 566);
-            this.btn_BFT.Name = "btn_BFT";
-            this.btn_BFT.Size = new System.Drawing.Size(82, 23);
-            this.btn_BFT.TabIndex = 25;
-            this.btn_BFT.Text = "傅里叶逆变换";
-            this.btn_BFT.UseVisualStyleBackColor = true;
-            this.btn_BFT.Visible = false;
-            this.btn_BFT.Click += new System.EventHandler(this.btn_BFT_Click);
             // 
             // MainForm
             // 
@@ -380,7 +380,7 @@
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.Button btn_SelectImage;
         private System.Windows.Forms.Button btn_Gray;
-        private System.Windows.Forms.Button btn_Threshod;
+        private System.Windows.Forms.Button btn_Binarization;
         private System.Windows.Forms.Button btn_Complementary;
         private System.Windows.Forms.Button btn_Histogram;
         private System.Windows.Forms.Button btn_Frequency;

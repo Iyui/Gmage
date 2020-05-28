@@ -18,10 +18,12 @@ namespace ImageAnalyze
         private Color tr_color = Color.Transparent;
         private bool b_start = false;
         bool[] b_visible = null;
-        public static int model = 0;
-        public CutBackground()
+        MainForm f;
+
+        public CutBackground(MainForm f)
         {
             InitializeComponent();
+            this.f = f;
         }
 
         private void CutBackground_Load(object sender, EventArgs e)
@@ -30,8 +32,6 @@ namespace ImageAnalyze
             {
                 items.Click += contextMenu_Click;
             }
-            SetBackgroundImageTransparent();
-            //timer.Start();
         }
         private void SetBackgroundImageTransparent()
         {
@@ -41,53 +41,60 @@ namespace ImageAnalyze
             {
                 g.CopyFromScreen(pt, new Point(), new Size(this.Width, this.Height));
             }
-
             this.BackgroundImage = SwitchFunc(b);
             GC.Collect();
         }
 
         private Bitmap SwitchFunc(Bitmap b)
         {
-
-            switch (model)
+            switch (Config.Model)
             {
                 default:
                     break;
-                case 1:
+                case FunctionType.Gray:
                     b = ImageToGreyP(b);
                     break;
-                case 2:
-                    b = ImageToGrey2(b);
+                case FunctionType.Binarization:
+                    b = BinarizationP(b);
                     break;
-                case 3:
-                    b = Thresholding(b);
-                    break;
-                case 4:
+                case FunctionType.Complementary:
                     b = ComplementaryP(b);
                     break;
-                case 5:
+                case FunctionType.Frequency:
                     b = FFT(b);
                     break;
-                case 6:
-                    b = GaussBlur(b);
+                case FunctionType.GaussBlur:
+                    b = GaussBlurP(b);
                     break;
-                case 7:
+                case FunctionType.Robert:
                     b = EdgeDetector_Robert(b);
                     break;
-                case 8:
+                case FunctionType.Smoothed:
                     b = EdgeDetector_Smoothed(b);
                     break;
-                case 9:
+                case FunctionType.Salt:
                     b = SaltNoise(b);
                     break;
-                case 10:
+                case FunctionType.GaussNoise:
                     b = GaussNoise(b);
                     break;
-                case 11:
+                case FunctionType.Polar:
                     b = Polar(b);
                     break;
-                case 12:
+                case FunctionType.FaceRecognition:
                     b = Recognite_Face(b); 
+                    break;
+                case FunctionType.Sharpen:
+                   b = Sharpen(b);
+                    break;
+                case FunctionType.Lighten:
+                    b = Lighten(b);
+                    break;
+                case FunctionType.Contrast:
+                    b = Contrast(b);
+                    break;
+                case FunctionType.MedianFilter:
+                    b = MedianFilter(b);
                     break;
             }
             return b;
@@ -154,7 +161,7 @@ namespace ImageAnalyze
                 //不是当前项的取消选择
                 if (item.Name == cms.Name)
                 {
-                    model = int.Parse(cms.Tag.ToString());
+                    Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), cms.Tag.ToString());
                     item.Checked = true; //设选中状态为true
                 }
                 else
@@ -168,6 +175,27 @@ namespace ImageAnalyze
         {
             IsCheckedControl((ToolStripMenuItem)sender);
             SetBackgroundImageTransparent();
+        }
+
+        private void tsmI_Save_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "JPEG (*.jpg,*.jpeg) | *.jpg;*.jpeg",//设置文件类型
+                FileName = Guid.NewGuid().ToString(),//设置默认文件名
+                AddExtension = true//设置自动在文件名中添加扩展名
+            };
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                BackgroundImage.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                MessageBox.Show("保存成功");
+            }
+        }
+
+        private void CutBackground_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (f.WindowState == FormWindowState.Minimized)
+                f.WindowState = FormWindowState.Normal;
         }
     }
 

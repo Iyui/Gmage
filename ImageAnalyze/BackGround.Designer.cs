@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.灰度化1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.灰度化2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.二值化ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.反色ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.频谱ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,20 +40,27 @@
             this.椒盐噪声ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.高斯噪声ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.极坐标ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmI_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.面部识别ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmI_Save = new System.Windows.Forms.ToolStripMenuItem();
+            this.锐化ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.亮度ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.对比度ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.中值滤波ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.亮度ToolStripMenuItem,
+            this.对比度ToolStripMenuItem,
             this.灰度化1ToolStripMenuItem,
-            this.灰度化2ToolStripMenuItem,
             this.二值化ToolStripMenuItem,
             this.反色ToolStripMenuItem,
+            this.锐化ToolStripMenuItem,
             this.频谱ToolStripMenuItem,
             this.高斯模糊ToolStripMenuItem,
+            this.中值滤波ToolStripMenuItem,
             this.边缘检测ToolStripMenuItem,
             this.边缘检测SToolStripMenuItem,
             this.椒盐噪声ToolStripMenuItem,
@@ -63,98 +69,120 @@
             this.面部识别ToolStripMenuItem,
             this.tsmI_Save});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 312);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(142, 356);
             this.contextMenuStrip1.Text = "变换类型";
             // 
             // 灰度化1ToolStripMenuItem
             // 
             this.灰度化1ToolStripMenuItem.Name = "灰度化1ToolStripMenuItem";
             this.灰度化1ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.灰度化1ToolStripMenuItem.Tag = "1";
-            this.灰度化1ToolStripMenuItem.Text = "灰度化1";
-            // 
-            // 灰度化2ToolStripMenuItem
-            // 
-            this.灰度化2ToolStripMenuItem.Name = "灰度化2ToolStripMenuItem";
-            this.灰度化2ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.灰度化2ToolStripMenuItem.Tag = "2";
-            this.灰度化2ToolStripMenuItem.Text = "灰度化2";
+            this.灰度化1ToolStripMenuItem.Tag = "Gray";
+            this.灰度化1ToolStripMenuItem.Text = "灰度化";
             // 
             // 二值化ToolStripMenuItem
             // 
             this.二值化ToolStripMenuItem.Name = "二值化ToolStripMenuItem";
             this.二值化ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.二值化ToolStripMenuItem.Tag = "3";
+            this.二值化ToolStripMenuItem.Tag = " Binarization";
             this.二值化ToolStripMenuItem.Text = "二值化";
             // 
             // 反色ToolStripMenuItem
             // 
             this.反色ToolStripMenuItem.Name = "反色ToolStripMenuItem";
             this.反色ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.反色ToolStripMenuItem.Tag = "4";
+            this.反色ToolStripMenuItem.Tag = " Complementary";
             this.反色ToolStripMenuItem.Text = "反色";
             // 
             // 频谱ToolStripMenuItem
             // 
             this.频谱ToolStripMenuItem.Name = "频谱ToolStripMenuItem";
             this.频谱ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.频谱ToolStripMenuItem.Tag = "5";
+            this.频谱ToolStripMenuItem.Tag = "Frequency";
             this.频谱ToolStripMenuItem.Text = "Fourier变换";
             // 
             // 高斯模糊ToolStripMenuItem
             // 
             this.高斯模糊ToolStripMenuItem.Name = "高斯模糊ToolStripMenuItem";
             this.高斯模糊ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.高斯模糊ToolStripMenuItem.Tag = "6";
-            this.高斯模糊ToolStripMenuItem.Text = "高斯模糊";
+            this.高斯模糊ToolStripMenuItem.Tag = "GaussBlur";
+            this.高斯模糊ToolStripMenuItem.Text = "高斯平滑";
             // 
             // 边缘检测ToolStripMenuItem
             // 
             this.边缘检测ToolStripMenuItem.Name = "边缘检测ToolStripMenuItem";
             this.边缘检测ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.边缘检测ToolStripMenuItem.Tag = "7";
+            this.边缘检测ToolStripMenuItem.Tag = "Robert";
             this.边缘检测ToolStripMenuItem.Text = "边缘检测R";
             // 
             // 边缘检测SToolStripMenuItem
             // 
             this.边缘检测SToolStripMenuItem.Name = "边缘检测SToolStripMenuItem";
             this.边缘检测SToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.边缘检测SToolStripMenuItem.Tag = "8";
+            this.边缘检测SToolStripMenuItem.Tag = "Smoothed";
             this.边缘检测SToolStripMenuItem.Text = "边缘检测S";
             // 
             // 椒盐噪声ToolStripMenuItem
             // 
             this.椒盐噪声ToolStripMenuItem.Name = "椒盐噪声ToolStripMenuItem";
             this.椒盐噪声ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.椒盐噪声ToolStripMenuItem.Tag = "9";
+            this.椒盐噪声ToolStripMenuItem.Tag = "Salt";
             this.椒盐噪声ToolStripMenuItem.Text = "椒盐噪声";
             // 
             // 高斯噪声ToolStripMenuItem
             // 
             this.高斯噪声ToolStripMenuItem.Name = "高斯噪声ToolStripMenuItem";
             this.高斯噪声ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.高斯噪声ToolStripMenuItem.Tag = "10";
+            this.高斯噪声ToolStripMenuItem.Tag = "GaussNoise";
             this.高斯噪声ToolStripMenuItem.Text = "高斯噪声";
             // 
             // 极坐标ToolStripMenuItem
             // 
             this.极坐标ToolStripMenuItem.Name = "极坐标ToolStripMenuItem";
             this.极坐标ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.极坐标ToolStripMenuItem.Tag = "11";
-            this.极坐标ToolStripMenuItem.Text = "极坐标";
+            this.极坐标ToolStripMenuItem.Tag = "Polar";
+            this.极坐标ToolStripMenuItem.Text = "极坐标变换";
+            // 
+            // 面部识别ToolStripMenuItem
+            // 
+            this.面部识别ToolStripMenuItem.Name = "面部识别ToolStripMenuItem";
+            this.面部识别ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.面部识别ToolStripMenuItem.Tag = "FaceRecognition";
+            this.面部识别ToolStripMenuItem.Text = "面部识别";
             // 
             // tsmI_Save
             // 
             this.tsmI_Save.Name = "tsmI_Save";
             this.tsmI_Save.Size = new System.Drawing.Size(180, 22);
             this.tsmI_Save.Text = "保存";
+            this.tsmI_Save.Click += new System.EventHandler(this.tsmI_Save_Click);
             // 
-            // 面部识别ToolStripMenuItem
+            // 锐化ToolStripMenuItem
             // 
-            this.面部识别ToolStripMenuItem.Name = "面部识别ToolStripMenuItem";
-            this.面部识别ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.面部识别ToolStripMenuItem.Tag = "12";
-            this.面部识别ToolStripMenuItem.Text = "面部识别";
+            this.锐化ToolStripMenuItem.Name = "锐化ToolStripMenuItem";
+            this.锐化ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.锐化ToolStripMenuItem.Tag = "Sharpen";
+            this.锐化ToolStripMenuItem.Text = "锐化";
+            // 
+            // 亮度ToolStripMenuItem
+            // 
+            this.亮度ToolStripMenuItem.Name = "亮度ToolStripMenuItem";
+            this.亮度ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.亮度ToolStripMenuItem.Tag = "Lighten";
+            this.亮度ToolStripMenuItem.Text = "亮度";
+            // 
+            // 对比度ToolStripMenuItem
+            // 
+            this.对比度ToolStripMenuItem.Name = "对比度ToolStripMenuItem";
+            this.对比度ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.对比度ToolStripMenuItem.Tag = "Contrast";
+            this.对比度ToolStripMenuItem.Text = "对比度";
+            // 
+            // 中值滤波ToolStripMenuItem
+            // 
+            this.中值滤波ToolStripMenuItem.Name = "中值滤波ToolStripMenuItem";
+            this.中值滤波ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.中值滤波ToolStripMenuItem.Tag = "MedianFilter";
+            this.中值滤波ToolStripMenuItem.Text = "中值滤波";
             // 
             // CutBackground
             // 
@@ -162,8 +190,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.ContextMenuStrip = this.contextMenuStrip1;
+            this.MaximizeBox = false;
             this.Name = "CutBackground";
             this.Text = "右键可选择处理方法";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CutBackground_FormClosed);
             this.Load += new System.EventHandler(this.CutBackground_Load);
             this.ResizeBegin += new System.EventHandler(this.CutBackground_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.CutBackground_ResizeEnd);
@@ -178,7 +208,6 @@
 
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 灰度化1ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 灰度化2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 二值化ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 反色ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 频谱ToolStripMenuItem;
@@ -190,5 +219,9 @@
         private System.Windows.Forms.ToolStripMenuItem 极坐标ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmI_Save;
         private System.Windows.Forms.ToolStripMenuItem 面部识别ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 锐化ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 亮度ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 对比度ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 中值滤波ToolStripMenuItem;
     }
 }

@@ -94,11 +94,11 @@ namespace ImageAnalyze
                 {
                     for (int j = 0; j < bitmapdat.Width; j++)
                     {
-                        temp = (byte)(pix[2] * .3 + pix[1] * .59 + pix[0] * .11 );
+                        temp = (byte)(pix[2] * .3 + pix[1] * .59 + pix[0] * .11);
                         pix[0] = pix[1] = pix[2] = temp;
                         pix += 3;
                     }
-                    pix += bitmapdat.Stride - bitmapdat.Width*3;
+                    pix += bitmapdat.Stride - bitmapdat.Width * 3;
                 }
             }
 
@@ -142,7 +142,7 @@ namespace ImageAnalyze
         /// <param name="img"></param>
         /// <param name="threshold">阈值</param>
         /// <returns></returns>
-        public static Bitmap Thresholding(Bitmap initbitmap, int threshold = 128)
+        public static Bitmap Binarization(Bitmap initbitmap, int threshold = 128)
         {
             Bitmap bitmap = initbitmap.Clone() as Bitmap;
             for (int i = 0; i < bitmap.Width; i++)
@@ -165,7 +165,7 @@ namespace ImageAnalyze
         /// </summary>
         /// <param name="initbitmap"></param>
         /// <returns></returns>
-        public static Bitmap ThresholdingP(Bitmap initbitmap, int threshold = 128)
+        public static Bitmap BinarizationP(Bitmap initbitmap, int threshold = 128)
         {
             Bitmap bitmap = initbitmap.Clone() as Bitmap; // 加载图像
             BitmapData bitmapdat = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
@@ -193,12 +193,12 @@ namespace ImageAnalyze
 
         #region 
         /// <summary>
-        /// 图像明暗调整
+        /// 图像亮度调整
         /// </summary>
         /// <param name="initbitmap">原始图</param>
         /// <param name="degree">亮度[-255, 255]</param>
         /// <returns></returns>
-        public static Bitmap Lighten(Bitmap initbitmap, int degree=0)
+        public static Bitmap Lighten(Bitmap initbitmap, int degree = 0)
         {
             if (initbitmap == null)
             {
@@ -470,7 +470,7 @@ namespace ImageAnalyze
             {
                 return null;
             }
-        } 
+        }
         #endregion
 
         #region 噪声
@@ -481,7 +481,7 @@ namespace ImageAnalyze
         /// <returns></returns>
         public static Bitmap SaltNoise(Bitmap initBitmap, double Pa = 0.001, double Pb = 0.001)
         {
-            return SaltP(initBitmap,Pa,Pb);
+            return SaltP(initBitmap, Pa, Pb);
         }
 
         /// <summary>
@@ -582,15 +582,15 @@ namespace ImageAnalyze
         /// <param name="y">The transformation center, where the output precision is maximal</param>
         /// <param name="M">Magnitude scale parameter</param>
         /// <returns></returns>
-        public static Bitmap Polar(Bitmap initBitmap, int M = 100 , float x=0,float y=0)
+        public static Bitmap Polar(Bitmap initBitmap, int M = 100, float x = 0, float y = 0)
         {
-            var pointF = new PointF(x,y);
+            var pointF = new PointF(x, y);
 
             var img = new Image<Bgr, byte>(initBitmap);
 
             var img2 = new Image<Bgr, byte>(initBitmap);
 
-            CvInvoke.LogPolar(img, img2, pointF,M);
+            CvInvoke.LogPolar(img, img2, pointF, M);
 
             return img2.ToBitmap();
         }
@@ -603,7 +603,7 @@ namespace ImageAnalyze
         /// <param name="bitmap"></param>
         /// <param name="Classifier">训练好的分类器</param>
         /// <returns></returns>
-        public static Bitmap Recognite_Face(Bitmap bitmap,string Classifier= "haarcascade_frontalface_alt.xml")
+        public static Bitmap Recognite_Face(Bitmap bitmap, string Classifier = "haarcascade_frontalface_alt.xml")
         {
             //如果支持用显卡,则用显卡运算
             CvInvoke.UseOpenCL = CvInvoke.HaveOpenCLCompatibleGpuDevice;

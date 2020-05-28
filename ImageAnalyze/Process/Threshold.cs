@@ -25,11 +25,6 @@ namespace ImageAnalyze.Process
             set; get;
         }
 
-        public int Model
-        {
-            set; get;
-        }
-
         public Bitmap ResultBitmap
         {
             set; get;
@@ -46,12 +41,12 @@ namespace ImageAnalyze.Process
 
         private void SetScrollStyle()
         {
-            switch (Model)
+            switch (Config.Model)
             {
-                case 14:
+                case FunctionType.Lighten:
                     tB_Threshold.Minimum = -255;
                     break;
-                case 15:
+                case FunctionType.Contrast:
                     tB_Threshold.Minimum = -100;
                     tB_Threshold.Maximum = 100;
                     break;
@@ -67,26 +62,26 @@ namespace ImageAnalyze.Process
         private Bitmap SetThreshold()
         {
             GC.Collect();
-            switch (Model)
+            switch (Config.Model)
             {
                 default:
                     break;
-                case 3:
-                    ResultBitmap = ThresholdingP(InitBitmap, Hold);
+                case FunctionType.Binarization:
+                    ResultBitmap = BinarizationP(InitBitmap, Hold);
                     break;
-                case 7:
+                case FunctionType.Robert:
                     ResultBitmap = EdgeDetector_Robert(InitBitmap, Hold);
                     break;
-                case 11:
+                case FunctionType.Polar:
                     ResultBitmap = Polar(InitBitmap, Hold);
                     break;
-                case 13:
+                case FunctionType.Sharpen:
                     ResultBitmap = Sharpen(InitBitmap, Hold / 25.5f);
                     break;
-                case 14:
+                case FunctionType.Lighten:
                     ResultBitmap = Lighten(InitBitmap, Hold);
                     break;
-                case 15:
+                case FunctionType.Contrast:
                     ResultBitmap = Contrast(InitBitmap, Hold);
                     break;
             }
@@ -95,15 +90,15 @@ namespace ImageAnalyze.Process
 
         private void SetThresholdText()
         {
-            switch (Model)
+            switch (Config.Model)
             {
                 default:
-                    label1.Text = $"阈值\r\n{Hold.ToString()}";
+                    label1.Text = $"阈值:\r\n{Hold.ToString()}";
                     break;
-                case 11:
+                case FunctionType.Binarization:
                     label1.Text = $"M:\r\n{Hold.ToString()}";
                     break;
-                case 13:
+                case FunctionType.Sharpen:
                     label1.Text = $"锐化程度:\r\n{(Hold / 25.5f).ToString("0.00%")}";
                     break;
             }

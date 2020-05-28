@@ -35,7 +35,7 @@ namespace ImageAnalyze
                             double b = Math.Sqrt(((double)pin_1[0] - (double)(pin_2[0] + 3)) * ((double)pin_1[0] - (double)(pin_2[0] + 3)) + ((double)(pin_1[0] + 3) - (double)pin_2[0]) * ((double)(pin_1[0] + 3) - (double)pin_2[0]));
                             double g = Math.Sqrt(((double)pin_1[1] - (double)(pin_2[1] + 3)) * ((double)pin_1[1] - (double)(pin_2[1] + 3)) + ((double)(pin_1[1] + 3) - (double)pin_2[1]) * ((double)(pin_1[1] + 3) - (double)pin_2[1]));
                             double r = Math.Sqrt(((double)pin_1[2] - (double)(pin_2[2] + 3)) * ((double)pin_1[2] - (double)(pin_2[2] + 3)) + ((double)(pin_1[2] + 3) - (double)pin_2[2]) * ((double)(pin_1[2] + 3) - (double)pin_2[2]));
-                            double bgr =( b + g + r)/3;//一直在纠结要不要除以3，感觉没差，选阈值的时候调整一下就好了- -
+                            double bgr = (b + g + r) / 3;//一直在纠结要不要除以3，感觉没差，选阈值的时候调整一下就好了- -
 
                             if (bgr > threshold) //阈值，超过阈值判定为边缘（选取适当的阈值）
                             {

@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="Process\EdgeDetector.cs" />
     <Compile Include="Process\FFT.cs" />
     <Compile Include="Filter\Filter.cs" />
