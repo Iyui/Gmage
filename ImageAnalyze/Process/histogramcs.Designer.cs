@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(361, 342);
             this.Name = "Histogramcs";
-            this.Text = "histogramcs";
+            this.Text = "直方图";
             this.Load += new System.EventHandler(this.histogramcs_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.histogramcs_Paint);
             this.ResumeLayout(false);

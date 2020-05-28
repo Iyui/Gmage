@@ -98,9 +98,11 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tB_Salt);
             this.Controls.Add(this.tB_Pepper);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Probability";
+            this.ShowInTaskbar = false;
             this.Text = "椒盐噪声概率";
             ((System.ComponentModel.ISupportInitialize)(this.tB_Pepper)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tB_Salt)).EndInit();

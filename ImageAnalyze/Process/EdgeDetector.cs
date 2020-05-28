@@ -181,6 +181,8 @@ namespace ImageAnalyze
                                 {
                                     vB = Math.Max(0, vB);
                                 }
+                                //var gray = vB + vG + vR;
+                                //pOut[0] = pOut[1] = pOut[2] = (byte)gray;
                                 pOut[0] = (byte)vB;
                                 pOut[1] = (byte)vG;
                                 pOut[2] = (byte)vR;

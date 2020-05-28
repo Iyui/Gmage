@@ -36,7 +36,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 28);
+            this.label1.Location = new System.Drawing.Point(10, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 12);
             this.label1.TabIndex = 4;
@@ -44,7 +44,7 @@
             // 
             // tB_Threshold
             // 
-            this.tB_Threshold.Location = new System.Drawing.Point(54, 21);
+            this.tB_Threshold.Location = new System.Drawing.Point(59, 21);
             this.tB_Threshold.Maximum = 255;
             this.tB_Threshold.Name = "tB_Threshold";
             this.tB_Threshold.Size = new System.Drawing.Size(170, 45);
@@ -60,10 +60,12 @@
             this.ClientSize = new System.Drawing.Size(236, 72);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tB_Threshold);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Threshold";
-            this.Text = "Threshold";
+            this.ShowInTaskbar = false;
+            this.Text = "阈值";
             this.Load += new System.EventHandler(this.Threshold_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tB_Threshold)).EndInit();
             this.ResumeLayout(false);

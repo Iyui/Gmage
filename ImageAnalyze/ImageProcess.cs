@@ -13,6 +13,9 @@ namespace ImageAnalyze
 {
     public class ImageProcess
     {
+
+        #region 简单的像素处理
+
         /// <summary>
         /// 反色 像素法
         /// </summary>
@@ -186,22 +189,428 @@ namespace ImageAnalyze
             return bitmap;
         }
 
+        #endregion
+
+        #region 
+        /// <summary>
+        /// 图像明暗调整
+        /// </summary>
+        /// <param name="initbitmap">原始图</param>
+        /// <param name="degree">亮度[-255, 255]</param>
+        /// <returns></returns>
+        public static Bitmap Lighten(Bitmap initbitmap, int degree=0)
+        {
+            if (initbitmap == null)
+            {
+                return null;
+            }
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            if (degree < -255) degree = -255;
+            if (degree > 255) degree = 255;
+
+            try
+            {
+
+                int width = bitmap.Width;
+                int height = bitmap.Height;
+
+                int pix = 0;
+
+                BitmapData data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+
+                unsafe
+                {
+                    byte* p = (byte*)data.Scan0;
+                    int offset = data.Stride - width * 3;
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width; x++)
+                        {
+                            // 处理指定位置像素的亮度
+                            for (int i = 0; i < 3; i++)
+                            {
+                                pix = p[i] + degree;
+
+                                if (degree < 0) p[i] = (byte)Math.Max(0, pix);
+                                if (degree > 0) p[i] = (byte)Math.Min(255, pix);
+
+                            } // i
+                            p += 3;
+                        } // x
+                        p += offset;
+                    } // y
+                }
+
+                bitmap.UnlockBits(data);
+
+                return bitmap;
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
+
+        /// <summary>
+        /// 图像对比度调整
+        /// </summary>
+        /// <param name="initbitmap">原始图</param>
+        /// <param name="degree">对比度[-100, 100]</param>
+        /// <returns></returns>
+        public static Bitmap Contrast(Bitmap initbitmap, int degree = 0)
+        {
+            if (initbitmap == null)
+            {
+                return null;
+            }
+
+            if (degree < -100) degree = -100;
+            if (degree > 100) degree = 100;
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            try
+            {
+
+                double pixel = 0;
+                double contrast = (100.0 + degree) / 100.0;
+                contrast *= contrast;
+                int width = bitmap.Width;
+                int height = bitmap.Height;
+                BitmapData data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                unsafe
+                {
+                    byte* p = (byte*)data.Scan0;
+                    int offset = data.Stride - width * 3;
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width; x++)
+                        {
+                            // 处理指定位置像素的对比度
+                            for (int i = 0; i < 3; i++)
+                            {
+                                pixel = ((p[i] / 255.0 - 0.5) * contrast + 0.5) * 255;
+                                if (pixel < 0) pixel = 0;
+                                if (pixel > 255) pixel = 255;
+                                p[i] = (byte)pixel;
+                            } // i
+                            p += 3;
+                        } // x
+                        p += offset;
+                    } // y
+                }
+                bitmap.UnlockBits(data);
+                return bitmap;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 锐化
+        /// </summary>
+        /// <param name="initbitmap">原始Bitmap</param>
+        /// <param name="val">锐化程度。取值[0,1]。值越大锐化程度越高</param>
+        /// <returns>锐化后的图像</returns>
+        public static Bitmap Sharpen(Bitmap initbitmap, float degree = 1)
+        {
+            if (initbitmap == null)
+            {
+                return null;
+            }
+
+            int w = initbitmap.Width;
+            int h = initbitmap.Height;
+
+            try
+            {
+
+                Bitmap bmpRtn = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+
+                BitmapData srcData = initbitmap.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+                BitmapData dstData = bmpRtn.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+
+                unsafe
+                {
+                    byte* pIn = (byte*)srcData.Scan0.ToPointer();
+                    byte* pOut = (byte*)dstData.Scan0.ToPointer();
+                    int stride = srcData.Stride;
+                    byte* p;
+
+                    for (int y = 0; y < h; y++)
+                    {
+                        for (int x = 0; x < w; x++)
+                        {
+                            //取周围9点的值。位于边缘上的点不做改变。
+                            if (x == 0 || x == w - 1 || y == 0 || y == h - 1)
+                            {
+                                //不做
+                                pOut[0] = pIn[0];
+                                pOut[1] = pIn[1];
+                                pOut[2] = pIn[2];
+                            }
+                            else
+                            {
+                                int r1, r2, r3, r4, r5, r6, r7, r8, r0;
+                                int g1, g2, g3, g4, g5, g6, g7, g8, g0;
+                                int b1, b2, b3, b4, b5, b6, b7, b8, b0;
+
+                                float vR, vG, vB;
+
+                                //左上
+                                p = pIn - stride - 3;
+                                r1 = p[2];
+                                g1 = p[1];
+                                b1 = p[0];
+
+                                //正上
+                                p = pIn - stride;
+                                r2 = p[2];
+                                g2 = p[1];
+                                b2 = p[0];
+
+                                //右上
+                                p = pIn - stride + 3;
+                                r3 = p[2];
+                                g3 = p[1];
+                                b3 = p[0];
+
+                                //左侧
+                                p = pIn - 3;
+                                r4 = p[2];
+                                g4 = p[1];
+                                b4 = p[0];
+
+                                //右侧
+                                p = pIn + 3;
+                                r5 = p[2];
+                                g5 = p[1];
+                                b5 = p[0];
+
+                                //右下
+                                p = pIn + stride - 3;
+                                r6 = p[2];
+                                g6 = p[1];
+                                b6 = p[0];
+
+                                //正下
+                                p = pIn + stride;
+                                r7 = p[2];
+                                g7 = p[1];
+                                b7 = p[0];
+
+                                //右下
+                                p = pIn + stride + 3;
+                                r8 = p[2];
+                                g8 = p[1];
+                                b8 = p[0];
+
+                                //自己
+                                p = pIn;
+                                r0 = p[2];
+                                g0 = p[1];
+                                b0 = p[0];
+
+                                vR = (float)r0 - (float)(r1 + r2 + r3 + r4 + r5 + r6 + r7 + r8) / 8;
+                                vG = (float)g0 - (float)(g1 + g2 + g3 + g4 + g5 + g6 + g7 + g8) / 8;
+                                vB = (float)b0 - (float)(b1 + b2 + b3 + b4 + b5 + b6 + b7 + b8) / 8;
+
+                                vR = r0 + vR * degree;
+                                vG = g0 + vG * degree;
+                                vB = b0 + vB * degree;
+
+                                if (vR > 0)
+                                {
+                                    vR = Math.Min(255, vR);
+                                }
+                                else
+                                {
+                                    vR = Math.Max(0, vR);
+                                }
+
+                                if (vG > 0)
+                                {
+                                    vG = Math.Min(255, vG);
+                                }
+                                else
+                                {
+                                    vG = Math.Max(0, vG);
+                                }
+
+                                if (vB > 0)
+                                {
+                                    vB = Math.Min(255, vB);
+                                }
+                                else
+                                {
+                                    vB = Math.Max(0, vB);
+                                }
+
+                                pOut[0] = (byte)vB;
+                                pOut[1] = (byte)vG;
+                                pOut[2] = (byte)vR;
+
+                            }
+
+                            pIn += 3;
+                            pOut += 3;
+                        }// end of x
+
+                        pIn += srcData.Stride - w * 3;
+                        pOut += srcData.Stride - w * 3;
+                    } // end of y
+                }
+
+                initbitmap.UnlockBits(srcData);
+                bmpRtn.UnlockBits(dstData);
+                return bmpRtn;
+            }
+            catch
+            {
+                return null;
+            }
+        } 
+        #endregion
+
+        #region 噪声
+        /// <summary>
+        /// 椒盐噪声
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap SaltNoise(Bitmap initBitmap, double Pa = 0.001, double Pb = 0.001)
+        {
+            return SaltP(initBitmap,Pa,Pb);
+        }
+
+        /// <summary>
+        /// 高斯噪声
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap GaussNoise(Bitmap initBitmap)
+        {
+            return Goss_noise(initBitmap);
+        }
+        #endregion
+
+        #region 滤波
+        /// <summary>
+        /// 高斯平滑
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap GaussBlur(Bitmap initBitmap)
+        {
+            Filter.Filter filter = new Filter.Filter();
+            return filter.Smooth(initBitmap);
+        }
+
+        /// <summary>
+        /// 高斯平滑 指针法
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap GaussBlurP(Bitmap initBitmap)
+        {
+            Filter.Filter filter = new Filter.Filter();
+            return filter.GaussSmooth(initBitmap);
+        }
+
+        /// <summary>
+        /// 中值滤波
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap MedianFilter(Bitmap initBitmap)
+        {
+            return Filter.Filter.MedianFilter(initBitmap);
+        }
+        #endregion
+
+        #region 边缘检测
+        /// <summary>
+        /// 边缘检测Robert算子
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <param name="Threshold"></param>
+        /// <returns></returns>
+        public static Bitmap EdgeDetector_Robert(Bitmap initBitmap, int Threshold = 80)
+        {
+            return EdgeDetector.Robert(initBitmap, Threshold);
+        }
+        /// <summary>
+        /// 边缘检测Smoothed
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap EdgeDetector_Smoothed(Bitmap initBitmap)
+        {
+            return EdgeDetector.Smoothed(initBitmap);
+        }
+        #endregion
+
+
+
+        #region 未用算法实现 
+        /// <summary>
+        /// 傅里叶变换 频率谱
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap FFT(Bitmap initBitmap)
+        {
+            return Fourier.FFT(initBitmap);
+        }
+
+        /// <summary>
+        /// 傅里叶逆变换
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap BFT(Bitmap initBitmap)
+        {
+            return Fourier.BFT(initBitmap);
+        }
+
+        /// <summary>
+        /// 极坐标变换
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <param name="x">The transformation center, where the output precision is maximal</param>
+        /// <param name="y">The transformation center, where the output precision is maximal</param>
+        /// <param name="M">Magnitude scale parameter</param>
+        /// <returns></returns>
+        public static Bitmap Polar(Bitmap initBitmap, int M = 100 , float x=0,float y=0)
+        {
+            var pointF = new PointF(x,y);
+
+            var img = new Image<Bgr, byte>(initBitmap);
+
+            var img2 = new Image<Bgr, byte>(initBitmap);
+
+            CvInvoke.LogPolar(img, img2, pointF,M);
+
+            return img2.ToBitmap();
+        }
+
+
+        #region 面部识别
         /// <summary>
         /// 面部识别
         /// </summary>
-        /// <param name="img"></param>
-        /// <param name="Grayimg"></param>
-        /// <param name="save"></param>
+        /// <param name="bitmap"></param>
+        /// <param name="Classifier">训练好的分类器</param>
         /// <returns></returns>
-        public static Bitmap Recognite_Face(Bitmap bitmap)
+        public static Bitmap Recognite_Face(Bitmap bitmap,string Classifier= "haarcascade_frontalface_alt.xml")
         {
-
             //如果支持用显卡,则用显卡运算
             CvInvoke.UseOpenCL = CvInvoke.HaveOpenCLCompatibleGpuDevice;
 
             //构建级联分类器,利用已经训练好的数据,识别人脸
             //var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
-            var face = new CascadeClassifier("lbpcascade_animeface.xml");
+            var face = new CascadeClassifier(Classifier);
 
             // var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
 
@@ -255,95 +664,8 @@ namespace ImageAnalyze
             g.DrawRectangle(pen, x, y, width, height);
             return image;
         }
+        #endregion
 
-        /// <summary>
-        /// 椒盐噪声
-        /// </summary>
-        /// <param name="initBitmap"></param>
-        /// <returns></returns>
-        public static Bitmap SaltNoise(Bitmap initBitmap, double Pa = 0.001, double Pb = 0.001)
-        {
-            return SaltP(initBitmap,Pa,Pb);
-        }
-
-        /// <summary>
-        /// 高斯噪声
-        /// </summary>
-        /// <param name="initBitmap"></param>
-        /// <returns></returns>
-        public static Bitmap GaussNoise(Bitmap initBitmap)
-        {
-            return Goss_noise(initBitmap);
-        }
-
-        /// <summary>
-        /// 高斯平滑
-        /// </summary>
-        /// <param name="initBitmap"></param>
-        /// <returns></returns>
-        public static Bitmap GaussBlur(Bitmap initBitmap)
-        {
-            Noise.Noise convolution = new Noise.Noise();
-            return convolution.Smooth(initBitmap);
-        }
-
-        /// <summary>
-        /// 高斯平滑 指针法
-        /// </summary>
-        /// <param name="initBitmap"></param>
-        /// <returns></returns>
-        public static Bitmap GaussBlurP(Bitmap initBitmap)
-        {
-            Noise.Noise convolution = new Noise.Noise();
-            return convolution.GaussSmooth(initBitmap);
-        }
-
-        /// <summary>
-        /// 边缘检测Robert算子
-        /// </summary>
-        /// <param name="initBitmap"></param>
-        /// <param name="Threshold"></param>
-        /// <returns></returns>
-        public static Bitmap EdgeDetector_Robert(Bitmap initBitmap, int Threshold = 80)
-        {
-            return EdgeDetector.Robert(initBitmap, Threshold);
-        }
-        /// <summary>
-        /// 边缘检测Smoothed
-        /// </summary>
-        /// <param name="initBitmap"></param>
-        /// <returns></returns>
-        public static Bitmap EdgeDetector_Smoothed(Bitmap initBitmap)
-        {
-            return EdgeDetector.Smoothed(initBitmap);
-        }
-
-        /// <summary>
-        /// 傅里叶变换 频率谱
-        /// </summary>
-        /// <param name="initBitmap"></param>
-        /// <returns></returns>
-        public static Bitmap FFT(Bitmap initBitmap)
-        {
-            return Fourier.FFT(initBitmap);
-        }
-        public static Bitmap Polar(Bitmap initBitmap, int M = 100)
-        {
-            var img = new Image<Bgr, byte>(initBitmap);
-
-            var img2 = new Image<Bgr, byte>(initBitmap);
-
-            CvInvoke.LogPolar(img, img2, new PointF(
-          img.Width / 2,
-          img.Height / 2
-                   ), M);
-            return img2.ToBitmap();
-        }
-
-        public static Bitmap MedianFilter(Bitmap initBitmap)
-        {
-            return Filter.Filter.MedianFilter(initBitmap);
-        }
-
+        #endregion
     }
 }

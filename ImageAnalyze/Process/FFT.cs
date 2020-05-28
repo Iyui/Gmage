@@ -28,6 +28,19 @@ namespace ImageAnalyze
 
         }
 
+        public static Bitmap BFT(Bitmap inputImage)
+        {
+            System.Drawing.Image sizeImage = new Bitmap(inputImage, 512, 512);
+            //inputImage.Dispose();
+            inputImage = (Bitmap)(sizeImage);
+            inputImage = ColorToGrayscale(inputImage);
+            ComplexImage finalImg = ComplexImage.FromBitmap(inputImage);
+            finalImg.BackwardFourierTransform();
+            //var data = finalImg.Data;
+            return finalImg.ToBitmap();
+
+        }
+
         //8位灰度图
         private static Bitmap ColorToGrayscale(Bitmap bmp)
         {

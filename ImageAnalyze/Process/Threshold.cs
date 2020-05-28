@@ -16,6 +16,7 @@ namespace ImageAnalyze.Process
         private MainForm f;
         public int Hold
         {
+            set => tB_Threshold.Value = value;
             get => tB_Threshold.Value;
         }
 
@@ -34,12 +35,27 @@ namespace ImageAnalyze.Process
             set; get;
         }
 
-        public Threshold(MainForm f, Point p)
+        public Threshold(MainForm f, Point p, int hold)
         {
             InitializeComponent();
+            Hold = hold;
             this.f = f;
             this.PointToScreen(p);
             this.Location = p;
+        }
+
+        private void SetScrollStyle()
+        {
+            switch (Model)
+            {
+                case 14:
+                    tB_Threshold.Minimum = -255;
+                    break;
+                case 15:
+                    tB_Threshold.Minimum = -100;
+                    tB_Threshold.Maximum = 100;
+                    break;
+            }
         }
 
         private void tB_Threshold_Scroll(object sender, EventArgs e)
@@ -64,21 +80,39 @@ namespace ImageAnalyze.Process
                 case 11:
                     ResultBitmap = Polar(InitBitmap, Hold);
                     break;
+                case 13:
+                    ResultBitmap = Sharpen(InitBitmap, Hold / 25.5f);
+                    break;
+                case 14:
+                    ResultBitmap = Lighten(InitBitmap, Hold);
+                    break;
+                case 15:
+                    ResultBitmap = Contrast(InitBitmap, Hold);
+                    break;
             }
             return ResultBitmap;
         }
 
         private void SetThresholdText()
         {
-            if (Model == 11)
-                label1.Text = $"M:\r\n{Hold.ToString()}";
-            else
-                label1.Text = $"阈值\r\n{Hold.ToString()}";
+            switch (Model)
+            {
+                default:
+                    label1.Text = $"阈值\r\n{Hold.ToString()}";
+                    break;
+                case 11:
+                    label1.Text = $"M:\r\n{Hold.ToString()}";
+                    break;
+                case 13:
+                    label1.Text = $"锐化程度:\r\n{(Hold / 25.5f).ToString("0.00%")}";
+                    break;
+            }
         }
 
         private void Threshold_Load(object sender, EventArgs e)
         {
             SetThresholdText();
+            SetScrollStyle();
         }
     }
 }

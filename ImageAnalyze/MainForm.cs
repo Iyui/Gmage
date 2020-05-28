@@ -19,12 +19,12 @@ namespace ImageAnalyze
     {
         #region 变量
 
-       public Image ResultImage
+        public Image ResultImage
         {
-            set=> pictureBox2.Image=value; get=>pictureBox2.Image;
+            set => pictureBox2.Image = value; get => pictureBox2.Image;
         }
 
-           Bitmap initBitmap = new Bitmap(1, 1);
+        Bitmap initBitmap = new Bitmap(1, 1);
 
         #endregion
 
@@ -34,7 +34,7 @@ namespace ImageAnalyze
             ResultImage = initBitmap.Clone() as Bitmap;
         }
 
-  
+
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
             ReadInitImage();
@@ -46,21 +46,19 @@ namespace ImageAnalyze
             OpenFileDialog oi = new OpenFileDialog
             {
                 //oi.InitialDirectory = "c:\\";
-                Filter = "图片(*.jpg,*.jpeg,*.bmp) | *.jpg;*.jpeg;*.bmp| 所有文件(*.*) | *.*",
+                Filter = "图片(*.jpg,*.jpeg,*.bmp,*.png) | *.jpg;*.jpeg;*.bmp;*.png| 所有文件(*.*) | *.*",
                 RestoreDirectory = true,
                 FilterIndex = 1
             };
             if (oi.ShowDialog() == DialogResult.OK)
             {
                 var filename = oi.FileName;
-                var Format = new string[] { ".jpg", ".bmp" ,".jpeg" };
+                var Format = new string[] { ".jpg", ".bmp", ".jpeg", ".png" };
                 if (Format.Contains(Path.GetExtension(filename).ToLower()))
                 {
                     try
                     {
                         initBitmap = (Bitmap)Image.FromFile(filename);
-                        //var image1 = Image.FromFile(filename);
-                        //image = new Bitmap(image1);
                         pB_Init.Image = initBitmap.Clone() as Image;
                     }
                     catch
@@ -74,36 +72,28 @@ namespace ImageAnalyze
         private void btn_Threshod_Click(object sender, EventArgs e)
         {
             CutBackground.model = 3;
-            Process.Threshold ptd = new Process.Threshold(this, MousePosition)
-            {
-                InitBitmap = initBitmap.Clone() as Bitmap,
-                Model = 3,
-            };
             ResultImage = ThresholdingP(initBitmap);
-            ptd.ShowDialog();
+            Open_Threshold_Config(3);
+
+
         }
         //反色
         private void btn_Complementary_Click(object sender, EventArgs e)
         {
             CutBackground.model = 4;
             ResultImage = ComplementaryP(initBitmap);
-            GC.Collect();
         }
 
         private void btn_Gray_Click(object sender, EventArgs e)
         {
             CutBackground.model = 1;
             ResultImage = ImageToGreyP(initBitmap);
-            GC.Collect();
         }
 
         private void btn_Histogram_Click(object sender, EventArgs e)
         {
-            if (initBitmap != null)
-            {
-                Histogramcs hs = new Histogramcs(initBitmap);
-                hs.ShowDialog();
-            }
+            Histogramcs hs = new Histogramcs(initBitmap);
+            hs.ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -114,12 +104,8 @@ namespace ImageAnalyze
 
         private void btn_Frequency_Click(object sender, EventArgs e)
         {
-            try
-            {
             CutBackground.model = 5;
-                ResultImage = FFT(initBitmap);
-            }
-            catch { };
+            ResultImage = FFT(initBitmap);
         }
 
         private void btn_Gaussian_Click(object sender, EventArgs e)
@@ -131,13 +117,8 @@ namespace ImageAnalyze
         private void btn_Robert_Click(object sender, EventArgs e)
         {
             CutBackground.model = 7;
-            Process.Threshold ptd = new Process.Threshold(this, MousePosition)
-            {
-                InitBitmap = initBitmap.Clone() as Bitmap,
-                Model = 7,
-            };
             ResultImage = EdgeDetector_Robert(initBitmap);
-            ptd.ShowDialog();
+            Open_Threshold_Config(7);
         }
 
         private void btn_Smoothed_Click(object sender, EventArgs e)
@@ -171,13 +152,9 @@ namespace ImageAnalyze
         private void btn_Polar_Click(object sender, EventArgs e)
         {
             CutBackground.model = 11;
-            Process.Threshold ptd = new Process.Threshold(this, MousePosition)
-            {
-                InitBitmap = initBitmap.Clone() as Bitmap,
-                Model = 11,
-            };
             ResultImage = Polar(initBitmap);
-            ptd.ShowDialog();
+            Open_Threshold_Config(11);
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -192,7 +169,7 @@ namespace ImageAnalyze
             ResultImage = Recognite_Face(initBitmap);
         }
 
-       
+
 
         private int Interval(int tick)
         {
@@ -222,6 +199,43 @@ namespace ImageAnalyze
                 ResultImage.Save(sfd.FileName);
                 MessageBox.Show("保存成功");
             }
+        }
+
+        private void btn_Sharpen_Click(object sender, EventArgs e)
+        {
+            CutBackground.model = 13;
+            ResultImage = Sharpen(initBitmap);
+            Open_Threshold_Config(13, 25);
+        }
+
+        private void Open_Threshold_Config(int model, int hold = 128)
+        {
+            Process.Threshold ptd = new Process.Threshold(this, MousePosition, hold)
+            {
+                InitBitmap = initBitmap.Clone() as Bitmap,
+                Model = model,
+            };
+            ptd.ShowDialog();
+        }
+
+        private void btn_Lighten_Click(object sender, EventArgs e)
+        {
+            CutBackground.model = 14;
+            ResultImage = Lighten(initBitmap);
+            Open_Threshold_Config(14, 0);
+        }
+
+        private void btn_Contrast_Click(object sender, EventArgs e)
+        {
+            CutBackground.model = 15;
+            ResultImage = Contrast(initBitmap);
+            Open_Threshold_Config(15, 0);
+        }
+
+        private void btn_BFT_Click(object sender, EventArgs e)
+        {
+            CutBackground.model = 16;
+            ResultImage = BFT(initBitmap);
         }
     }
 }
