@@ -183,8 +183,9 @@ namespace ImageAnalyze
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            btn_SelectImage.Focus();
+
         }
+
 
         private void btn_Save_Click(object sender, EventArgs e)
         {
