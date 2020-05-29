@@ -501,6 +501,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.BackgroundImage = global::ImageAnalyze.Properties.Resources.Gmage;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.panel1.Controls.Add(this.mRB_Select);
             this.panel1.Location = new System.Drawing.Point(13, 131);

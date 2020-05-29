@@ -166,6 +166,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
+    <None Include="Resources\Gmage1.png" />
+    <None Include="Resources\未标题-3.png" />
     <None Include="Resources\Gmage.png" />
     <None Include="Resources\未标题-34.png" />
   </ItemGroup>
