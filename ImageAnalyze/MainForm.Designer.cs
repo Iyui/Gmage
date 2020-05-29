@@ -48,6 +48,11 @@
             this.变换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.直方图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.图像旋转ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Clockwise180 = new System.Windows.Forms.ToolStripMenuItem();
+            this.Clockwise90 = new System.Windows.Forms.ToolStripMenuItem();
+            this.Clockwise270 = new System.Windows.Forms.ToolStripMenuItem();
+            this.RotateNoneFlipX = new System.Windows.Forms.ToolStripMenuItem();
+            this.RotateNoneFlipY = new System.Windows.Forms.ToolStripMenuItem();
             this.滤镜ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.模糊ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.高斯模糊ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,9 +77,11 @@
             this.mtS_Selected = new MaterialSkin.Controls.MaterialTabSelector();
             this.mTC_ImageTab = new MaterialSkin.Controls.MaterialTabControl();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.mRB_Select = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // materialContextMenuStrip1
@@ -110,7 +117,7 @@
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(496, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(376, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -243,9 +250,50 @@
             // 
             // 图像旋转ToolStripMenuItem
             // 
+            this.图像旋转ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Clockwise180,
+            this.Clockwise90,
+            this.Clockwise270,
+            this.RotateNoneFlipX,
+            this.RotateNoneFlipY});
             this.图像旋转ToolStripMenuItem.Name = "图像旋转ToolStripMenuItem";
             this.图像旋转ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.图像旋转ToolStripMenuItem.Text = "图像旋转";
+            // 
+            // Clockwise180
+            // 
+            this.Clockwise180.Name = "Clockwise180";
+            this.Clockwise180.Size = new System.Drawing.Size(146, 22);
+            this.Clockwise180.Text = "180度";
+            this.Clockwise180.Click += new System.EventHandler(this.Clockwise180_Click);
+            // 
+            // Clockwise90
+            // 
+            this.Clockwise90.Name = "Clockwise90";
+            this.Clockwise90.Size = new System.Drawing.Size(146, 22);
+            this.Clockwise90.Text = "90度(顺时针)";
+            this.Clockwise90.Click += new System.EventHandler(this.Clockwise90_Click);
+            // 
+            // Clockwise270
+            // 
+            this.Clockwise270.Name = "Clockwise270";
+            this.Clockwise270.Size = new System.Drawing.Size(146, 22);
+            this.Clockwise270.Text = "90度(逆时针)";
+            this.Clockwise270.Click += new System.EventHandler(this.Clockwise270_Click);
+            // 
+            // RotateNoneFlipX
+            // 
+            this.RotateNoneFlipX.Name = "RotateNoneFlipX";
+            this.RotateNoneFlipX.Size = new System.Drawing.Size(146, 22);
+            this.RotateNoneFlipX.Text = "垂直镜像";
+            this.RotateNoneFlipX.Click += new System.EventHandler(this.RotateNoneFlipX_Click);
+            // 
+            // RotateNoneFlipY
+            // 
+            this.RotateNoneFlipY.Name = "RotateNoneFlipY";
+            this.RotateNoneFlipY.Size = new System.Drawing.Size(146, 22);
+            this.RotateNoneFlipY.Text = "水平镜像";
+            this.RotateNoneFlipY.Click += new System.EventHandler(this.RotateNoneFlipY_Click);
             // 
             // 滤镜ToolStripMenuItem
             // 
@@ -430,11 +478,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mTC_ImageTab.Depth = 0;
-            this.mTC_ImageTab.Location = new System.Drawing.Point(1, 68);
+            this.mTC_ImageTab.Location = new System.Drawing.Point(12, 68);
             this.mTC_ImageTab.MouseState = MaterialSkin.MouseState.HOVER;
             this.mTC_ImageTab.Name = "mTC_ImageTab";
             this.mTC_ImageTab.SelectedIndex = 0;
-            this.mTC_ImageTab.Size = new System.Drawing.Size(790, 648);
+            this.mTC_ImageTab.Size = new System.Drawing.Size(770, 648);
             this.mTC_ImageTab.TabIndex = 19;
             this.mTC_ImageTab.Visible = false;
             this.mTC_ImageTab.SelectedIndexChanged += new System.EventHandler(this.materialTabSelector1_TabIndexChanged);
@@ -448,6 +496,20 @@
             this.panel2.Size = new System.Drawing.Size(719, 17);
             this.panel2.TabIndex = 20;
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.BackgroundImage = global::ImageAnalyze.Properties.Resources.Gmage;
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel1.Controls.Add(this.mRB_Select);
+            this.panel1.Location = new System.Drawing.Point(13, 131);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(769, 423);
+            this.panel1.TabIndex = 21;
+            this.panel1.Click += new System.EventHandler(this.btn_SelectImage_Click);
+            // 
             // mRB_Select
             // 
             this.mRB_Select.AutoSize = true;
@@ -455,7 +517,7 @@
             this.mRB_Select.Depth = 0;
             this.mRB_Select.Font = new System.Drawing.Font("宋体", 20F);
             this.mRB_Select.Icon = null;
-            this.mRB_Select.Location = new System.Drawing.Point(252, 317);
+            this.mRB_Select.Location = new System.Drawing.Point(528, 355);
             this.mRB_Select.MouseState = MaterialSkin.MouseState.HOVER;
             this.mRB_Select.Name = "mRB_Select";
             this.mRB_Select.Primary = true;
@@ -463,18 +525,20 @@
             this.mRB_Select.TabIndex = 0;
             this.mRB_Select.Text = "添加图片";
             this.mRB_Select.UseVisualStyleBackColor = true;
+            this.mRB_Select.Visible = false;
             this.mRB_Select.Click += new System.EventHandler(this.btn_SelectImage_Click);
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(794, 728);
             this.ContextMenuStrip = this.materialContextMenuStrip1;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.mtS_Selected);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.mTC_ImageTab);
-            this.Controls.Add(this.mRB_Select);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gmage";
@@ -482,6 +546,8 @@
             this.materialContextMenuStrip1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -534,6 +600,12 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_Classifier;
         private System.Windows.Forms.ToolStripMenuItem 识别ToolStripMenuItem;
         private MaterialSkin.Controls.MaterialRaisedButton mRB_Select;
+        private System.Windows.Forms.ToolStripMenuItem Clockwise180;
+        private System.Windows.Forms.ToolStripMenuItem Clockwise90;
+        private System.Windows.Forms.ToolStripMenuItem Clockwise270;
+        private System.Windows.Forms.ToolStripMenuItem RotateNoneFlipX;
+        private System.Windows.Forms.ToolStripMenuItem RotateNoneFlipY;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

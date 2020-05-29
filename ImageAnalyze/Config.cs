@@ -124,5 +124,25 @@ namespace ImageAnalyze
         /// 面部识别
         /// </summary>
         FaceRecognition,
+        /// <summary>
+        /// 旋转180度
+        /// </summary>
+        Clockwise180,
+        /// <summary>
+        /// 旋转90度
+        /// </summary>
+        Clockwise90,
+        /// <summary>
+        /// 旋转270度
+        /// </summary>
+        Clockwise270,
+        /// <summary>
+        /// 垂直镜像
+        /// </summary>
+        RotateNoneFlipX,
+        /// <summary>
+        /// 水平镜像
+        /// </summary>
+        RotateNoneFlipY,
     }
 }

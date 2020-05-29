@@ -13,6 +13,66 @@ namespace ImageAnalyze
 {
     public class ImageProcess
     {
+        #region 翻转和旋转
+        /// <summary>
+        /// 顺时针90度
+        /// </summary>
+        /// <param name="initbitmap"></param>
+        /// <returns></returns>
+        public static Bitmap Clockwise90(Bitmap initbitmap)
+        {
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            return bitmap;
+        }
+
+        /// <summary>
+        /// 旋转180度
+        /// </summary>
+        /// <param name="initbitmap"></param>
+        /// <returns></returns>
+        public static Bitmap Clockwise180(Bitmap initbitmap)
+        {
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            bitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
+            return bitmap;
+        }
+        /// <summary>
+        /// 逆时针90度
+        /// </summary>
+        /// <param name="initbitmap"></param>
+        /// <returns></returns>
+        public static Bitmap Clockwise270(Bitmap initbitmap)
+        {
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            bitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            return bitmap;
+        }
+        /// <summary>
+        /// 垂直镜像
+        /// </summary>
+        /// <param name="initbitmap"></param>
+        /// <returns></returns>
+        public static Bitmap RotateNoneFlipX(Bitmap initbitmap)
+        {
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            bitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
+            return bitmap;
+        }
+
+        /// <summary>
+        /// 水平镜像
+        /// </summary>
+        /// <param name="initbitmap"></param>
+        /// <returns></returns>
+        public static Bitmap RotateNoneFlipY(Bitmap initbitmap)
+        {
+            Bitmap bitmap = initbitmap.Clone() as Bitmap;
+            bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            return bitmap;
+        }
+
+        #endregion
 
         #region 简单的像素处理
 

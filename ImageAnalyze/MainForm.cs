@@ -77,6 +77,7 @@ namespace ImageAnalyze
                             mtS_Selected.BaseTabControl = mTC_ImageTab;
                             mTC_ImageTab.Visible = true;
                             mRB_Select.Visible = false;
+                            panel1.Visible = false;
                         }
                         initBitmap = (Bitmap)Image.FromFile(filename);
                         SetTab(Path.GetFileNameWithoutExtension(filename));
@@ -404,6 +405,37 @@ namespace ImageAnalyze
                 return true;
             }
             return false;
+        }
+
+        private void Clockwise180_Click(object sender, EventArgs e)
+        {
+            Config.Model = FunctionType.Clockwise180;
+            ResultImage = Clockwise180(initBitmap);
+        }
+
+        private void Clockwise90_Click(object sender, EventArgs e)
+        {
+            Config.Model = FunctionType.Clockwise90;
+            ResultImage = Clockwise90(initBitmap);
+
+        }
+
+        private void Clockwise270_Click(object sender, EventArgs e)
+        {
+            Config.Model = FunctionType.Clockwise270;
+            ResultImage = Clockwise270(initBitmap);
+        }
+
+        private void RotateNoneFlipX_Click(object sender, EventArgs e)
+        {
+            Config.Model = FunctionType.RotateNoneFlipX;
+            ResultImage = RotateNoneFlipX(initBitmap);
+        }
+
+        private void RotateNoneFlipY_Click(object sender, EventArgs e)
+        {
+            Config.Model = FunctionType.RotateNoneFlipY;
+            ResultImage = RotateNoneFlipY(initBitmap);
         }
     }
 }

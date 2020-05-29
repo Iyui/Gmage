@@ -28,33 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pB_Init = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.pB_Init)).BeginInit();
+            this.pB_Init = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pB_Init)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pB_Init
-            // 
-            this.pB_Init.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pB_Init.BackColor = System.Drawing.Color.Transparent;
-            this.pB_Init.Location = new System.Drawing.Point(0, 0);
-            this.pB_Init.Name = "pB_Init";
-            this.pB_Init.Size = new System.Drawing.Size(150, 150);
-            this.pB_Init.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pB_Init.TabIndex = 3;
-            this.pB_Init.TabStop = false;
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.pB_Init);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(150, 150);
             this.panel1.TabIndex = 2;
+            // 
+            // pB_Init
+            // 
+            this.pB_Init.BackColor = System.Drawing.Color.Transparent;
+            this.pB_Init.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pB_Init.Location = new System.Drawing.Point(0, 0);
+            this.pB_Init.Name = "pB_Init";
+            this.pB_Init.Size = new System.Drawing.Size(150, 150);
+            this.pB_Init.TabIndex = 3;
+            this.pB_Init.TabStop = false;
             // 
             // ImageTab
             // 
@@ -63,8 +62,8 @@
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.panel1);
             this.Name = "ImageTab";
-            ((System.ComponentModel.ISupportInitialize)(this.pB_Init)).EndInit();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pB_Init)).EndInit();
             this.ResumeLayout(false);
 
         }
