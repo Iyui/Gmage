@@ -22,7 +22,7 @@ namespace Gmage
 
         public Bitmap ResultImage
         {
-            set=> col.Image=value; get=> (Bitmap)col.Image;
+            set => col.Image = value; get => (Bitmap)col.Image;
         }
 
         public Bitmap initBitmap { set; get; }
@@ -41,17 +41,17 @@ namespace Gmage
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-            materialSkinManager.ColorScheme = 
-                new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, 
+            materialSkinManager.ColorScheme =
+                new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             menuStrip1.BackColor = ((int)Primary.BlueGrey900).ToColor();
         }
-     
+
 
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
             ReadInitImage();
-            
+
         }
 
 
@@ -65,7 +65,7 @@ namespace Gmage
                 FilterIndex = 1,
                 InitialDirectory = Application.StartupPath,
                 Multiselect = true,
-        };
+            };
             if (oi.ShowDialog() == DialogResult.OK)
             {
                 foreach (var filename in oi.FileNames)
@@ -131,7 +131,7 @@ namespace Gmage
             mTC_ImageTab.SelectedTab = mTC_ImageTab.TabPages[t.Name];
             it.Dock = DockStyle.Fill;
             it.Image = initBitmap.Clone() as Image;
-            
+
         }
 
         HashSet<string> NameHash = new HashSet<string>();
@@ -263,7 +263,7 @@ namespace Gmage
         private void btn_FaceRecognition_Click(object sender, EventArgs e)
         {
             Config.Model = FunctionType.FaceRecognition;
-            if(Path.GetExtension(Config.ClassifierPath)==".xml")
+            if (Path.GetExtension(Config.ClassifierPath) == ".xml")
                 ResultImage = Recognite_Face(initBitmap, Config.ClassifierPath);
             else
                 MessageBox.Show("请先选择分类器", "错误的预期", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -284,7 +284,7 @@ namespace Gmage
                 }
                 CheckonIndex();
             }
-            Classifier_Load(); 
+            Classifier_Load();
         }
 
         private void Classifier_Load()
@@ -332,7 +332,7 @@ namespace Gmage
                 {
                     Directory.CreateDirectory(path);
                 }
-                return true; 
+                return true;
             }
             catch { return false; }
         }
@@ -347,7 +347,7 @@ namespace Gmage
         private void tsmi_Index_Click(object sender, EventArgs e)
         {
             Config.ClassifierPath = (string)((ToolStripMenuItem)sender).Name;
-            config.IsCheckedControl((ToolStripMenuItem)sender,tsmi_Index);
+            config.IsCheckedControl((ToolStripMenuItem)sender, tsmi_Index);
             mTC_ImageTab.SelectedTab = mTC_ImageTab.TabPages[((ToolStripMenuItem)sender).Tag.ToString()];
         }
 
@@ -356,7 +356,7 @@ namespace Gmage
             int i = 0;
             foreach (ToolStripMenuItem item in tsmi_Index.DropDownItems)
             {
-                if (i++< tsmi_Index.DropDownItems.Count-1)
+                if (i++ < tsmi_Index.DropDownItems.Count - 1)
                     continue;
                 item.Checked = true; //设选中状态为true
             }
@@ -415,14 +415,14 @@ namespace Gmage
 
         private void tsmi_About_Click(object sender, EventArgs e)
         {
-           // MessageBox.Show("666");
+            // MessageBox.Show("666");
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
         }
-        PictureBox col= new PictureBox();
+        PictureBox col = new PictureBox();
         private void materialTabSelector1_TabIndexChanged(object sender, EventArgs e)
         {
             ResetBitmap();
@@ -464,7 +464,7 @@ namespace Gmage
                 var TabName = SelectedTabName.Substring(3);
                 //使用TabControl控件的TabPages属性的Remove方法移除指定的选项卡
                 htTabImageName.Remove(SelectedTabName);
-                tsmi_Index.DropDownItems.RemoveByKey("tsmi_"+TabName);
+                tsmi_Index.DropDownItems.RemoveByKey("tsmi_" + TabName);
                 NameHash.Remove(TabName);
                 mTC_ImageTab.TabPages.Remove(mTC_ImageTab.SelectedTab);
             }

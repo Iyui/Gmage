@@ -80,6 +80,10 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.mRB_Select = new MaterialSkin.Controls.MaterialRaisedButton();
             this.tsmi_Index = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -121,7 +125,7 @@
             this.tsmi_Index});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(522, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(672, 28);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -131,6 +135,7 @@
             this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.选择图片ToolStripMenuItem,
             this.另存为ToolStripMenuItem,
+            this.toolStripSeparator1,
             this.批处理ToolStripMenuItem});
             this.文件ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
@@ -140,14 +145,14 @@
             // 选择图片ToolStripMenuItem
             // 
             this.选择图片ToolStripMenuItem.Name = "选择图片ToolStripMenuItem";
-            this.选择图片ToolStripMenuItem.Size = new System.Drawing.Size(149, 26);
+            this.选择图片ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.选择图片ToolStripMenuItem.Text = "打开...";
             this.选择图片ToolStripMenuItem.Click += new System.EventHandler(this.btn_SelectImage_Click);
             // 
             // 另存为ToolStripMenuItem
             // 
             this.另存为ToolStripMenuItem.Name = "另存为ToolStripMenuItem";
-            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(149, 26);
+            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.另存为ToolStripMenuItem.Text = "另存为...";
             this.另存为ToolStripMenuItem.Click += new System.EventHandler(this.btn_Save_Click);
             // 
@@ -161,6 +166,7 @@
             // 
             this.编辑ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Clear,
+            this.toolStripSeparator2,
             this.首选项ToolStripMenuItem});
             this.编辑ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
@@ -258,10 +264,11 @@
             this.Clockwise180,
             this.Clockwise90,
             this.Clockwise270,
+            this.toolStripSeparator3,
             this.RotateNoneFlipX,
             this.RotateNoneFlipY});
             this.图像旋转ToolStripMenuItem.Name = "图像旋转ToolStripMenuItem";
-            this.图像旋转ToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
+            this.图像旋转ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.图像旋转ToolStripMenuItem.Text = "图像旋转";
             // 
             // Clockwise180
@@ -317,9 +324,10 @@
             // 
             this.模糊ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.高斯模糊ToolStripMenuItem,
+            this.toolStripSeparator4,
             this.中值滤波ToolStripMenuItem});
             this.模糊ToolStripMenuItem.Name = "模糊ToolStripMenuItem";
-            this.模糊ToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
+            this.模糊ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.模糊ToolStripMenuItem.Text = "模糊/滤波";
             // 
             // 高斯模糊ToolStripMenuItem
@@ -461,7 +469,7 @@
             // 
             this.tsmi_About.Name = "tsmi_About";
             this.tsmi_About.Size = new System.Drawing.Size(224, 26);
-            this.tsmi_About.Text = "关于...";
+            this.tsmi_About.Text = "关于Gmage";
             this.tsmi_About.Click += new System.EventHandler(this.tsmi_About_Click);
             // 
             // mtS_Selected
@@ -546,6 +554,26 @@
             this.tsmi_Index.Size = new System.Drawing.Size(68, 24);
             this.tsmi_Index.Text = "选项卡";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(221, 6);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(221, 6);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(221, 6);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(221, 6);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -624,6 +652,10 @@
         private System.Windows.Forms.ToolStripMenuItem RotateNoneFlipY;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Index;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }
 
