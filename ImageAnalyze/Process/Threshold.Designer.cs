@@ -1,4 +1,4 @@
-﻿namespace ImageAnalyze.Process
+﻿namespace Gmage.Process
 {
     partial class Threshold
     {

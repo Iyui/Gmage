@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace ImageAnalyze
+namespace Gmage
 {
     public class EdgeDetector
     {

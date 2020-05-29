@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
-namespace ImageAnalyze
+namespace Gmage
 {
     public partial class Probability : MaterialForm
     {

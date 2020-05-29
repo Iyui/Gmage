@@ -13,8 +13,8 @@ using System.IO;
 using MaterialSkin;
 using MaterialSkin.Animations;
 using MaterialSkin.Controls;
-using static ImageAnalyze.ImageProcess;
-namespace ImageAnalyze
+using static Gmage.ImageProcess;
+namespace Gmage
 {
     public partial class MainForm : MaterialForm
     {

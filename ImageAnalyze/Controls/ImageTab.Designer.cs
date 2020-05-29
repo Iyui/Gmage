@@ -1,4 +1,4 @@
-﻿namespace ImageAnalyze.Controls
+﻿namespace Gmage.Controls
 {
     partial class ImageTab
     {

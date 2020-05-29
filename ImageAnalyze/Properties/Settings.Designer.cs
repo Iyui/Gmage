@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ImageAnalyze.Properties
+namespace Gmage.Properties
 {
 
 

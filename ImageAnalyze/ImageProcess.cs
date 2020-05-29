@@ -8,8 +8,8 @@ using System.Drawing.Imaging;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using static ImageAnalyze.Noise.Noise;
-namespace ImageAnalyze
+using static Gmage.Noise.Noise;
+namespace Gmage
 {
     public class ImageProcess
     {

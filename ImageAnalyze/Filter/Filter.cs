@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing.Imaging;
 using System.Drawing;
-namespace ImageAnalyze.Filter
+namespace Gmage.Filter
 {
     public class Filter
     {

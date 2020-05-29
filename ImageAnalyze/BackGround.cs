@@ -10,8 +10,8 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using static ImageAnalyze.ImageProcess;
-namespace ImageAnalyze
+using static Gmage.ImageProcess;
+namespace Gmage
 {
     public partial class CutBackground :Form
     {

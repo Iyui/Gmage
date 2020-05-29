@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ImageAnalyze.ImageProcess;
+using static Gmage.ImageProcess;
 using MaterialSkin;
 using MaterialSkin.Controls;
-namespace ImageAnalyze.Process
+namespace Gmage.Process
 {
     public partial class Threshold : MaterialForm
     {

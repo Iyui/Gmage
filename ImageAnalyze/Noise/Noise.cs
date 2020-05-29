@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
-namespace ImageAnalyze.Noise
+namespace Gmage.Noise
 {
     public class Noise
     {

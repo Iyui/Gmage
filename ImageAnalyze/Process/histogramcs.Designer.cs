@@ -1,4 +1,4 @@
-﻿namespace ImageAnalyze
+﻿namespace Gmage
 {
     partial class Histogramcs
     {

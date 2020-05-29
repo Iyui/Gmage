@@ -11,7 +11,7 @@ using System.Drawing.Imaging;
 using AForge.Imaging;
 using System.IO;
 
-namespace ImageAnalyze
+namespace Gmage
 {
     public class Fourier
     {

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ImageAnalyze.Controls
+namespace Gmage.Controls
 {
     public partial class ImageTab : UserControl
     {
