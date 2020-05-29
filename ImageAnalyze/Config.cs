@@ -52,7 +52,30 @@ namespace Gmage
                 }
             }
         }
+
+        /// <summary>
+        /// 设置菜单单选
+        /// </summary>
+        /// <param name="cms">参数-右键可选项类</param>
+        public void IsCheckedControl(ToolStripMenuItem cms, string name)
+        {
+            foreach (ToolStripMenuItem item in cms.DropDownItems)
+            {
+                //不是当前项的取消选择
+                if (item.Tag.ToString() == name)
+                {
+                    item.Checked = true; //设选中状态为true
+                }
+                else
+                {
+                    item.Checked = false; //设选中状态为false
+                }
+            }
+        }
+
     }
+
+
 
     public enum FunctionType
     {

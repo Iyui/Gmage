@@ -6,14 +6,16 @@ using System.Windows.Forms;
 
 namespace Gmage
 {
-    static class Program
+    internal static class Program
     {
+        internal static string[] MyArgs;
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            MyArgs = args;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

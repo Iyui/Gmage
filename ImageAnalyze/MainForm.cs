@@ -62,40 +62,49 @@ namespace Gmage
                 //oi.InitialDirectory = "c:\\";
                 Filter = "图片(*.jpg,*.jpeg,*.bmp,*.png) | *.jpg;*.jpeg;*.bmp;*.png| 所有文件(*.*) | *.*",
                 RestoreDirectory = true,
-                FilterIndex = 1
-            };
+                FilterIndex = 1,
+                InitialDirectory = Application.StartupPath,
+                Multiselect = true,
+        };
             if (oi.ShowDialog() == DialogResult.OK)
             {
-                var filename = oi.FileName;
-                var Format = new string[] { ".jpg", ".bmp", ".jpeg", ".png" };
-                if (Format.Contains(Path.GetExtension(filename).ToLower()))
+                foreach (var filename in oi.FileNames)
                 {
-                    try
-                    {
-                        if (mtS_Selected.BaseTabControl != mTC_ImageTab)
-                        {
-                            mtS_Selected.BaseTabControl = mTC_ImageTab;
-                            mTC_ImageTab.Visible = true;
-                            mRB_Select.Visible = false;
-                            panel1.Visible = false;
-                        }
-                        initBitmap = (Bitmap)Image.FromFile(filename);
-                        SetTab(Path.GetFileNameWithoutExtension(filename));
-                        if (!HideTab())
-                        {
-                            materialContextMenuStrip1.Enabled = true;
-                        }
-                        else
-                        {
-                            ResetBitmap();
-                        }
-                        //pB_Init.Image = initBitmap.Clone() as Image;
+                    SetImageShow(filename);
+                }
+                CheckonIndex();
+            }
+        }
 
-                    }
-                    catch(Exception ex)
+        private void SetImageShow(string filename)
+        {
+            var Format = new string[] { ".jpg", ".bmp", ".jpeg", ".png" };
+            if (Format.Contains(Path.GetExtension(filename).ToLower()))
+            {
+                try
+                {
+                    if (mtS_Selected.BaseTabControl != mTC_ImageTab)
                     {
-                        MessageBox.Show("不正确的格式", "错误的预期", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        mtS_Selected.BaseTabControl = mTC_ImageTab;
+                        mTC_ImageTab.Visible = true;
+                        mRB_Select.Visible = false;
+                        panel1.Visible = false;
                     }
+                    initBitmap = (Bitmap)Image.FromFile(filename);
+                    SetTab(Path.GetFileNameWithoutExtension(filename));
+                    if (!HideTab())
+                    {
+                        materialContextMenuStrip1.Enabled = true;
+                        tsm_CloseTabPage.Enabled = true;
+                    }
+                    else
+                    {
+                        ResetBitmap();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("不正确的格式", "错误的预期", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -103,18 +112,14 @@ namespace Gmage
         /// <summary>
         /// 打开文件时tabcontrol显示图片名字
         /// </summary>
-        private void SetTabName(TabPage tp,string imageName)
-        {
-            tp.Text = imageName;
-        }
-
-        /// <summary>
-        /// 打开文件时tabcontrol显示图片名字
-        /// </summary>
         private void SetTab(string imageName)
         {
-            TabPage t = new TabPage(imageName);
-            t.Name = "tp_" + imageName;
+            imageName = reName(imageName);
+            AddPagesIndex(imageName);
+            TabPage t = new TabPage(imageName)
+            {
+                Name = "tp_" + imageName
+            };
             mTC_ImageTab.TabPages.Add(t);
             PictureBox it = new PictureBox()
             {
@@ -127,6 +132,36 @@ namespace Gmage
             it.Dock = DockStyle.Fill;
             it.Image = initBitmap.Clone() as Image;
             
+        }
+
+        HashSet<string> NameHash = new HashSet<string>();
+        private string reName(string name)
+        {
+            string extension = Path.GetExtension(name);//扩展名 “.aspx”
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(name);// 没有扩展名的文件名
+            if (!NameHash.Add(name))
+            {
+                return reName(fileNameWithoutExtension, fileNameWithoutExtension, extension, name);
+            }
+            return name;
+        }
+
+        /// <summary>
+        /// 重命名
+        /// </summary>
+        /// <param name="fileNameWithoutExtension">无拓展名的文件名</param>
+        /// <param name="original">原始无拓展名的文件名</param>
+        /// <param name="extension">拓展名</param>
+        /// <param name="name">有拓展名的文件名</param>
+        /// <param name="serialNum">序号</param>
+        /// <returns></returns>
+        private string reName(string fileNameWithoutExtension, string original, string extension, string name, int serialNum = 1)
+        {
+            name = original + $"({serialNum.ToString()})" + extension;
+            serialNum++;
+            if (!NameHash.Add(name))
+                return reName(fileNameWithoutExtension, original, extension, name, serialNum);
+            return name;
         }
 
         private void btn_Binarization_Click(object sender, EventArgs e)
@@ -221,6 +256,8 @@ namespace Gmage
         {
             CutBackground cb = new CutBackground(this);
             cb.Show();
+
+            this.WindowState = FormWindowState.Minimized;
         }
 
         private void btn_FaceRecognition_Click(object sender, EventArgs e)
@@ -232,13 +269,6 @@ namespace Gmage
                 MessageBox.Show("请先选择分类器", "错误的预期", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-
-
-        private int Interval(int tick)
-        {
-            return Environment.TickCount - tick;
-        }
-
         private void btn_MedianFilter_Click(object sender, EventArgs e)
         {
             ResultImage = MedianFilter(initBitmap);
@@ -246,7 +276,15 @@ namespace Gmage
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Classifier_Load();
+            if (Program.MyArgs.Length > 0)
+            {
+                foreach (var filename in Program.MyArgs)
+                {
+                    SetImageShow(filename);
+                }
+                CheckonIndex();
+            }
+            Classifier_Load(); 
         }
 
         private void Classifier_Load()
@@ -268,31 +306,60 @@ namespace Gmage
                     Tag = f.FullName,
                     CheckOnClick = true,
                 };
-                items.Click += contextMenu_Click;
+                items.Click += tsmi_Classifier_Click;
                 tsmi_Classifier.DropDownItems.Add(items);
             }
         }
 
+        private void AddPagesIndex(string ImageName)
+        {
+            ToolStripMenuItem items = new ToolStripMenuItem()
+            {
+                Name = "tsmi_" + ImageName,
+                Text = ImageName,
+                Tag = "tp_" + ImageName,
+                CheckOnClick = true,
+            };
+            items.Click += tsmi_Index_Click;
+            tsmi_Index.DropDownItems.Add(items);
+        }
+
         private bool FloderExist(string path)
         {
-
             try
             {
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
-                return true;
-                
+                return true; 
             }
             catch { return false; }
         }
 
         Config config = new Config();
-        private void contextMenu_Click(object sender, EventArgs e)
+        private void tsmi_Classifier_Click(object sender, EventArgs e)
         {
             Config.ClassifierPath = (string)((ToolStripMenuItem)sender).Name;
             config.IsCheckedControl((ToolStripMenuItem)sender, tsmi_Classifier);
+        }
+
+        private void tsmi_Index_Click(object sender, EventArgs e)
+        {
+            Config.ClassifierPath = (string)((ToolStripMenuItem)sender).Name;
+            config.IsCheckedControl((ToolStripMenuItem)sender,tsmi_Index);
+            mTC_ImageTab.SelectedTab = mTC_ImageTab.TabPages[((ToolStripMenuItem)sender).Tag.ToString()];
+        }
+
+        private void CheckonIndex()
+        {
+            int i = 0;
+            foreach (ToolStripMenuItem item in tsmi_Index.DropDownItems)
+            {
+                if (i++< tsmi_Index.DropDownItems.Count-1)
+                    continue;
+                item.Checked = true; //设选中状态为true
+            }
         }
 
         private void btn_Save_Click(object sender, EventArgs e)
@@ -365,7 +432,10 @@ namespace Gmage
         {
             if (mTC_ImageTab.SelectedTab is null)
                 return;
-            var selectedTabName = (string)htTabImageName[mTC_ImageTab.SelectedTab.Name];
+            var TabName = mTC_ImageTab.SelectedTab.Name;
+            var selectedTabName = (string)htTabImageName[TabName];
+
+            config.IsCheckedControl(tsmi_Index, TabName);
             col = (PictureBox)mTC_ImageTab.SelectedTab.Controls.Find(selectedTabName, true)[0];
             if (!(col.Image is null))
                 initBitmap = (Bitmap)col.Image;
@@ -373,7 +443,6 @@ namespace Gmage
 
         private void tsm_CloseTabPage_Click(object sender, EventArgs e)
         {
-
             Remove();
             if (HideTab())
             {
@@ -391,9 +460,12 @@ namespace Gmage
             {
                 if (HideTab())
                     return;
+                var SelectedTabName = mTC_ImageTab.SelectedTab.Name;
+                var TabName = SelectedTabName.Substring(3);
                 //使用TabControl控件的TabPages属性的Remove方法移除指定的选项卡
-                int removeIndex = mTC_ImageTab.SelectedIndex;
-                htTabImageName.Remove((string)mTC_ImageTab.SelectedTab.Name);
+                htTabImageName.Remove(SelectedTabName);
+                tsmi_Index.DropDownItems.RemoveByKey("tsmi_"+TabName);
+                NameHash.Remove(TabName);
                 mTC_ImageTab.TabPages.Remove(mTC_ImageTab.SelectedTab);
             }
         }
@@ -436,6 +508,31 @@ namespace Gmage
         {
             Config.Model = FunctionType.RotateNoneFlipY;
             ResultImage = RotateNoneFlipY(initBitmap);
+        }
+
+        private void mTC_ImageTab_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Move;
+            }
+        }
+
+        private void mTC_ImageTab_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
+                for (int i = 0; i < file.Length; i++)
+                {
+                    if (File.Exists(file[i]))
+                    {
+                        // 设置显示的图片
+                        SetImageShow(file[i]);
+                    }
+                }
+                CheckonIndex();
+            }
         }
     }
 }
