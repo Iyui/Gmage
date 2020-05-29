@@ -3,12 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 namespace ImageAnalyze
 {
     public class Config
     {
         public static FunctionType Model;
+        public static string ClassifierPath;
+        /// <summary>
+        /// 设置右键菜单单选
+        /// </summary>
+        /// <param name="cms">参数-右键可选项类</param>
+        public void IsCheckedControl(ToolStripMenuItem cms, ContextMenuStrip contextMenuStrip)
+        {
+            foreach (ToolStripMenuItem item in contextMenuStrip.Items)
+            {
+                if (cms.Name == "tsmI_Save")
+                    return;
+                //不是当前项的取消选择
+                if (item.Name == cms.Name)
+                {
+                    Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), cms.Tag.ToString());
+                    item.Checked = true; //设选中状态为true
+                }
+                else
+                {
+                    item.Checked = false; //设选中状态为false
+                }
+            }
+        }
+
+        /// <summary>
+        /// 设置右键菜单单选
+        /// </summary>
+        /// <param name="cms">参数-右键可选项类</param>
+        public void IsCheckedControl(ToolStripMenuItem cms, ToolStripMenuItem cmsf)
+        {
+            foreach (ToolStripMenuItem item in cmsf.DropDownItems)
+            {
+                //不是当前项的取消选择
+                if (item.Name == cms.Name)
+                {
+                    item.Checked = true; //设选中状态为true
+                }
+                else
+                {
+                    item.Checked = false; //设选中状态为false
+                }
+            }
+        }
     }
 
     public enum FunctionType

@@ -69,118 +69,119 @@
             this.面部识别ToolStripMenuItem,
             this.tsmI_Save});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(142, 356);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 378);
             this.contextMenuStrip1.Text = "变换类型";
             // 
             // 亮度ToolStripMenuItem
             // 
             this.亮度ToolStripMenuItem.Name = "亮度ToolStripMenuItem";
-            this.亮度ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.亮度ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.亮度ToolStripMenuItem.Tag = "Lighten";
             this.亮度ToolStripMenuItem.Text = "亮度";
+            this.亮度ToolStripMenuItem.Click += new System.EventHandler(this.亮度ToolStripMenuItem_Click);
             // 
             // 对比度ToolStripMenuItem
             // 
             this.对比度ToolStripMenuItem.Name = "对比度ToolStripMenuItem";
-            this.对比度ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.对比度ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.对比度ToolStripMenuItem.Tag = "Contrast";
             this.对比度ToolStripMenuItem.Text = "对比度";
             // 
             // 灰度化1ToolStripMenuItem
             // 
             this.灰度化1ToolStripMenuItem.Name = "灰度化1ToolStripMenuItem";
-            this.灰度化1ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.灰度化1ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.灰度化1ToolStripMenuItem.Tag = "Gray";
             this.灰度化1ToolStripMenuItem.Text = "灰度化";
             // 
             // 二值化ToolStripMenuItem
             // 
             this.二值化ToolStripMenuItem.Name = "二值化ToolStripMenuItem";
-            this.二值化ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.二值化ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.二值化ToolStripMenuItem.Tag = " Binarization";
             this.二值化ToolStripMenuItem.Text = "二值化";
             // 
             // 反色ToolStripMenuItem
             // 
             this.反色ToolStripMenuItem.Name = "反色ToolStripMenuItem";
-            this.反色ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.反色ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.反色ToolStripMenuItem.Tag = " Complementary";
             this.反色ToolStripMenuItem.Text = "反色";
             // 
             // 锐化ToolStripMenuItem
             // 
             this.锐化ToolStripMenuItem.Name = "锐化ToolStripMenuItem";
-            this.锐化ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.锐化ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.锐化ToolStripMenuItem.Tag = "Sharpen";
             this.锐化ToolStripMenuItem.Text = "锐化";
             // 
             // 频谱ToolStripMenuItem
             // 
             this.频谱ToolStripMenuItem.Name = "频谱ToolStripMenuItem";
-            this.频谱ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.频谱ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.频谱ToolStripMenuItem.Tag = "Frequency";
             this.频谱ToolStripMenuItem.Text = "Fourier变换";
             // 
             // 高斯模糊ToolStripMenuItem
             // 
             this.高斯模糊ToolStripMenuItem.Name = "高斯模糊ToolStripMenuItem";
-            this.高斯模糊ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.高斯模糊ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.高斯模糊ToolStripMenuItem.Tag = "GaussBlur";
             this.高斯模糊ToolStripMenuItem.Text = "高斯平滑";
             // 
             // 中值滤波ToolStripMenuItem
             // 
             this.中值滤波ToolStripMenuItem.Name = "中值滤波ToolStripMenuItem";
-            this.中值滤波ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.中值滤波ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.中值滤波ToolStripMenuItem.Tag = "MedianFilter";
             this.中值滤波ToolStripMenuItem.Text = "中值滤波";
             // 
             // 边缘检测ToolStripMenuItem
             // 
             this.边缘检测ToolStripMenuItem.Name = "边缘检测ToolStripMenuItem";
-            this.边缘检测ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.边缘检测ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.边缘检测ToolStripMenuItem.Tag = "Robert";
             this.边缘检测ToolStripMenuItem.Text = "边缘检测R";
             // 
             // 边缘检测SToolStripMenuItem
             // 
             this.边缘检测SToolStripMenuItem.Name = "边缘检测SToolStripMenuItem";
-            this.边缘检测SToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.边缘检测SToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.边缘检测SToolStripMenuItem.Tag = "Smoothed";
             this.边缘检测SToolStripMenuItem.Text = "边缘检测S";
             // 
             // 椒盐噪声ToolStripMenuItem
             // 
             this.椒盐噪声ToolStripMenuItem.Name = "椒盐噪声ToolStripMenuItem";
-            this.椒盐噪声ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.椒盐噪声ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.椒盐噪声ToolStripMenuItem.Tag = "Salt";
             this.椒盐噪声ToolStripMenuItem.Text = "椒盐噪声";
             // 
             // 高斯噪声ToolStripMenuItem
             // 
             this.高斯噪声ToolStripMenuItem.Name = "高斯噪声ToolStripMenuItem";
-            this.高斯噪声ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.高斯噪声ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.高斯噪声ToolStripMenuItem.Tag = "GaussNoise";
             this.高斯噪声ToolStripMenuItem.Text = "高斯噪声";
             // 
             // 极坐标ToolStripMenuItem
             // 
             this.极坐标ToolStripMenuItem.Name = "极坐标ToolStripMenuItem";
-            this.极坐标ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.极坐标ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.极坐标ToolStripMenuItem.Tag = "Polar";
             this.极坐标ToolStripMenuItem.Text = "极坐标变换";
             // 
             // 面部识别ToolStripMenuItem
             // 
             this.面部识别ToolStripMenuItem.Name = "面部识别ToolStripMenuItem";
-            this.面部识别ToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.面部识别ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.面部识别ToolStripMenuItem.Tag = "FaceRecognition";
             this.面部识别ToolStripMenuItem.Text = "面部识别";
             // 
             // tsmI_Save
             // 
             this.tsmI_Save.Name = "tsmI_Save";
-            this.tsmI_Save.Size = new System.Drawing.Size(141, 22);
+            this.tsmI_Save.Size = new System.Drawing.Size(180, 22);
             this.tsmI_Save.Text = "保存";
             this.tsmI_Save.Click += new System.EventHandler(this.tsmI_Save_Click);
             // 

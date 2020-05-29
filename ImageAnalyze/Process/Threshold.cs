@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static ImageAnalyze.ImageProcess;
-
+using MaterialSkin;
+using MaterialSkin.Controls;
 namespace ImageAnalyze.Process
 {
-    public partial class Threshold : Form
+    public partial class Threshold : MaterialForm
     {
         private MainForm f;
         public int Hold
@@ -41,6 +42,9 @@ namespace ImageAnalyze.Process
 
         private void SetScrollStyle()
         {
+            tB_Threshold.BackColor = ((int)Primary.BlueGrey800).ToColor();
+            label1.BackColor = ((int)Primary.BlueGrey800).ToColor();
+            label1.ForeColor= ((int)TextShade.WHITE).ToColor();
             switch (Config.Model)
             {
                 case FunctionType.Lighten:
@@ -93,13 +97,13 @@ namespace ImageAnalyze.Process
             switch (Config.Model)
             {
                 default:
-                    label1.Text = $"阈值:\r\n{Hold.ToString()}";
+                    label1.Text = $"{Hold.ToString()}";
                     break;
                 case FunctionType.Binarization:
-                    label1.Text = $"M:\r\n{Hold.ToString()}";
+                    label1.Text = $"{Hold.ToString()}";
                     break;
                 case FunctionType.Sharpen:
-                    label1.Text = $"锐化程度:\r\n{(Hold / 25.5f).ToString("0.00%")}";
+                    label1.Text = $"{(Hold / 25.5f).ToString("0.00%")}";
                     break;
             }
         }

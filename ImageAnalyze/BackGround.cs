@@ -13,7 +13,7 @@ using Emgu.CV.Structure;
 using static ImageAnalyze.ImageProcess;
 namespace ImageAnalyze
 {
-    public partial class CutBackground : Form
+    public partial class CutBackground :Form
     {
         private Color tr_color = Color.Transparent;
         private bool b_start = false;
@@ -148,32 +148,11 @@ namespace ImageAnalyze
             Setting();
         }
 
-        /// <summary>
-        /// 设置右键菜单单选
-        /// </summary>
-        /// <param name="cms">参数-右键可选项类</param>
-        public void IsCheckedControl(ToolStripMenuItem cms)
-        {
-            foreach (ToolStripMenuItem item in this.contextMenuStrip1.Items)
-            {
-                if (cms.Name == "tsmI_Save")
-                    return;
-                //不是当前项的取消选择
-                if (item.Name == cms.Name)
-                {
-                    Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), cms.Tag.ToString());
-                    item.Checked = true; //设选中状态为true
-                }
-                else
-                {
-                    item.Checked = false; //设选中状态为false
-                }
-            }
-        }
 
+        Config config = new Config();
         private void contextMenu_Click(object sender, EventArgs e)
         {
-            IsCheckedControl((ToolStripMenuItem)sender);
+            config.IsCheckedControl((ToolStripMenuItem)sender, contextMenuStrip1);
             SetBackgroundImageTransparent();
         }
 
@@ -196,6 +175,11 @@ namespace ImageAnalyze
         {
             if (f.WindowState == FormWindowState.Minimized)
                 f.WindowState = FormWindowState.Normal;
+        }
+
+        private void 亮度ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

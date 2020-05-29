@@ -606,31 +606,36 @@ namespace ImageAnalyze
         public static Bitmap Recognite_Face(Bitmap bitmap, string Classifier = "haarcascade_frontalface_alt.xml")
         {
             //如果支持用显卡,则用显卡运算
-            CvInvoke.UseOpenCL = CvInvoke.HaveOpenCLCompatibleGpuDevice;
+                CvInvoke.UseOpenCL = CvInvoke.HaveOpenCLCompatibleGpuDevice;
 
-            //构建级联分类器,利用已经训练好的数据,识别人脸
-            //var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
-            var face = new CascadeClassifier(Classifier);
+                //构建级联分类器,利用已经训练好的数据,识别人脸
+                //var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
+                var face = new CascadeClassifier("Classifier/" + Classifier);
 
-            // var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
+                // var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
 
-            //加载要识别的图片
-            //var img = new Image<Bgr, byte>("0.png");
-            //var img2 = new Image<Gray, byte>(img.ToBitmap());
-            Image<Bgr, byte> img = new Image<Bgr, byte>(bitmap);
-            var Grayimg = new Image<Gray, byte>(bitmap);
-            //把图片从彩色转灰度
-            CvInvoke.CvtColor(img, Grayimg, ColorConversion.Bgr2Gray);
+                //加载要识别的图片
+                //var img = new Image<Bgr, byte>("0.png");
+                //var img2 = new Image<Gray, byte>(img.ToBitmap());
+                Image<Bgr, byte> img = new Image<Bgr, byte>(bitmap);
+                var Grayimg = new Image<Gray, byte>(bitmap);
+                //把图片从彩色转灰度
+                CvInvoke.CvtColor(img, Grayimg, ColorConversion.Bgr2Gray);
 
-            //亮度增强
-            CvInvoke.EqualizeHist(Grayimg, Grayimg);
-            //在这一步就已经识别出来了,返回的是人脸所在的位置和大小
-            var facesDetected = face.DetectMultiScale(Grayimg, 1.1, 10, new Size(50, 50));
+                //亮度增强
+                CvInvoke.EqualizeHist(Grayimg, Grayimg);
+                //在这一步就已经识别出来了,返回的是人脸所在的位置和大小
+                var facesDetected = face.DetectMultiScale(Grayimg, 1.1, 10, new Size(50, 50));
 
-            //循环把人脸部分切出来并保存
-            // CutandSave(facesDetected);
-            return ShowCut(facesDetected, img);
-
+                //循环把人脸部分切出来并保存
+                // CutandSave(facesDetected);
+                var resultImg = ShowCut(facesDetected, img);
+                Grayimg.Dispose();
+                img.Dispose();
+                face.Dispose();
+                GC.Collect();
+                return resultImg;
+            
 
             ////释放资源退出
             //img.Dispose();

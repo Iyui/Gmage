@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using MaterialSkin;
+using MaterialSkin.Controls;
 namespace ImageAnalyze
 {
-    public partial class Probability : Form
+    public partial class Probability : MaterialForm
     {
         public double Pb
         {
@@ -30,11 +31,13 @@ namespace ImageAnalyze
             set; get;
         }
         private MainForm f;
+        private readonly MaterialSkinManager materialSkinManager;
         public Probability()
         {
             InitializeComponent();
-          
-
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
         }
 
         public Probability(MainForm f, Point p)
@@ -70,6 +73,20 @@ namespace ImageAnalyze
         private void btn_MedianFilter_Click(object sender, EventArgs e)
         {
             f.SetImageCallback(ImageProcess.MedianFilter(ResultBitmap));
+        }
+
+        private void Probability_Load(object sender, EventArgs e)
+        {
+            tB_Pepper.BackColor = ((int)Primary.BlueGrey800).ToColor();
+            label1.BackColor = ((int)Primary.BlueGrey800).ToColor();
+            label1.ForeColor = ((int)TextShade.WHITE).ToColor();
+
+            label3.ForeColor = ((int)TextShade.BLACK).ToColor();
+            label3.BackColor = Color.FromArgb(255, 255, 255, 255);
+
+            label2.ForeColor = ((int)TextShade.BLACK).ToColor();
+            label2.BackColor = Color.FromArgb(255, 255, 255, 255);
+            tB_Salt.BackColor = Color.FromArgb(255, 255, 255, 255);
         }
     }
 }
