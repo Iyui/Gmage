@@ -22,14 +22,14 @@ namespace Gmage
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var mf = new MainForm();
-            ReadExpansionDll(mf);
+            ReadPlug_in(mf);
             Application.Run(mf);
         }
 
-        internal static void ReadExpansionDll(MainForm mf)
+        internal static void ReadPlug_in(MainForm mf)
         {
             //搜索某路径下所有dll
-            foreach (string fn in Directory.GetFiles(Application.StartupPath+"\\expansion\\", "*.dll"))
+            foreach (string fn in Directory.GetFiles(Application.StartupPath+"\\plug_in\\", "*.dll"))
             {
                 //获取程序集
                 Assembly ass = Assembly.LoadFrom(fn);
@@ -39,29 +39,34 @@ namespace Gmage
                     //判断是否是实现了插件接口
                     if (t.GetInterface("IGmage",true) !=null)
                     {
-                        Set_ToolStripMenuItem(mf);
                         //创建实例
-                        object o = ass.CreateInstance(t.ToString());
-                        //获取方法
-                        MethodInfo mi = t.GetMethod("Mage");
+                        object o = ass.CreateInstance(t.ToString());   
                         //执行方法
-                        mi.Invoke(o, new object[] { new Bitmap(1, 1) });
+                        Set_MenuItem(mf,o,t);
                     }
                 }
             }
         }
 
-        internal static void Set_ToolStripMenuItem(MainForm f)
+        /// <summary>
+        /// 设置菜单栏按键
+        /// </summary>
+        /// <param name="tsmi">按键实例</param>
+        /// <param name="mf">窗体</param>
+        /// <param name="o">插件实例</param>
+        /// <param name="t"></param>
+        internal static void Set_MenuItem(MainForm mf, object o, Type t)
         {
-            string IName = "接口测试";
-            ToolStripMenuItem items = new ToolStripMenuItem()
+            //获取方法
+            MethodInfo filter = t.GetMethod("GMage_Filter");
+            MethodInfo item = t.GetMethod("Set_ToolStripMenuItem");
+            var tsmi = (ToolStripMenuItem)item.Invoke(o, null);
+            tsmi.Click += (click_sender, click_e) =>
             {
-                Name = "tsmi_" + IName,
-                Text = IName,
-                Tag = "tp_" + IName,
+                t.GetProperty("InitBitmap").SetValue(o, mf.ResultImage);
+                mf.ResultImage = (Bitmap)filter.Invoke(o, null);      
             };
-            //items.Click += tsmi_Index_Click;
-            f.滤镜ToolStripMenuItem.DropDownItems.Add(items);
+            mf.tsmi_Filter.DropDownItems.Add(tsmi);
         }
     }
 }

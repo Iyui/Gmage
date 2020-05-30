@@ -48,7 +48,7 @@ namespace ImageAnalyze
                 Tag = "tp_" + IName,
             };
             //items.Click += tsmi_Index_Click;
-            f.滤镜ToolStripMenuItem.DropDownItems.Add(items);
+            f.tsmi_Filter.DropDownItems.Add(items);
         }
     }
 }
