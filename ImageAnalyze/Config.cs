@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 namespace Gmage
 {
     public class Config
@@ -167,5 +168,79 @@ namespace Gmage
         /// 水平镜像
         /// </summary>
         RotateNoneFlipY,
+    }
+
+    public enum MessageType
+    {
+        ImageReading,
+        Message,
+        RunTime,
+        FolderPath,
+        FilePath,
+        Error,
+        DeadlyError,
+        Progress,
+        ImageInfo,
+        PrgressInfo,
+    }
+
+    public class MessageEventArgs : EventArgs
+    {
+        public MessageType messageType;
+        public object oMessage;
+        public String Message; //传递字符串信息
+        public float Progress;
+        public Image imageinfo;
+        public string PrgressInfo;
+        public string[] FileNames;
+        public MessageEventArgs(object obj, MessageType type)
+        {
+            this.oMessage = obj;
+            this.messageType = type;
+        }
+
+        public MessageEventArgs(string message, MessageType type = MessageType.Message)
+        {
+            PrgressInfo = message;
+            this.Message = message;
+            this.messageType = type;
+        }
+
+        public MessageEventArgs(float progress, MessageType type = MessageType.Progress)
+        {
+            this.Progress = progress;
+            this.messageType = type;
+        }
+
+        public MessageEventArgs(Image img, MessageType type = MessageType.ImageInfo)
+        {
+            this.imageinfo = img;
+            this.messageType = type;
+        }
+
+        public MessageEventArgs(string[] fileNames, MessageType type = MessageType.ImageReading)
+        {
+            this.FileNames = fileNames;
+            this.messageType = type;
+        }
+
+
+    }
+
+    public delegate void MessageEventHandler(MessageEventArgs e);
+
+    public class MessageClass
+    {
+        public event MessageEventHandler OnMessageSend = null;
+
+        public void MessageSend(MessageEventArgs e)
+        {
+            OnMessageSend?.Invoke(e);
+        }
+    }
+
+    public static class RollBack
+    {
+        public static MessageClass messageClass = new MessageClass();
     }
 }

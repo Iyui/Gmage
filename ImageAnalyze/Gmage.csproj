@@ -85,7 +85,12 @@
     <Compile Include="Controls\ImageTab.Designer.cs">
       <DependentUpon>ImageTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="IGmageClass.cs" />
+    <Compile Include="Controls\Progress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Progress.Designer.cs">
+      <DependentUpon>Progress.cs</DependentUpon>
+    </Compile>
     <Compile Include="Process\EdgeDetector.cs" />
     <Compile Include="Process\FFT.cs" />
     <Compile Include="Filter\Filter.cs" />
@@ -125,6 +130,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\ImageTab.resx">
       <DependentUpon>ImageTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Progress.resx">
+      <DependentUpon>Progress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -166,7 +174,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="License-LGPL.txt" />
     <None Include="Resources\Gmage1.png" />
     <None Include="Resources\未标题-3.png" />
     <None Include="Resources\Gmage.png" />

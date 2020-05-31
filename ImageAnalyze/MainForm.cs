@@ -14,12 +14,78 @@ using MaterialSkin;
 using MaterialSkin.Animations;
 using MaterialSkin.Controls;
 using static Gmage.ImageProcess;
+using System.Threading;
+
 namespace Gmage
 {
     public partial class MainForm : MaterialForm
     {
         #region 变量
-
+        /// <summary>
+        /// 消息处理
+        /// </summary>
+        /// <param name="e"></param>
+        private void MessageManage(MessageEventArgs e)
+        {
+            switch (e.messageType)
+            {
+                case MessageType.ImageReading:
+                    mPB_Bar.Visible = true;
+                    Thread thread = new Thread(new ParameterizedThreadStart(SetImageShow));
+                    thread.Start((object)e.FileNames); 
+                    break;
+                case MessageType.RunTime:
+                    break;
+                case MessageType.Message:
+                    SetImage_Control(e.Message);
+                    break;
+                case MessageType.Error:
+                    break;
+                case MessageType.DeadlyError:
+                    MessageBox.Show(e.Message, "致命错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case MessageType.Progress:
+                    if((int)e.Progress<100)
+                    {
+                        mPB_Bar.Value = (int)e.Progress;
+                       
+                    }else
+                        mPB_Bar.Visible = false;
+                    break;
+                case MessageType.ImageInfo:
+                    
+                    break;
+                case MessageType.PrgressInfo:
+                    break;
+            }
+        }
+        private void SubthreadMessageReceive(MessageEventArgs e)
+        {
+            try
+            {
+                if (this.IsHandleCreated && !this.IsDisposed)
+                {
+                    MessageEventHandler handler = new MessageEventHandler(MessageManage);
+                    this.Invoke(handler, new object[] { e });
+                }
+            }
+            catch (Exception)
+            {
+                //throw new Exception("", ex);
+            }
+        }
+        private void RollBackMessage(string fileName)
+        {
+            RollBack.messageClass.MessageSend(new MessageEventArgs(fileName));
+        }
+        private void RollBackMessage(string[] fileNames)
+        {
+            RollBack.messageClass.MessageSend(new MessageEventArgs(fileNames));
+        }
+        private void RollBackMessage(float pro, MessageType mt = MessageType.Progress)
+        {
+            RollBack.messageClass.MessageSend(new MessageEventArgs(pro, mt));
+        }
         public Bitmap ResultImage
         {
             set => col.Image = value; get => (Bitmap)col.Image;
@@ -45,8 +111,8 @@ namespace Gmage
                 new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             menuStrip1.BackColor = ((int)Primary.BlueGrey900).ToColor();
+            RollBack.messageClass.OnMessageSend += new MessageEventHandler(SubthreadMessageReceive);
         }
-
 
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
@@ -68,14 +134,22 @@ namespace Gmage
             };
             if (oi.ShowDialog() == DialogResult.OK)
             {
-                foreach (var filename in oi.FileNames)
-                {
-                    SetImageShow(filename);
-                }
-                CheckonIndex();
+                RollBackMessage(oi.FileNames);
+                
             }
         }
-
+        private void SetImageShow(object fileNames)
+        {
+            var files = (string[])fileNames;
+            var count = files.Count();
+            float c = 0;
+            foreach (var filename in files)
+            {
+                RollBackMessage(++c/ count * 100f);
+                SetImageShow(filename);
+            }
+            CheckonIndex();
+        }
         private void SetImageShow(string filename)
         {
             var Format = new string[] { ".jpg", ".bmp", ".jpeg", ".png" };
@@ -83,29 +157,34 @@ namespace Gmage
             {
                 try
                 {
-                    if (mtS_Selected.BaseTabControl != mTC_ImageTab)
-                    {
-                        mtS_Selected.BaseTabControl = mTC_ImageTab;
-                        mTC_ImageTab.Visible = true;
-                        mRB_Select.Visible = false;
-                        panel1.Visible = false;
-                    }
-                    initBitmap = (Bitmap)Image.FromFile(filename);
-                    SetTab(Path.GetFileNameWithoutExtension(filename));
-                    if (!HideTab())
-                    {
-                        materialContextMenuStrip1.Enabled = true;
-                        tsm_CloseTabPage.Enabled = true;
-                    }
-                    else
-                    {
-                        ResetBitmap();
-                    }
+                    RollBackMessage(filename);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("不正确的格式", "错误的预期", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void SetImage_Control(string filename)
+        {
+            if (mtS_Selected.BaseTabControl != mTC_ImageTab)
+            {
+                mtS_Selected.BaseTabControl = mTC_ImageTab;
+                mTC_ImageTab.Visible = true;
+                mRB_Select.Visible = false;
+                panel1.Visible = false;
+            }
+            initBitmap = (Bitmap)Image.FromFile(filename);
+            SetTab(Path.GetFileNameWithoutExtension(filename));
+            if (!HideTab())
+            {
+                materialContextMenuStrip1.Enabled = true;
+                tsm_CloseTabPage.Enabled = true;
+            }
+            else
+            {
+                ResetBitmap();
             }
         }
 
@@ -278,11 +357,7 @@ namespace Gmage
         {
             if (Program.MyArgs.Length > 0)
             {
-                foreach (var filename in Program.MyArgs)
-                {
-                    SetImageShow(filename);
-                }
-                CheckonIndex();
+                RollBackMessage(Program.MyArgs);
             }
             Classifier_Load();
         }
@@ -523,15 +598,7 @@ namespace Gmage
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
-                for (int i = 0; i < file.Length; i++)
-                {
-                    if (File.Exists(file[i]))
-                    {
-                        // 设置显示的图片
-                        SetImageShow(file[i]);
-                    }
-                }
-                CheckonIndex();
+                RollBackMessage(file);
             }
         }
     }
