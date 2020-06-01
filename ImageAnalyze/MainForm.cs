@@ -53,7 +53,6 @@ namespace Gmage
                         mPB_Bar.Visible = false;
                     break;
                 case MessageType.ImageInfo:
-                    
                     break;
                 case MessageType.PrgressInfo:
                     break;
@@ -172,7 +171,7 @@ namespace Gmage
             {
                 mtS_Selected.BaseTabControl = mTC_ImageTab;
                 mTC_ImageTab.Visible = true;
-                mRB_Select.Visible = false;
+                
                 panel1.Visible = false;
             }
             initBitmap = (Bitmap)Image.FromFile(filename);
@@ -209,6 +208,7 @@ namespace Gmage
             htTabImageName.Add(t.Name, it.Name);
             mTC_ImageTab.SelectedTab = mTC_ImageTab.TabPages[t.Name];
             it.Dock = DockStyle.Fill;
+            it.SizeMode = PictureBoxSizeMode.CenterImage;
             it.Image = initBitmap.Clone() as Image;
 
         }
@@ -333,10 +333,8 @@ namespace Gmage
 
         private void button2_Click(object sender, EventArgs e)
         {
-            CutBackground cb = new CutBackground(this);
-            cb.Show();
-
-            this.WindowState = FormWindowState.Minimized;
+            BatchForm bf = new BatchForm();
+            bf.Show();
         }
 
         private void btn_FaceRecognition_Click(object sender, EventArgs e)

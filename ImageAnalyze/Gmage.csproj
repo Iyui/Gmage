@@ -78,6 +78,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BatchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BatchForm.Designer.cs">
+      <DependentUpon>BatchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BatchModel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BatchModel.Designer.cs">
+      <DependentUpon>BatchModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="Controls\ImageTab.cs">
       <SubType>UserControl</SubType>
@@ -90,6 +102,12 @@
     </Compile>
     <Compile Include="Controls\Progress.Designer.cs">
       <DependentUpon>Progress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadForm.Designer.cs">
+      <DependentUpon>LoadForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Process\EdgeDetector.cs" />
     <Compile Include="Process\FFT.cs" />
@@ -128,11 +146,20 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BatchForm.resx">
+      <DependentUpon>BatchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BatchModel.resx">
+      <DependentUpon>BatchModel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageTab.resx">
       <DependentUpon>ImageTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Progress.resx">
       <DependentUpon>Progress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadForm.resx">
+      <DependentUpon>LoadForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

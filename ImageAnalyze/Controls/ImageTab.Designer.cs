@@ -38,7 +38,7 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.Controls.Add(this.pB_Init);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -52,6 +52,7 @@
             this.pB_Init.Location = new System.Drawing.Point(0, 0);
             this.pB_Init.Name = "pB_Init";
             this.pB_Init.Size = new System.Drawing.Size(150, 150);
+            this.pB_Init.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pB_Init.TabIndex = 3;
             this.pB_Init.TabStop = false;
             // 

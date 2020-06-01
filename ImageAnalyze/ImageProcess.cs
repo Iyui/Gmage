@@ -13,6 +13,76 @@ namespace Gmage
 {
     public class ImageProcess
     {
+        public static Bitmap SwitchFunc(Bitmap b)
+        {
+            switch (Config.Model)
+            {
+                default:
+                    break;
+                case FunctionType.Gray:
+                    b = ImageToGreyP(b);
+                    break;
+                case FunctionType.Binarization:
+                    b = BinarizationP(b);
+                    break;
+                case FunctionType.Complementary:
+                    b = ComplementaryP(b);
+                    break;
+                case FunctionType.Frequency:
+                    b = FFT(b);
+                    break;
+                case FunctionType.GaussBlur:
+                    b = GaussBlurP(b);
+                    break;
+                case FunctionType.Robert:
+                    b = EdgeDetector_Robert(b);
+                    break;
+                case FunctionType.Smoothed:
+                    b = EdgeDetector_Smoothed(b);
+                    break;
+                case FunctionType.Salt:
+                    b = SaltNoise(b);
+                    break;
+                case FunctionType.GaussNoise:
+                    b = GaussNoise(b);
+                    break;
+                case FunctionType.Polar:
+                    b = Polar(b);
+                    break;
+                case FunctionType.FaceRecognition:
+                    b = Recognite_Face(b);
+                    break;
+                case FunctionType.Sharpen:
+                    b = Sharpen(b);
+                    break;
+                case FunctionType.Lighten:
+                    b = Lighten(b);
+                    break;
+                case FunctionType.Contrast:
+                    b = Contrast(b);
+                    break;
+                case FunctionType.MedianFilter:
+                    b = MedianFilter(b);
+                    break;
+                case FunctionType.Clockwise180:
+                    b = Clockwise180(b);
+                    break;
+                case FunctionType.Clockwise270:
+                    b = Clockwise270(b);
+                    break;
+                case FunctionType.RotateNoneFlipX:
+                    b = RotateNoneFlipX(b);
+                    break;
+                case FunctionType.RotateNoneFlipY:
+                    b = RotateNoneFlipY(b);
+                    break;
+                case FunctionType.Clockwise90:
+                    b = Clockwise90(b);
+                    break;
+            }
+            return b;
+        }
+
         #region 翻转和旋转
         /// <summary>
         /// 顺时针90度

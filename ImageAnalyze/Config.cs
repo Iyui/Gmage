@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.IO;
 namespace Gmage
 {
     public class Config
@@ -74,6 +75,18 @@ namespace Gmage
             }
         }
 
+        public bool FloderExist(string path)
+        {
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                return true;
+            }
+            catch { return false; }
+        }
     }
 
 
@@ -81,7 +94,7 @@ namespace Gmage
     public enum FunctionType
     {
         /// <summary>
-        /// 灰度化
+        /// 空
         /// </summary>
         Empty,
         /// <summary>
@@ -181,6 +194,7 @@ namespace Gmage
         DeadlyError,
         Progress,
         ImageInfo,
+        Loading,
         PrgressInfo,
     }
 
@@ -242,5 +256,16 @@ namespace Gmage
     public static class RollBack
     {
         public static MessageClass messageClass = new MessageClass();
+
+        public static void RollBackMessage(float pro, MessageType mt = MessageType.Progress)
+        {
+            messageClass.MessageSend(new MessageEventArgs(pro, mt));
+        }
+
+        public static void RollBackMessage(string message, MessageType mt = MessageType.Message)
+        {
+            messageClass.MessageSend(new MessageEventArgs(message,mt));
+        }
+
     }
 }

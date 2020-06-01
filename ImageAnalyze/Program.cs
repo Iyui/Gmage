@@ -24,12 +24,17 @@ namespace Gmage
             var mf = new MainForm();
             ReadPlug_in(mf);
             Application.Run(mf);
+            //Application.Run(new BatchForm());
         }
 
         internal static void ReadPlug_in(MainForm mf)
         {
+            Config cf = new Config();
+            var path = Application.StartupPath + "\\plug_in\\";
+            if (!cf.FloderExist(path))
+                return;
             //搜索某路径下所有dll
-            foreach (string fn in Directory.GetFiles(Application.StartupPath+"\\plug_in\\", "*.dll"))
+            foreach (string fn in Directory.GetFiles(path, "*.dll"))
             {
                 //获取程序集
                 Assembly ass = Assembly.LoadFrom(fn);
