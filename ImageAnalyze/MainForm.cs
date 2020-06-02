@@ -164,8 +164,9 @@ namespace Gmage
 
                 panel1.Visible = false;
             }
-            initBitmap = (Bitmap)Image.FromFile(filename);
-            ResultImage = initBitmap.Clone() as Bitmap;
+            var initImage = (Bitmap)Image.FromFile(filename);
+            ResultImage = initImage.Clone() as Bitmap;
+            initBitmap = initImage.Clone() as Bitmap; ;
             SetTab(Path.GetFileNameWithoutExtension(filename));
             if (!HideTab())
             {
@@ -480,7 +481,7 @@ namespace Gmage
         {
             ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
             {
-               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Salt,tsmi_Polar,tsmi_Robert,tsmi_Sharpen
+               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen
             };
             foreach (var tsmi in toolStripMenuItems)
             {
