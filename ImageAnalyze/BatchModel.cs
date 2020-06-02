@@ -16,8 +16,7 @@ namespace Gmage
         private readonly MaterialSkinManager materialSkinManager;
         Dictionary<string, FunctionType> Func = new Dictionary<string, FunctionType>();
 
-        public string ModelName
-        { set; get; }
+        public string ModelName { set; get; }
         public BatchModel()
         {
             InitializeComponent();

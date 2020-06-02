@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.mFB_Index = new MaterialSkin.Controls.MaterialFlatButton();
-            this.mFB_RemoveImg = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Image = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_SelectTask = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_ClearImg = new MaterialSkin.Controls.MaterialFlatButton();
@@ -48,12 +48,15 @@
             this.mFB_OpenFolder = new MaterialSkin.Controls.MaterialFlatButton();
             this.gB_View2 = new System.Windows.Forms.GroupBox();
             this.pB_View2 = new System.Windows.Forms.PictureBox();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.mFB_RemoveImg = new MaterialSkin.Controls.MaterialFlatButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pB_View)).BeginInit();
             this.gB_Task.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGV_Paths)).BeginInit();
             this.gB_View2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pB_View2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // mFB_Index
@@ -65,7 +68,7 @@
             this.mFB_Index.Font = new System.Drawing.Font("宋体", 15F);
             this.mFB_Index.ForeColor = System.Drawing.Color.White;
             this.mFB_Index.Icon = null;
-            this.mFB_Index.Location = new System.Drawing.Point(13, 72);
+            this.mFB_Index.Location = new System.Drawing.Point(10, 70);
             this.mFB_Index.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.mFB_Index.MouseState = MaterialSkin.MouseState.HOVER;
             this.mFB_Index.Name = "mFB_Index";
@@ -76,25 +79,6 @@
             this.mFB_Index.UseVisualStyleBackColor = false;
             this.mFB_Index.Click += new System.EventHandler(this.mFB_Index_Click);
             // 
-            // mFB_RemoveImg
-            // 
-            this.mFB_RemoveImg.AutoSize = true;
-            this.mFB_RemoveImg.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.mFB_RemoveImg.BackColor = System.Drawing.Color.Transparent;
-            this.mFB_RemoveImg.Depth = 0;
-            this.mFB_RemoveImg.Font = new System.Drawing.Font("宋体", 15F);
-            this.mFB_RemoveImg.ForeColor = System.Drawing.Color.White;
-            this.mFB_RemoveImg.Icon = null;
-            this.mFB_RemoveImg.Location = new System.Drawing.Point(13, 168);
-            this.mFB_RemoveImg.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.mFB_RemoveImg.MouseState = MaterialSkin.MouseState.HOVER;
-            this.mFB_RemoveImg.Name = "mFB_RemoveImg";
-            this.mFB_RemoveImg.Primary = false;
-            this.mFB_RemoveImg.Size = new System.Drawing.Size(81, 36);
-            this.mFB_RemoveImg.TabIndex = 4;
-            this.mFB_RemoveImg.Text = "移除图片";
-            this.mFB_RemoveImg.UseVisualStyleBackColor = false;
-            // 
             // mFB_Image
             // 
             this.mFB_Image.AutoSize = true;
@@ -104,7 +88,7 @@
             this.mFB_Image.Font = new System.Drawing.Font("宋体", 15F);
             this.mFB_Image.ForeColor = System.Drawing.Color.White;
             this.mFB_Image.Icon = null;
-            this.mFB_Image.Location = new System.Drawing.Point(13, 120);
+            this.mFB_Image.Location = new System.Drawing.Point(10, 120);
             this.mFB_Image.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.mFB_Image.MouseState = MaterialSkin.MouseState.HOVER;
             this.mFB_Image.Name = "mFB_Image";
@@ -124,7 +108,7 @@
             this.mFB_SelectTask.Font = new System.Drawing.Font("宋体", 15F);
             this.mFB_SelectTask.ForeColor = System.Drawing.Color.White;
             this.mFB_SelectTask.Icon = null;
-            this.mFB_SelectTask.Location = new System.Drawing.Point(13, 264);
+            this.mFB_SelectTask.Location = new System.Drawing.Point(10, 270);
             this.mFB_SelectTask.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.mFB_SelectTask.MouseState = MaterialSkin.MouseState.HOVER;
             this.mFB_SelectTask.Name = "mFB_SelectTask";
@@ -144,7 +128,7 @@
             this.mFB_ClearImg.Font = new System.Drawing.Font("宋体", 15F);
             this.mFB_ClearImg.ForeColor = System.Drawing.Color.White;
             this.mFB_ClearImg.Icon = null;
-            this.mFB_ClearImg.Location = new System.Drawing.Point(13, 216);
+            this.mFB_ClearImg.Location = new System.Drawing.Point(10, 220);
             this.mFB_ClearImg.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.mFB_ClearImg.MouseState = MaterialSkin.MouseState.HOVER;
             this.mFB_ClearImg.Name = "mFB_ClearImg";
@@ -164,7 +148,7 @@
             this.mFB_StartTask.Font = new System.Drawing.Font("宋体", 15F);
             this.mFB_StartTask.ForeColor = System.Drawing.Color.White;
             this.mFB_StartTask.Icon = null;
-            this.mFB_StartTask.Location = new System.Drawing.Point(13, 312);
+            this.mFB_StartTask.Location = new System.Drawing.Point(10, 320);
             this.mFB_StartTask.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.mFB_StartTask.MouseState = MaterialSkin.MouseState.HOVER;
             this.mFB_StartTask.Name = "mFB_StartTask";
@@ -180,7 +164,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
             this.groupBox1.Controls.Add(this.pB_View);
-            this.groupBox1.Location = new System.Drawing.Point(949, 299);
+            this.groupBox1.Location = new System.Drawing.Point(950, 300);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(173, 235);
             this.groupBox1.TabIndex = 13;
@@ -205,7 +189,7 @@
             this.gB_Task.Controls.Add(this.mL_Remain);
             this.gB_Task.Controls.Add(this.mL_Count);
             this.gB_Task.Controls.Add(this.mL_Task);
-            this.gB_Task.Location = new System.Drawing.Point(949, 72);
+            this.gB_Task.Location = new System.Drawing.Point(950, 70);
             this.gB_Task.Name = "gB_Task";
             this.gB_Task.Size = new System.Drawing.Size(173, 221);
             this.gB_Task.TabIndex = 14;
@@ -271,19 +255,17 @@
             // mFB_Output
             // 
             this.mFB_Output.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.mFB_Output.AutoSize = true;
-            this.mFB_Output.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.mFB_Output.BackColor = System.Drawing.Color.Transparent;
             this.mFB_Output.Depth = 0;
             this.mFB_Output.Font = new System.Drawing.Font("宋体", 15F);
             this.mFB_Output.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.mFB_Output.Icon = null;
-            this.mFB_Output.Location = new System.Drawing.Point(13, 783);
+            this.mFB_Output.Location = new System.Drawing.Point(10, 783);
             this.mFB_Output.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.mFB_Output.MouseState = MaterialSkin.MouseState.HOVER;
             this.mFB_Output.Name = "mFB_Output";
             this.mFB_Output.Primary = false;
-            this.mFB_Output.Size = new System.Drawing.Size(78, 36);
+            this.mFB_Output.Size = new System.Drawing.Size(81, 36);
             this.mFB_Output.TabIndex = 15;
             this.mFB_Output.Text = "输出至...";
             this.mFB_Output.UseVisualStyleBackColor = false;
@@ -295,7 +277,7 @@
             this.mL_Output.Depth = 0;
             this.mL_Output.Font = new System.Drawing.Font("Roboto", 11F);
             this.mL_Output.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.mL_Output.Location = new System.Drawing.Point(104, 793);
+            this.mL_Output.Location = new System.Drawing.Point(98, 793);
             this.mL_Output.MouseState = MaterialSkin.MouseState.HOVER;
             this.mL_Output.Name = "mL_Output";
             this.mL_Output.Size = new System.Drawing.Size(610, 19);
@@ -304,6 +286,9 @@
             // dGV_Paths
             // 
             this.dGV_Paths.AllowUserToAddRows = false;
+            this.dGV_Paths.AllowUserToDeleteRows = false;
+            this.dGV_Paths.AllowUserToResizeColumns = false;
+            this.dGV_Paths.AllowUserToResizeRows = false;
             this.dGV_Paths.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -311,7 +296,7 @@
             this.dGV_Paths.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dGV_Paths.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGV_Paths.ColumnHeadersVisible = false;
-            this.dGV_Paths.Location = new System.Drawing.Point(104, 72);
+            this.dGV_Paths.Location = new System.Drawing.Point(100, 70);
             this.dGV_Paths.Name = "dGV_Paths";
             this.dGV_Paths.ReadOnly = true;
             this.dGV_Paths.RowHeadersVisible = false;
@@ -345,7 +330,7 @@
             this.mFB_OpenFolder.Font = new System.Drawing.Font("宋体", 15F);
             this.mFB_OpenFolder.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.mFB_OpenFolder.Icon = null;
-            this.mFB_OpenFolder.Location = new System.Drawing.Point(13, 735);
+            this.mFB_OpenFolder.Location = new System.Drawing.Point(10, 733);
             this.mFB_OpenFolder.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.mFB_OpenFolder.MouseState = MaterialSkin.MouseState.HOVER;
             this.mFB_OpenFolder.Name = "mFB_OpenFolder";
@@ -361,9 +346,9 @@
             this.gB_View2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gB_View2.BackColor = System.Drawing.Color.Transparent;
             this.gB_View2.Controls.Add(this.pB_View2);
-            this.gB_View2.Location = new System.Drawing.Point(949, 549);
+            this.gB_View2.Location = new System.Drawing.Point(950, 550);
             this.gB_View2.Name = "gB_View2";
-            this.gB_View2.Size = new System.Drawing.Size(173, 235);
+            this.gB_View2.Size = new System.Drawing.Size(173, 232);
             this.gB_View2.TabIndex = 21;
             this.gB_View2.TabStop = false;
             this.gB_View2.Text = "效果预览";
@@ -377,6 +362,25 @@
             this.pB_View2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pB_View2.TabIndex = 12;
             this.pB_View2.TabStop = false;
+            // 
+            // mFB_RemoveImg
+            // 
+            this.mFB_RemoveImg.BackColor = System.Drawing.Color.Transparent;
+            this.mFB_RemoveImg.Depth = 0;
+            this.mFB_RemoveImg.Enabled = false;
+            this.mFB_RemoveImg.Font = new System.Drawing.Font("宋体", 15F);
+            this.mFB_RemoveImg.ForeColor = System.Drawing.Color.White;
+            this.mFB_RemoveImg.Icon = null;
+            this.mFB_RemoveImg.Location = new System.Drawing.Point(10, 170);
+            this.mFB_RemoveImg.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_RemoveImg.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_RemoveImg.Name = "mFB_RemoveImg";
+            this.mFB_RemoveImg.Primary = false;
+            this.mFB_RemoveImg.Size = new System.Drawing.Size(81, 36);
+            this.mFB_RemoveImg.TabIndex = 4;
+            this.mFB_RemoveImg.Text = "移除/重选";
+            this.mFB_RemoveImg.UseVisualStyleBackColor = false;
+            this.mFB_RemoveImg.Click += new System.EventHandler(this.mFB_RemoveImg_Click);
             // 
             // BatchForm
             // 
@@ -407,6 +411,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dGV_Paths)).EndInit();
             this.gB_View2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pB_View2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -414,7 +419,6 @@
 
         #endregion
         private MaterialSkin.Controls.MaterialFlatButton mFB_Index;
-        private MaterialSkin.Controls.MaterialFlatButton mFB_RemoveImg;
         private MaterialSkin.Controls.MaterialFlatButton mFB_Image;
         private MaterialSkin.Controls.MaterialFlatButton mFB_SelectTask;
         private MaterialSkin.Controls.MaterialFlatButton mFB_ClearImg;
@@ -433,5 +437,7 @@
         private System.Windows.Forms.GroupBox gB_View2;
         private System.Windows.Forms.PictureBox pB_View2;
         private MaterialSkin.Controls.MaterialLabel mL_Error;
+        private System.Windows.Forms.BindingSource bindingSource1;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_RemoveImg;
     }
 }

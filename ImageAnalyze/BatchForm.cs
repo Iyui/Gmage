@@ -45,6 +45,7 @@ namespace Gmage
                     }
                     break;
                 case MessageType.ImageInfo:
+                    mL_Count.Text = "图片总计：" + ImageTouch.ImagePath.Count.ToString();
                     break;
                 case MessageType.PrgressInfo:
                     mL_Remain.Text = "转换剩余：" + e.Progress.ToString();
@@ -58,6 +59,10 @@ namespace Gmage
                     dGV_Paths.DataSource = (DataTable)e.oMessage;
                     mL_Count.Text = "图片总计：" + ImageTouch.ImagePath.Count.ToString();
                     dGV_Paths.Refresh();
+                    if (ImageTouch.ImagePath.Count > 0)
+                        mFB_RemoveImg.Enabled = true;
+                    else
+                        mFB_RemoveImg.Enabled = false;
                     break;
             }
         }
@@ -214,7 +219,10 @@ namespace Gmage
 
         private void dGV_Paths_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            GC.Collect();
+            if (dGV_Paths.CurrentRow.DefaultCellStyle.ForeColor != Color.Gray)
+            {
+                mFB_RemoveImg.Enabled = true;
+            }
             var path = dGV_Paths.SelectedCells[0].Value.ToString();
             Image image = new Bitmap(1, 1);
             try
@@ -230,7 +238,7 @@ namespace Gmage
                 pB_View.Image = image;
                 pB_View2.Image = SwitchFunc(image.Clone() as Bitmap);
             }
-
+            GC.Collect();
         }
 
         private void dGV_Paths_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -273,6 +281,31 @@ namespace Gmage
             dt.Columns.Add("路径");
             ImageTouch.Clear();
             RollBack.RollBackMessage(dt, MessageType.PathTable);
+        }
+
+        private void mFB_RemoveImg_Click(object sender, EventArgs e)
+        {
+            var presentItem = "";
+            int index = -1;
+            foreach (DataGridViewCell presentItems in dGV_Paths.SelectedCells)
+            {
+                presentItem = presentItems.Value.ToString();
+                index = presentItems.RowIndex;
+                if (dGV_Paths.Rows[index].DefaultCellStyle.ForeColor != Color.Gray)
+                {
+                    ImageTouch.ImagePath.Remove(presentItem);
+                    ImagePaths.Remove(presentItem);
+                    dGV_Paths.Rows[index].DefaultCellStyle.ForeColor = Color.Gray;
+                }
+                else
+                {
+                    ImageTouch.ImagePath.Add(presentItem);
+                    ImagePaths.Add(presentItem);
+                    dGV_Paths.Rows[index].DefaultCellStyle.ForeColor = Color.White;
+                }
+            }
+            RollBack.RollBackMessage(null, MessageType.ImageInfo);
+            GC.Collect();
         }
     }
 
