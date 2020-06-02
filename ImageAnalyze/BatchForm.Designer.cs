@@ -285,6 +285,7 @@
             // 
             // dGV_Paths
             // 
+            this.dGV_Paths.AllowDrop = true;
             this.dGV_Paths.AllowUserToAddRows = false;
             this.dGV_Paths.AllowUserToDeleteRows = false;
             this.dGV_Paths.AllowUserToResizeColumns = false;
@@ -306,6 +307,8 @@
             this.dGV_Paths.TabIndex = 18;
             this.dGV_Paths.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dGV_Paths_CellClick);
             this.dGV_Paths.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dGV_Paths_CellDoubleClick);
+            this.dGV_Paths.DragDrop += new System.Windows.Forms.DragEventHandler(this.dGV_Paths_DragDrop);
+            this.dGV_Paths.DragOver += new System.Windows.Forms.DragEventHandler(this.dGV_Paths_DragOver);
             // 
             // mPB_Progress
             // 

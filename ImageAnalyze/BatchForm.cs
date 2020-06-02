@@ -138,15 +138,39 @@ namespace Gmage
             var paths = ImageTouch.GetImagePath();
             if (paths is null)
                 return;
-            Thread thread = new Thread(new ParameterizedThreadStart(SetPathView));
-            thread.Start(ImageTouch.ImagePath);
+            ThreadSetPathView();
         }
-        private void SetPathView(object ImagePaths)
+
+        private void ThreadSetPathView()
         {
-            foreach (var s in (HashSet<string>)ImagePaths)
+            Thread thread = new Thread(SetPathView);
+            thread.Start();
+        }
+
+        private void ThreadSetPathView(string[] hs)
+        {
+            Thread thread = new Thread(new ParameterizedThreadStart(SetDropPathView));
+            thread.Start(hs);
+        }
+
+        private void SetDropPathView(object hs)
+        {
+            foreach (var s in (string[])hs)
             {
-                if (this.ImagePaths.Add(s))
+                if (ImageTouch.ImagePath.Add(s) && ImagePaths.Add(s))
                     dt.Rows.Add(s);
+            }
+            RollBack.RollBackMessage(dt, MessageType.PathTable);
+        }
+
+        private void SetPathView()
+        {
+            foreach (var s in ImageTouch.ImagePath)
+            {
+                if (ImagePaths.Add(s))
+                {
+                    dt.Rows.Add(s);
+                }
             }
             RollBack.RollBackMessage(dt, MessageType.PathTable);
         }
@@ -191,25 +215,6 @@ namespace Gmage
         private void Finished()
         {
             TaskFinished = true;
-        }
-
-        private void BatchForm_Resize(object sender, EventArgs e)
-        {
-            //this.Size = new Size(917, 534);
-        }
-
-        private void mLV_ImgInfo_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
-        {
-
-        }
-
-        private void mLV_ImgInfo_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
-        {
-
-        }
-
-        private void mLV_ImgInfo_ColumnWidthChanging_1(object sender, ColumnWidthChangingEventArgs e)
-        {
         }
 
         private void mFB_OpenFolder_Click(object sender, EventArgs e)
@@ -280,6 +285,7 @@ namespace Gmage
             dt = new DataTable();
             dt.Columns.Add("路径");
             ImageTouch.Clear();
+            ImagePaths.Clear();
             RollBack.RollBackMessage(dt, MessageType.PathTable);
         }
 
@@ -306,6 +312,23 @@ namespace Gmage
             }
             RollBack.RollBackMessage(null, MessageType.ImageInfo);
             GC.Collect();
+        }
+
+        private void dGV_Paths_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
+                ThreadSetPathView(file);
+            }
+        }
+
+        private void dGV_Paths_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Move;
+            }
         }
     }
 

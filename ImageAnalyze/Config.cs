@@ -278,5 +278,10 @@ namespace Gmage
             messageClass.MessageSend(new MessageEventArgs(message, mt));
         }
 
+        public static void RollBackMessage(string[] fileNames)
+        {
+           messageClass.MessageSend(new MessageEventArgs(fileNames));
+        }
+
     }
 }

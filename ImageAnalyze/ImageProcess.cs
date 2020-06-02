@@ -621,7 +621,7 @@ namespace Gmage
         /// <returns></returns>
         public static Bitmap GaussNoise(Bitmap initBitmap)
         {
-            return Goss_noise(initBitmap);
+            return Gauss_noise(initBitmap);
         }
         #endregion
 
@@ -680,8 +680,6 @@ namespace Gmage
             return EdgeDetector.Smoothed(initBitmap);
         }
         #endregion
-
-
 
         #region 未用算法实现 
         /// <summary>

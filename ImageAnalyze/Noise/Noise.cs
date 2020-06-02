@@ -36,7 +36,7 @@ namespace Gmage.Noise
         /// <param name="u">数学期望</param>
         /// <param name="a">方差</param>
         /// <returns></returns>
-        public static Bitmap Goss_noise(Bitmap bitmap, double u = 0.5, double a = 0.1)
+        public static Bitmap Gauss_noise(Bitmap bitmap, double u = 0.5, double a = 0.1)
         {
             int width = bitmap.Width;
             int height = bitmap.Height;

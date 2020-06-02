@@ -13,6 +13,7 @@ using System.IO;
 using MaterialSkin;
 using MaterialSkin.Animations;
 using MaterialSkin.Controls;
+using static Gmage.RollBack;
 using static Gmage.ImageProcess;
 using System.Threading;
 
@@ -32,7 +33,7 @@ namespace Gmage
                 case MessageType.ImageReading:
                     mPB_Bar.Visible = true;
                     Thread thread = new Thread(new ParameterizedThreadStart(SetImageShow));
-                    thread.Start((object)e.FileNames); 
+                    thread.Start((object)e.FileNames);
                     break;
                 case MessageType.RunTime:
                     break;
@@ -45,11 +46,11 @@ namespace Gmage
                     MessageBox.Show(e.Message, "致命错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 case MessageType.Progress:
-                    if((int)e.Progress<100)
+                    if ((int)e.Progress < 100)
                     {
                         mPB_Bar.Value = (int)e.Progress;
-                       
-                    }else
+                    }
+                    else
                         mPB_Bar.Visible = false;
                     break;
                 case MessageType.ImageInfo:
@@ -73,18 +74,7 @@ namespace Gmage
                 //throw new Exception("", ex);
             }
         }
-        private void RollBackMessage(string fileName)
-        {
-            RollBack.messageClass.MessageSend(new MessageEventArgs(fileName));
-        }
-        private void RollBackMessage(string[] fileNames)
-        {
-            RollBack.messageClass.MessageSend(new MessageEventArgs(fileNames));
-        }
-        private void RollBackMessage(float pro, MessageType mt = MessageType.Progress)
-        {
-            RollBack.messageClass.MessageSend(new MessageEventArgs(pro, mt));
-        }
+
         public Bitmap ResultImage
         {
             set => col.Image = value; get => (Bitmap)col.Image;
@@ -111,14 +101,14 @@ namespace Gmage
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             menuStrip1.BackColor = ((int)Primary.BlueGrey900).ToColor();
             RollBack.messageClass.OnMessageSend += new MessageEventHandler(SubthreadMessageReceive);
+            TsmiClick();
+            TsmiThresholdClick();
         }
 
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
             ReadInitImage();
-
         }
-
 
         private void ReadInitImage()
         {
@@ -134,7 +124,7 @@ namespace Gmage
             if (oi.ShowDialog() == DialogResult.OK)
             {
                 RollBackMessage(oi.FileNames);
-                
+
             }
         }
         private void SetImageShow(object fileNames)
@@ -144,7 +134,7 @@ namespace Gmage
             float c = 0;
             foreach (var filename in files)
             {
-                RollBackMessage(++c/ count * 100f);
+                RollBackMessage(++c / count * 100f);
                 SetImageShow(filename);
             }
             CheckonIndex();
@@ -171,10 +161,11 @@ namespace Gmage
             {
                 mtS_Selected.BaseTabControl = mTC_ImageTab;
                 mTC_ImageTab.Visible = true;
-                
+
                 panel1.Visible = false;
             }
             initBitmap = (Bitmap)Image.FromFile(filename);
+            ResultImage = initBitmap.Clone() as Bitmap;
             SetTab(Path.GetFileNameWithoutExtension(filename));
             if (!HideTab())
             {
@@ -243,62 +234,10 @@ namespace Gmage
             return name;
         }
 
-        private void btn_Binarization_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Binarization;
-            ResultImage = BinarizationP(initBitmap);
-            Open_Threshold_Config();
-
-
-        }
-        //反色
-        private void btn_Complementary_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Complementary;
-            ResultImage = ComplementaryP(initBitmap);
-        }
-
-        private void btn_Gray_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Gray;
-            ResultImage = ImageToGreyP(initBitmap);
-        }
-
         private void btn_Histogram_Click(object sender, EventArgs e)
         {
-            Histogramcs hs = new Histogramcs(initBitmap);
+            Histogramcs hs = new Histogramcs(ResultImage);
             hs.ShowDialog();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Gray;
-            ResultImage = ImageToGrey2(initBitmap);
-        }
-
-        private void btn_Frequency_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Frequency;
-            ResultImage = FFT(initBitmap);
-        }
-
-        private void btn_Gaussian_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.GaussBlur;
-            ResultImage = GaussBlurP(initBitmap);
-        }
-
-        private void btn_Robert_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Robert;
-            ResultImage = EdgeDetector_Robert(initBitmap);
-            Open_Threshold_Config(20);
-        }
-
-        private void btn_Smoothed_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Smoothed;
-            ResultImage = EdgeDetector_Smoothed(initBitmap);
         }
 
         private void btn_Salt_Click(object sender, EventArgs e)
@@ -306,29 +245,15 @@ namespace Gmage
             Config.Model = FunctionType.Salt;
             Probability py = new Probability(this, MousePosition)
             {
-                InitBitmap = initBitmap,
+                InitBitmap = ResultImage,
             };
-            SetImageCallback(SaltNoise(initBitmap));
+            SetImageCallback(SaltNoise(ResultImage));
             py.ShowDialog();
         }
 
         public void SetImageCallback(Bitmap bitmap)
         {
             ResultImage = bitmap;
-        }
-
-        private void btn_GaussNoise_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.GaussNoise;
-            ResultImage = GaussNoise(initBitmap);
-        }
-
-        private void btn_Polar_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Polar;
-            ResultImage = Polar(initBitmap);
-            Open_Threshold_Config(11);
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -341,14 +266,9 @@ namespace Gmage
         {
             Config.Model = FunctionType.FaceRecognition;
             if (Path.GetExtension(Config.ClassifierPath) == ".xml")
-                ResultImage = Recognite_Face(initBitmap, Config.ClassifierPath);
+                ResultImage = Recognite_Face(ResultImage, Config.ClassifierPath);
             else
                 MessageBox.Show("请先选择分类器", "错误的预期", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private void btn_MedianFilter_Click(object sender, EventArgs e)
-        {
-            ResultImage = MedianFilter(initBitmap);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -450,51 +370,20 @@ namespace Gmage
             }
         }
 
-        private void btn_Sharpen_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Sharpen;
-            ResultImage = Sharpen(initBitmap);
-            Open_Threshold_Config(25);
-        }
-
         private void Open_Threshold_Config(int hold = 128)
         {
             Process.Threshold ptd = new Process.Threshold(this, MousePosition, hold)
             {
-                InitBitmap = initBitmap.Clone() as Bitmap,
+                InitBitmap = ResultImage.Clone() as Bitmap,
             };
             ptd.ShowDialog();
         }
 
-        private void btn_Lighten_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Lighten;
-            ResultImage = Lighten(initBitmap);
-            Open_Threshold_Config(0);
-        }
-
-        private void btn_Contrast_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Contrast;
-            ResultImage = Contrast(initBitmap);
-            Open_Threshold_Config(0);
-        }
-
-        private void btn_BFT_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.BFT;
-            ResultImage = BFT(initBitmap);
-        }
-
         private void tsmi_About_Click(object sender, EventArgs e)
         {
-            // MessageBox.Show("666");
+            
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
         PictureBox col = new PictureBox();
         private void materialTabSelector1_TabIndexChanged(object sender, EventArgs e)
         {
@@ -552,37 +441,6 @@ namespace Gmage
             return false;
         }
 
-        private void Clockwise180_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Clockwise180;
-            ResultImage = Clockwise180(initBitmap);
-        }
-
-        private void Clockwise90_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Clockwise90;
-            ResultImage = Clockwise90(initBitmap);
-
-        }
-
-        private void Clockwise270_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.Clockwise270;
-            ResultImage = Clockwise270(initBitmap);
-        }
-
-        private void RotateNoneFlipX_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.RotateNoneFlipX;
-            ResultImage = RotateNoneFlipX(initBitmap);
-        }
-
-        private void RotateNoneFlipY_Click(object sender, EventArgs e)
-        {
-            Config.Model = FunctionType.RotateNoneFlipY;
-            ResultImage = RotateNoneFlipY(initBitmap);
-        }
-
         private void mTC_ImageTab_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -598,6 +456,46 @@ namespace Gmage
                 string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
                 RollBackMessage(file);
             }
+        }
+
+        private void TsmiClick()
+        {
+            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[] 
+            {
+                tsmi_Gray,tsmi_Complementary,tsmi_Frequency,
+                Clockwise180,Clockwise90,Clockwise270,RotateNoneFlipX,RotateNoneFlipY,
+                Tsmi_GaussBlur,tsmi_MedianFilter,tsmi_GaussNoise,tsmi_Smoothed
+            };
+            foreach (var tsmi in toolStripMenuItems)
+            {
+                tsmi.Click += (click_sender, click_e) =>
+                {
+                    Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
+                    ResultImage = SwitchFunc(ResultImage);
+                };
+            }
+        }
+
+        private void TsmiThresholdClick()
+        {
+            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
+            {
+               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Salt,tsmi_Polar,tsmi_Robert,tsmi_Sharpen
+            };
+            foreach (var tsmi in toolStripMenuItems)
+            {
+                tsmi.Click += (click_sender, click_e) =>
+                {
+                    Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
+                    ResultImage = SwitchFunc(ResultImage);
+                    Open_Threshold_Config(30);
+                };
+            }
+        }
+
+        private void tsmi_Clear_Click(object sender, EventArgs e)
+        {
+            ResultImage = initBitmap.Clone() as Bitmap ;
         }
     }
 }
