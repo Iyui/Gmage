@@ -56,6 +56,11 @@ namespace Gmage
 
         private void materialFlatButton1_Click(object sender, EventArgs e)
         {
+            if(lB_Task.SelectedItem is null)
+            {
+                DialogResult = DialogResult.Cancel;
+                return;
+            }
             ModelName =lB_Task.SelectedItem.ToString();
             Config.Model = Func[ModelName];
         }

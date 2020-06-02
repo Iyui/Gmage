@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
+using System.Data;
 namespace Gmage
 {
     public class Config
@@ -196,6 +197,10 @@ namespace Gmage
         ImageInfo,
         Loading,
         PrgressInfo,
+        PathTable,
+
+        BatchError,
+        BatchDeadlyError,
     }
 
     public class MessageEventArgs : EventArgs
@@ -207,6 +212,7 @@ namespace Gmage
         public Image imageinfo;
         public string PrgressInfo;
         public string[] FileNames;
+        public DataTable PathTable;
         public MessageEventArgs(object obj, MessageType type)
         {
             this.oMessage = obj;
@@ -265,6 +271,11 @@ namespace Gmage
         public static void RollBackMessage(string message, MessageType mt = MessageType.Message)
         {
             messageClass.MessageSend(new MessageEventArgs(message,mt));
+        }
+
+        public static void RollBackMessage(object message, MessageType mt = MessageType.Message)
+        {
+            messageClass.MessageSend(new MessageEventArgs(message, mt));
         }
 
     }

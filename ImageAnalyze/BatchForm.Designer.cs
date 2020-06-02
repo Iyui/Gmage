@@ -37,13 +37,13 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pB_View = new System.Windows.Forms.PictureBox();
             this.gB_Task = new System.Windows.Forms.GroupBox();
+            this.mL_Error = new MaterialSkin.Controls.MaterialLabel();
             this.mL_Remain = new MaterialSkin.Controls.MaterialLabel();
             this.mL_Count = new MaterialSkin.Controls.MaterialLabel();
             this.mL_Task = new MaterialSkin.Controls.MaterialLabel();
             this.mFB_Output = new MaterialSkin.Controls.MaterialFlatButton();
             this.mL_Output = new MaterialSkin.Controls.MaterialLabel();
             this.dGV_Paths = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mPB_Progress = new MaterialSkin.Controls.MaterialProgressBar();
             this.mFB_OpenFolder = new MaterialSkin.Controls.MaterialFlatButton();
             this.gB_View2 = new System.Windows.Forms.GroupBox();
@@ -113,6 +113,7 @@
             this.mFB_Image.TabIndex = 5;
             this.mFB_Image.Text = "选择图片";
             this.mFB_Image.UseVisualStyleBackColor = false;
+            this.mFB_Image.Click += new System.EventHandler(this.mFB_Image_Click);
             // 
             // mFB_SelectTask
             // 
@@ -152,6 +153,7 @@
             this.mFB_ClearImg.TabIndex = 8;
             this.mFB_ClearImg.Text = "清空图片";
             this.mFB_ClearImg.UseVisualStyleBackColor = false;
+            this.mFB_ClearImg.Click += new System.EventHandler(this.mFB_ClearImg_Click);
             // 
             // mFB_StartTask
             // 
@@ -191,6 +193,7 @@
             this.pB_View.Location = new System.Drawing.Point(6, 20);
             this.pB_View.Name = "pB_View";
             this.pB_View.Size = new System.Drawing.Size(161, 202);
+            this.pB_View.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pB_View.TabIndex = 12;
             this.pB_View.TabStop = false;
             // 
@@ -198,6 +201,7 @@
             // 
             this.gB_Task.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gB_Task.BackColor = System.Drawing.Color.Transparent;
+            this.gB_Task.Controls.Add(this.mL_Error);
             this.gB_Task.Controls.Add(this.mL_Remain);
             this.gB_Task.Controls.Add(this.mL_Count);
             this.gB_Task.Controls.Add(this.mL_Task);
@@ -207,6 +211,20 @@
             this.gB_Task.TabIndex = 14;
             this.gB_Task.TabStop = false;
             this.gB_Task.Text = "信息列表";
+            // 
+            // mL_Error
+            // 
+            this.mL_Error.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.mL_Error.BackColor = System.Drawing.Color.Transparent;
+            this.mL_Error.Depth = 0;
+            this.mL_Error.Font = new System.Drawing.Font("Roboto", 11F);
+            this.mL_Error.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.mL_Error.Location = new System.Drawing.Point(8, 75);
+            this.mL_Error.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mL_Error.Name = "mL_Error";
+            this.mL_Error.Size = new System.Drawing.Size(159, 20);
+            this.mL_Error.TabIndex = 24;
+            this.mL_Error.Text = "转换失败：0";
             // 
             // mL_Remain
             // 
@@ -229,7 +247,7 @@
             this.mL_Count.Depth = 0;
             this.mL_Count.Font = new System.Drawing.Font("Roboto", 11F);
             this.mL_Count.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.mL_Count.Location = new System.Drawing.Point(8, 75);
+            this.mL_Count.Location = new System.Drawing.Point(8, 100);
             this.mL_Count.MouseState = MaterialSkin.MouseState.HOVER;
             this.mL_Count.Name = "mL_Count";
             this.mL_Count.Size = new System.Drawing.Size(159, 20);
@@ -277,10 +295,10 @@
             this.mL_Output.Depth = 0;
             this.mL_Output.Font = new System.Drawing.Font("Roboto", 11F);
             this.mL_Output.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.mL_Output.Location = new System.Drawing.Point(100, 793);
+            this.mL_Output.Location = new System.Drawing.Point(104, 793);
             this.mL_Output.MouseState = MaterialSkin.MouseState.HOVER;
             this.mL_Output.Name = "mL_Output";
-            this.mL_Output.Size = new System.Drawing.Size(614, 19);
+            this.mL_Output.Size = new System.Drawing.Size(610, 19);
             this.mL_Output.TabIndex = 17;
             // 
             // dGV_Paths
@@ -293,8 +311,6 @@
             this.dGV_Paths.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dGV_Paths.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGV_Paths.ColumnHeadersVisible = false;
-            this.dGV_Paths.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1});
             this.dGV_Paths.Location = new System.Drawing.Point(104, 72);
             this.dGV_Paths.Name = "dGV_Paths";
             this.dGV_Paths.ReadOnly = true;
@@ -305,12 +321,6 @@
             this.dGV_Paths.TabIndex = 18;
             this.dGV_Paths.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dGV_Paths_CellClick);
             this.dGV_Paths.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dGV_Paths_CellDoubleClick);
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "路径";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
             // 
             // mPB_Progress
             // 
@@ -364,6 +374,7 @@
             this.pB_View2.Location = new System.Drawing.Point(6, 20);
             this.pB_View2.Name = "pB_View2";
             this.pB_View2.Size = new System.Drawing.Size(161, 202);
+            this.pB_View2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pB_View2.TabIndex = 12;
             this.pB_View2.TabStop = false;
             // 
@@ -414,7 +425,6 @@
         private MaterialSkin.Controls.MaterialFlatButton mFB_Output;
         private MaterialSkin.Controls.MaterialLabel mL_Output;
         private System.Windows.Forms.DataGridView dGV_Paths;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private MaterialSkin.Controls.MaterialProgressBar mPB_Progress;
         private MaterialSkin.Controls.MaterialFlatButton mFB_OpenFolder;
         private MaterialSkin.Controls.MaterialLabel mL_Remain;
@@ -422,5 +432,6 @@
         private MaterialSkin.Controls.MaterialLabel mL_Task;
         private System.Windows.Forms.GroupBox gB_View2;
         private System.Windows.Forms.PictureBox pB_View2;
+        private MaterialSkin.Controls.MaterialLabel mL_Error;
     }
 }
