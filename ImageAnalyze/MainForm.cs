@@ -100,7 +100,7 @@ namespace Gmage
                 new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             menuStrip1.BackColor = ((int)Primary.BlueGrey900).ToColor();
-            RollBack.messageClass.OnMessageSend += new MessageEventHandler(SubthreadMessageReceive);
+            messageClass.OnMessageSend += new MessageEventHandler(SubthreadMessageReceive);
             TsmiClick();
             TsmiThresholdClick();
         }
@@ -259,8 +259,10 @@ namespace Gmage
 
         private void button2_Click(object sender, EventArgs e)
         {
-            BatchForm bf = new BatchForm();
-            bf.Show();
+            GmageConfigXML.XmlHandle.SetPreferences("Conventional", "HomePage", "1");
+            Config.homePage = 1;
+            Config.bReStart = true;
+            Application.Exit();
         }
 
         private void btn_FaceRecognition_Click(object sender, EventArgs e)
@@ -284,7 +286,7 @@ namespace Gmage
         private void Classifier_Load()
         {
             var path = Application.StartupPath + @"\Classifier\";
-            FloderExist(path);
+            config.FloderExist(path);
             DirectoryInfo dir = new DirectoryInfo(path);
             FileInfo[] fi = dir.GetFiles();
             if (fi.Length == 0)
@@ -316,19 +318,6 @@ namespace Gmage
             };
             items.Click += tsmi_Index_Click;
             tsmi_Index.DropDownItems.Add(items);
-        }
-
-        private bool FloderExist(string path)
-        {
-            try
-            {
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                return true;
-            }
-            catch { return false; }
         }
 
         Config config = new Config();
@@ -497,6 +486,12 @@ namespace Gmage
         private void tsmi_Clear_Click(object sender, EventArgs e)
         {
             ResultImage = initBitmap.Clone() as Bitmap ;
+        }
+
+        private void tsmi_Preferences_Click(object sender, EventArgs e)
+        {
+            Preferences preferences = new Preferences();
+            preferences.ShowDialog();
         }
     }
 }

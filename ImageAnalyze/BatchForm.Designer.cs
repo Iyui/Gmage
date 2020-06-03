@@ -50,6 +50,7 @@
             this.pB_View2 = new System.Windows.Forms.PictureBox();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.mFB_RemoveImg = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mFB_HomePage = new MaterialSkin.Controls.MaterialFlatButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pB_View)).BeginInit();
             this.gB_Task.SuspendLayout();
@@ -330,6 +331,7 @@
             this.mFB_OpenFolder.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.mFB_OpenFolder.BackColor = System.Drawing.Color.Transparent;
             this.mFB_OpenFolder.Depth = 0;
+            this.mFB_OpenFolder.Enabled = false;
             this.mFB_OpenFolder.Font = new System.Drawing.Font("宋体", 15F);
             this.mFB_OpenFolder.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.mFB_OpenFolder.Icon = null;
@@ -385,11 +387,33 @@
             this.mFB_RemoveImg.UseVisualStyleBackColor = false;
             this.mFB_RemoveImg.Click += new System.EventHandler(this.mFB_RemoveImg_Click);
             // 
+            // mFB_HomePage
+            // 
+            this.mFB_HomePage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.mFB_HomePage.AutoSize = true;
+            this.mFB_HomePage.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.mFB_HomePage.BackColor = System.Drawing.Color.Transparent;
+            this.mFB_HomePage.Depth = 0;
+            this.mFB_HomePage.Font = new System.Drawing.Font("宋体", 15F);
+            this.mFB_HomePage.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.mFB_HomePage.Icon = null;
+            this.mFB_HomePage.Location = new System.Drawing.Point(10, 685);
+            this.mFB_HomePage.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_HomePage.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_HomePage.Name = "mFB_HomePage";
+            this.mFB_HomePage.Primary = false;
+            this.mFB_HomePage.Size = new System.Drawing.Size(81, 36);
+            this.mFB_HomePage.TabIndex = 22;
+            this.mFB_HomePage.Text = "返回首页";
+            this.mFB_HomePage.UseVisualStyleBackColor = false;
+            this.mFB_HomePage.Click += new System.EventHandler(this.mFB_HomePage_Click);
+            // 
             // BatchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 827);
+            this.Controls.Add(this.mFB_HomePage);
             this.Controls.Add(this.gB_View2);
             this.Controls.Add(this.mFB_OpenFolder);
             this.Controls.Add(this.mPB_Progress);
@@ -406,7 +430,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "BatchForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "批处理";
+            this.Text = "Gmage批处理";
             this.Load += new System.EventHandler(this.BatchForm_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pB_View)).EndInit();
@@ -442,5 +466,6 @@
         private MaterialSkin.Controls.MaterialLabel mL_Error;
         private System.Windows.Forms.BindingSource bindingSource1;
         private MaterialSkin.Controls.MaterialFlatButton mFB_RemoveImg;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_HomePage;
     }
 }

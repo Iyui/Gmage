@@ -38,7 +38,7 @@
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Clear = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.首选项ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_Preferences = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Image = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Change = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Lighten = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,7 +123,7 @@
             this.tsmi_Index});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(540, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(420, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -162,7 +162,7 @@
             this.编辑ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Clear,
             this.toolStripSeparator2,
-            this.首选项ToolStripMenuItem});
+            this.tsmi_Preferences});
             this.编辑ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
             this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
@@ -171,7 +171,7 @@
             // tsmi_Clear
             // 
             this.tsmi_Clear.Name = "tsmi_Clear";
-            this.tsmi_Clear.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Clear.Size = new System.Drawing.Size(148, 22);
             this.tsmi_Clear.Text = "清除所有效果";
             this.tsmi_Clear.Click += new System.EventHandler(this.tsmi_Clear_Click);
             // 
@@ -180,11 +180,12 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(145, 6);
             // 
-            // 首选项ToolStripMenuItem
+            // tsmi_Preferences
             // 
-            this.首选项ToolStripMenuItem.Name = "首选项ToolStripMenuItem";
-            this.首选项ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.首选项ToolStripMenuItem.Text = "首选项";
+            this.tsmi_Preferences.Name = "tsmi_Preferences";
+            this.tsmi_Preferences.Size = new System.Drawing.Size(148, 22);
+            this.tsmi_Preferences.Text = "首选项";
+            this.tsmi_Preferences.Click += new System.EventHandler(this.tsmi_Preferences_Click);
             // 
             // tsmi_Image
             // 
@@ -333,7 +334,7 @@
             this.toolStripSeparator4,
             this.tsmi_MedianFilter});
             this.模糊ToolStripMenuItem.Name = "模糊ToolStripMenuItem";
-            this.模糊ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.模糊ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.模糊ToolStripMenuItem.Text = "模糊/滤波";
             // 
             // Tsmi_GaussBlur
@@ -362,20 +363,20 @@
             this.tsmi_GaussNoise,
             this.tsmi_Salt});
             this.噪声ToolStripMenuItem.Name = "噪声ToolStripMenuItem";
-            this.噪声ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.噪声ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.噪声ToolStripMenuItem.Text = "噪声";
             // 
             // tsmi_GaussNoise
             // 
             this.tsmi_GaussNoise.Name = "tsmi_GaussNoise";
-            this.tsmi_GaussNoise.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_GaussNoise.Size = new System.Drawing.Size(124, 22);
             this.tsmi_GaussNoise.Tag = "GaussNoise";
             this.tsmi_GaussNoise.Text = "高斯噪声";
             // 
             // tsmi_Salt
             // 
             this.tsmi_Salt.Name = "tsmi_Salt";
-            this.tsmi_Salt.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Salt.Size = new System.Drawing.Size(124, 22);
             this.tsmi_Salt.Text = "椒盐噪声";
             this.tsmi_Salt.Click += new System.EventHandler(this.btn_Salt_Click);
             // 
@@ -384,13 +385,13 @@
             this.扭曲ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Polar});
             this.扭曲ToolStripMenuItem.Name = "扭曲ToolStripMenuItem";
-            this.扭曲ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.扭曲ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.扭曲ToolStripMenuItem.Text = "扭曲";
             // 
             // tsmi_Polar
             // 
             this.tsmi_Polar.Name = "tsmi_Polar";
-            this.tsmi_Polar.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Polar.Size = new System.Drawing.Size(112, 22);
             this.tsmi_Polar.Tag = "Polar";
             this.tsmi_Polar.Text = "极坐标";
             // 
@@ -400,34 +401,34 @@
             this.tsmi_Robert,
             this.tsmi_Smoothed});
             this.边缘检测ToolStripMenuItem.Name = "边缘检测ToolStripMenuItem";
-            this.边缘检测ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.边缘检测ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.边缘检测ToolStripMenuItem.Text = "边缘检测";
             // 
             // tsmi_Robert
             // 
             this.tsmi_Robert.Name = "tsmi_Robert";
-            this.tsmi_Robert.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Robert.Size = new System.Drawing.Size(136, 22);
             this.tsmi_Robert.Tag = "Robert";
             this.tsmi_Robert.Text = "Robert";
             // 
             // tsmi_Smoothed
             // 
             this.tsmi_Smoothed.Name = "tsmi_Smoothed";
-            this.tsmi_Smoothed.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Smoothed.Size = new System.Drawing.Size(136, 22);
             this.tsmi_Smoothed.Tag = "Smoothed";
             this.tsmi_Smoothed.Text = "Smoothed";
             // 
             // tsmi_Sharpen
             // 
             this.tsmi_Sharpen.Name = "tsmi_Sharpen";
-            this.tsmi_Sharpen.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Sharpen.Size = new System.Drawing.Size(129, 22);
             this.tsmi_Sharpen.Tag = "Sharpen";
             this.tsmi_Sharpen.Text = "锐化";
             // 
             // 字符化ToolStripMenuItem
             // 
             this.字符化ToolStripMenuItem.Name = "字符化ToolStripMenuItem";
-            this.字符化ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.字符化ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.字符化ToolStripMenuItem.Text = "字符画";
             // 
             // 级联分类器ToolStripMenuItem
@@ -555,9 +556,9 @@
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = global::Gmage.Properties.Resources.Gmage;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel1.Location = new System.Drawing.Point(13, 131);
+            this.panel1.Location = new System.Drawing.Point(19, 131);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(769, 423);
+            this.panel1.Size = new System.Drawing.Size(756, 423);
             this.panel1.TabIndex = 21;
             this.panel1.Click += new System.EventHandler(this.btn_SelectImage_Click);
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragDrop);
@@ -595,7 +596,7 @@
         private System.Windows.Forms.ToolStripMenuItem 另存为ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 编辑ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Clear;
-        private System.Windows.Forms.ToolStripMenuItem 首选项ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_Preferences;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Image;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Change;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Lighten;

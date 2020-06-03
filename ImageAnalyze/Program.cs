@@ -7,6 +7,7 @@ using GmageIF;
 using System.IO;
 using System.Reflection;
 using System.Drawing;
+
 namespace Gmage
 {
     internal static class Program
@@ -19,13 +20,42 @@ namespace Gmage
         static void Main(string[] args)
         {
             MyArgs = args;
+            GmageConfigXML.XmlHandle.LoadGmageConfig();
+            Config.Read_Init_Preferences();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var mf = new MainForm();
-            ReadPlug_in(mf);
-            Application.Run(mf);
-            //Application.Run(new BatchForm());
+            Config.bReStart = false;
+            switch (Config.homePage)
+            {
+                default:
+                case 0:
+                    var mf = new MainForm();
+                    ReadPlug_in(mf);
+                    Application.Run(mf);
+                    break;
+                case 1:
+                    Application.Run(new BatchForm());
+                    break;     
+            }
+            GmageConfigXML.XmlHandle.SaveGmageConfig();
+            Restart();
         }
+
+        private static void Restart()
+        {
+            try
+            {
+                if (true == Config.bReStart)
+                {
+                    System.Diagnostics.Process.Start(Application.ExecutablePath); 
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("软件配置参数错误.信息:\r\n" + ex.Message);
+            }
+        }
+
 
         internal static void ReadPlug_in(MainForm mf)
         {
@@ -44,6 +74,7 @@ namespace Gmage
                     //判断是否是实现了插件接口
                     if (t.GetInterface("IGmage",true) !=null)
                     {
+                        Config.PluginList.Add(fn);
                         //创建实例
                         object o = ass.CreateInstance(t.ToString());   
                         //执行方法
@@ -51,6 +82,8 @@ namespace Gmage
                     }
                 }
             }
+
+            Classifier_Load(cf);
         }
 
         /// <summary>
@@ -73,5 +106,23 @@ namespace Gmage
             };
             mf.tsmi_Filter.DropDownItems.Add(tsmi);
         }
+
+        private static void Classifier_Load(Config cf)
+        {
+            var path = Application.StartupPath + @"\Classifier\";
+            cf.FloderExist(path);
+            DirectoryInfo dir = new DirectoryInfo(path);
+            FileInfo[] fi = dir.GetFiles();
+            if (fi.Length == 0)
+                return;
+            foreach (var f in fi)
+            {
+                Config.Classifier.Add(f.FullName);
+            }
+        }
+
+
     }
+
+
 }

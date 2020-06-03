@@ -109,6 +109,12 @@
     <Compile Include="LoadForm.Designer.cs">
       <DependentUpon>LoadForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Preferences.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Preferences.Designer.cs">
+      <DependentUpon>Preferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="Process\EdgeDetector.cs" />
     <Compile Include="Process\FFT.cs" />
     <Compile Include="Filter\Filter.cs" />
@@ -163,6 +169,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preferences.resx">
+      <DependentUpon>Preferences.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Process\histogramcs.resx">
       <DependentUpon>histogramcs.cs</DependentUpon>

@@ -130,6 +130,8 @@ namespace Gmage
         private void mFB_Output_Click(object sender, EventArgs e)
         {
             OUTputPath = ImageTouch.GetFolderPath();
+            if (Directory.Exists(OUTputPath))
+                mFB_OpenFolder.Enabled = true;
             mL_Output.Text = "输出至：" + OUTputPath;
         }
 
@@ -329,6 +331,14 @@ namespace Gmage
             {
                 e.Effect = DragDropEffects.Move;
             }
+        }
+
+        private void mFB_HomePage_Click(object sender, EventArgs e)
+        {
+            GmageConfigXML.XmlHandle.SetPreferences("Conventional", "HomePage","0");
+            Config.homePage = 0;
+            Config.bReStart = true;
+            Application.Exit();
         }
     }
 
