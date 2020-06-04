@@ -1,4 +1,9 @@
-﻿using System;
+﻿/* 
+ * 20200602:完善批处理
+ * 20200603:新增首选项设置
+ * 20200604:新增拾色器
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,7 +21,6 @@ using MaterialSkin.Controls;
 using static Gmage.RollBack;
 using static Gmage.ImageProcess;
 using System.Threading;
-
 namespace Gmage
 {
     public partial class MainForm : MaterialForm
@@ -75,6 +79,8 @@ namespace Gmage
             }
         }
 
+        public Tools Tool{set; get;} = Tools.Empty;
+
         public Bitmap ResultImage
         {
             set => col.Image = value; get => (Bitmap)col.Image;
@@ -100,11 +106,22 @@ namespace Gmage
                 new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900,
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             menuStrip1.BackColor = ((int)Primary.BlueGrey900).ToColor();
+
+            //Mtb_Color
+            tabPage1.BackColor = ((int)Primary.BlueGrey800).ToColor();
+            groupBox1.BackColor = ((int)Primary.BlueGrey800).ToColor();
+            tB_R.BackColor = ((int)Primary.BlueGrey800).ToColor();
+            tB_G.BackColor = ((int)Primary.BlueGrey800).ToColor();
+            tB_B.BackColor = ((int)Primary.BlueGrey800).ToColor();
+
+            SetColorRGB();
+            // pTools.BackColor = Color.FromArgb(255, 55, 71, 79);
             messageClass.OnMessageSend += new MessageEventHandler(SubthreadMessageReceive);
             TsmiClick();
             TsmiThresholdClick();
+            ToolsClickEvent();
         }
-
+        #region mtS_Selected及以上的控件功能
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
             ReadInitImage();
@@ -114,11 +131,9 @@ namespace Gmage
         {
             OpenFileDialog oi = new OpenFileDialog
             {
-                //oi.InitialDirectory = "c:\\";
                 Filter = "图片(*.jpg,*.jpeg,*.bmp,*.png) | *.jpg;*.jpeg;*.bmp;*.png| 所有文件(*.*) | *.*",
                 RestoreDirectory = true,
                 FilterIndex = 1,
-                InitialDirectory = Application.StartupPath,
                 Multiselect = true,
             };
             if (oi.ShowDialog() == DialogResult.OK)
@@ -127,6 +142,7 @@ namespace Gmage
 
             }
         }
+
         private void SetImageShow(object fileNames)
         {
             var files = (string[])fileNames;
@@ -139,6 +155,7 @@ namespace Gmage
             }
             CheckonIndex();
         }
+
         private void SetImageShow(string filename)
         {
             var Format = new string[] { ".jpg", ".bmp", ".jpeg", ".png" };
@@ -161,7 +178,6 @@ namespace Gmage
             {
                 mtS_Selected.BaseTabControl = mTC_ImageTab;
                 mTC_ImageTab.Visible = true;
-
                 panel1.Visible = false;
             }
             var initImage = (Bitmap)Image.FromFile(filename);
@@ -195,14 +211,76 @@ namespace Gmage
             {
                 Name = "pb_" + imageName,
             };
-            mTC_ImageTab.TabPages[t.Name].Controls.Add(it);
-            mTC_ImageTab.TabPages[t.Name].BackColor = Color.FromArgb(255, 51, 51, 51);
+            var tp = mTC_ImageTab.TabPages[t.Name];
+            tp.Controls.Add(it);
+            tp.BackColor = Color.FromArgb(255, 51, 51, 51);
             htTabImageName.Add(t.Name, it.Name);
-            mTC_ImageTab.SelectedTab = mTC_ImageTab.TabPages[t.Name];
-            it.Dock = DockStyle.Fill;
+            mTC_ImageTab.SelectedTab = tp;
+            it.Dock = DockStyle.None;
             it.SizeMode = PictureBoxSizeMode.CenterImage;
             it.Image = initBitmap.Clone() as Image;
+            it.Width = it.Image.Width;
+            it.Height = it.Image.Height;
+            var p = GetControlCenterLocation(tp, it);
+            it.Location = p;
+            it.Anchor = AnchorStyles.Left|AnchorStyles.Top;
+            it.MouseDown += (sender, e) =>
+            {
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.RGB_Pick:
+                        var c = ((Bitmap)it.Image).GetPixel(e.X,e.Y);
+                        Pick_RGB(c);
+                        break;
+                }
+            };
+            it.MouseMove += (sender, e) =>
+            {
+                it.Cursor = MouseCursor();
 
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.RGB_Pick:
+                        if (e.Button == MouseButtons.Left)
+                        {
+                            var c = ((Bitmap)it.Image).GetPixel(e.X, e.Y);
+                            Pick_RGB(c);
+                        }
+                        break;
+                }
+            };
+        }
+
+        /// <summary>
+        /// 获取[里控件]居中于[外控件]时的左上角坐标
+        /// </summary>
+        /// <param name="outC"></param>
+        /// <param name="inC"></param>
+        /// <returns></returns>
+        private Point GetControlCenterLocation(Control outC,Control inC)
+        {
+            var x = 0;
+            var y = 0;
+
+            var outW = outC.Width;
+            var outH = outC.Height;
+
+            var inW = inC.Width;
+            var inH = inC.Height;
+
+            x = (outW - inW) / 2;
+            y = (outH - inH) / 2;
+
+            x = x > 0 ? x : 0;
+            y = y > 0 ? y : 0;
+
+            return new Point(x, y);
         }
 
         HashSet<string> NameHash = new HashSet<string>();
@@ -283,6 +361,9 @@ namespace Gmage
             Classifier_Load();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void Classifier_Load()
         {
             var path = Application.StartupPath + @"\Classifier\";
@@ -329,7 +410,7 @@ namespace Gmage
 
         private void tsmi_Index_Click(object sender, EventArgs e)
         {
-            Config.ClassifierPath = (string)((ToolStripMenuItem)sender).Name;
+            Config.ClassifierPath = ((ToolStripMenuItem)sender).Name;
             config.IsCheckedControl((ToolStripMenuItem)sender, tsmi_Index);
             mTC_ImageTab.SelectedTab = mTC_ImageTab.TabPages[((ToolStripMenuItem)sender).Tag.ToString()];
         }
@@ -493,5 +574,215 @@ namespace Gmage
             Preferences preferences = new Preferences();
             preferences.ShowDialog();
         }
+        #endregion
+
+        #region 拾色器
+#region 调色板
+        private void pB_Color_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlgColor = new ColorDialog();
+            if (dlgColor.ShowDialog() == DialogResult.OK)
+            {
+                var c = dlgColor.Color;
+                pB_Color.BackColor = c;
+                Color_R = c.R;
+                Color_G = c.G;
+                Color_B = c.B;
+            }
+        }
+
+        public int Color_R
+        {
+            get
+            {
+                int.TryParse(mT_R.Text, out int r);
+                if (r > 255)
+                    r = 255;
+                if (r < 0)
+                    r = 0;
+                mT_R.Text = r.ToString();
+                return r;
+            }
+            set
+            {
+                if (value > 255)
+                {
+                    mT_R.Text = 255.ToString();
+                    return;
+                }
+                if (value < 0)
+                {
+                    mT_R.Text = 0.ToString();
+                    return;
+                }
+                mT_R.Text = value.ToString();
+            }
+        }
+        public int Color_G
+        {
+            get
+            {
+                int.TryParse(mT_G.Text,out int r);
+                if (r > 255)
+                    r = 255;
+                if (r < 0)
+                    r = 0;
+                mT_G.Text = r.ToString();
+                return r;
+            }
+            set
+            {
+                if (value > 255)
+                {
+                    mT_G.Text = 255.ToString();
+                    return;
+                }
+                if (value < 0)
+                {
+                    mT_G.Text = 0.ToString();
+                    return;
+                }
+                mT_G.Text = value.ToString();
+            }
+        }
+
+        public int Color_B
+        {
+            get
+            {
+                int.TryParse(mT_B.Text, out int r);
+                if (r > 255)
+                   r= 255;
+                if (r < 0)
+                   r= 0;
+                mT_B.Text = r.ToString();
+                return r;
+            }
+            set
+            {
+                if (value > 255)
+                {
+                    mT_B.Text = 255.ToString();
+                    return;
+                }
+                if (value < 0)
+                {
+                    mT_B.Text = 0.ToString();
+                    return;
+                }
+                mT_B.Text = value.ToString();
+            }
+        }
+
+        private void SetColorRGB()
+        {
+            mT_R.TextChanged += (sender, e) =>
+            {
+                tB_R.Value = Color_R;
+                Change_pB_Color();
+            };
+
+            mT_G.TextChanged += (sender, e) =>
+            {
+                tB_G.Value = Color_G;
+                Change_pB_Color();
+            };
+
+            mT_B.TextChanged += (sender, e) =>
+            {
+                tB_B.Value = Color_B;
+                Change_pB_Color();
+            };
+
+
+            mT_R.KeyPress += InputLimit;
+
+            mT_G.KeyPress += InputLimit;
+
+            mT_B.KeyPress += InputLimit;
+
+            tB_R.Scroll += (sender, e) =>
+             {
+                 Color_R = tB_R.Value;
+             };
+
+            tB_G.Scroll += (sender, e) =>
+            {
+                Color_G = tB_G.Value;
+            };
+
+            tB_B.Scroll += (sender, e) =>
+            {
+                Color_B = tB_B.Value;
+            };
+
+        }
+
+        private void InputLimit(object sender, KeyPressEventArgs e)
+        {
+            if (((int)e.KeyChar < 48 && (int)e.KeyChar != 8) || ((int)e.KeyChar > 57))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Change_pB_Color()
+        {
+            pB_Color.BackColor = Color.FromArgb(Color_R, Color_G, Color_B);
+        }
+
+        #endregion
+
+        #region 鼠标拾色
+        Point p = MousePosition;
+        
+        private void Pick_RGB(Color c)
+        {
+            Color_R = c.R;
+            Color_G = c.G;
+            Color_B = c.B;
+        }
+
+
+
+        #endregion
+        #endregion
+
+        #region 左边工具栏
+        private void ToolsClickEvent()
+        {
+            mFB_Select.Click+=(sender,e)=> 
+            {
+                Tool = (Tools)Enum.Parse(typeof(Tools), mFB_Select.Tag.ToString());
+            };
+            mFB_ColorPicker.Click += (sender, e) =>
+            {
+                Tool = (Tools)Enum.Parse(typeof(Tools), mFB_ColorPicker.Tag.ToString());
+            };
+
+        }
+
+        private System.Windows.Forms.Cursor MouseCursor()
+        {
+            switch (Tool)
+            {
+                default:
+                case Tools.Empty:
+                    return Cursors.Default;
+                case Tools.Cut:
+                case Tools.RGB_Pick:
+                    return Cursors.Cross;
+            }
+        }
+        #endregion
+
+
+    }
+
+    public enum Tools
+    {
+        Empty,
+        Cut,
+        RGB_Pick,
     }
 }
