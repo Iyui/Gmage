@@ -38,6 +38,7 @@ namespace Gmage.Process
             this.f = f;
             this.PointToScreen(p);
             this.Location = p;
+            button2.BackColor = button1.BackColor = ((int)Primary.BlueGrey800).ToColor();
         }
 
         private void SetScrollStyle()
@@ -92,6 +93,32 @@ namespace Gmage.Process
             return ResultBitmap;
         }
 
+        private int LoadThreshold()
+        {
+            int _threshold = 0;
+            switch (Config.Model)
+            {
+                default:
+                case FunctionType.Sharpen:
+                case FunctionType.Contrast:
+                case FunctionType.Lighten:
+                    _threshold = 0;
+                    break;
+                case FunctionType.Binarization:
+                    _threshold = 128;
+                    break;
+                case FunctionType.Robert:
+                    _threshold = 30;
+                    break;
+                case FunctionType.Polar:
+                    _threshold = 30;
+                    break;
+               
+            }
+            return _threshold;
+        }
+
+
         private void SetThresholdText()
         {
             switch (Config.Model)
@@ -110,8 +137,28 @@ namespace Gmage.Process
 
         private void Threshold_Load(object sender, EventArgs e)
         {
-            SetThresholdText();
             SetScrollStyle();
+            Hold = LoadThreshold();
+            SetThresholdText();
+            f.SetImageCallback(SetThreshold());
+        }
+
+        private void mFB_Select_Click(object sender, EventArgs e)
+        {
+            f.SetImageCallback(ResultBitmap);
+        }
+
+        private void Threshold_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (DialogResult != DialogResult.OK)
+            {
+                f.SetImageCallback(InitBitmap);
+            }
+        }
+
+        private void materialFlatButton1_Click(object sender, EventArgs e)
+        {
+            f.SetImageCallback(InitBitmap);
         }
     }
 }

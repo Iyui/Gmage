@@ -1,7 +1,10 @@
-﻿/* 
+﻿/* Title:Gmage
+ * Author:Iyui
+ * Image Process
+ * 20200521:第一版
  * 20200602:完善批处理
  * 20200603:新增首选项设置
- * 20200604:新增拾色器
+ * 20200604:新增拾色器、图片移动
  */
 using System;
 using System.Collections.Generic;
@@ -63,6 +66,8 @@ namespace Gmage
                     break;
             }
         }
+        ToolTip toolTip = new ToolTip();
+
         private void SubthreadMessageReceive(MessageEventArgs e)
         {
             try
@@ -80,6 +85,8 @@ namespace Gmage
         }
 
         public Tools Tool{set; get;} = Tools.Empty;
+        private Tools lastTool= Tools.Empty;
+        private bool spaceUp = false;
 
         public Bitmap ResultImage
         {
@@ -89,6 +96,8 @@ namespace Gmage
         public Bitmap initBitmap { set; get; }
 
         private Hashtable htTabImageName = new Hashtable();
+
+        bool canDrag = false;
 
         //Bitmap 
 
@@ -120,7 +129,39 @@ namespace Gmage
             TsmiClick();
             TsmiThresholdClick();
             ToolsClickEvent();
+            SetToolTipPromot();
+            this.KeyDown += (sender, e) =>
+            {
+                if (e.KeyCode == Keys.Space)
+                {
+                    if (spaceUp)
+                    {
+                        lastTool = Tool;
+                        spaceUp = false;
+                        Tool = Tools.Move;
+                    }
+                }
+            };
+            this.KeyUp += (sender, e) =>
+            {
+                if (e.KeyCode == Keys.Space)
+                {
+                    Tool = lastTool;
+                    spaceUp = true ;
+                }
+            };
         }
+
+        /// <summary>
+        /// 设置按钮的提示文本
+        /// </summary>
+        private void SetToolTipPromot()
+        {
+           
+            toolTip.SetToolTip(mFB_Cut, "裁剪");
+            toolTip.SetToolTip(mFB_ColorPicker, "拾色器");
+        }
+
         #region mtS_Selected及以上的控件功能
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
@@ -139,7 +180,6 @@ namespace Gmage
             if (oi.ShowDialog() == DialogResult.OK)
             {
                 RollBackMessage(oi.FileNames);
-
             }
         }
 
@@ -224,12 +264,20 @@ namespace Gmage
             var p = GetControlCenterLocation(tp, it);
             it.Location = p;
             it.Anchor = AnchorStyles.Left|AnchorStyles.Top;
+            Point mouse_offset= new Point();
+            Point mouse_offset2 = p;
+
             it.MouseDown += (sender, e) =>
             {
                 switch (Tool)
                 {
                     default:
                     case Tools.Empty:
+                        break;
+                    case Tools.Move:
+                        canDrag = true;
+                        mouse_offset.X = -e.X;
+                        mouse_offset.Y = -e.Y;
                         break;
                     case Tools.RGB_Pick:
                         var c = ((Bitmap)it.Image).GetPixel(e.X,e.Y);
@@ -240,23 +288,42 @@ namespace Gmage
             it.MouseMove += (sender, e) =>
             {
                 it.Cursor = MouseCursor();
-
                 switch (Tool)
                 {
                     default:
                     case Tools.Empty:
                         break;
+                    case Tools.Move:
+                        if (e.Button == MouseButtons.Left&&canDrag)
+                        {
+                            it.Location =new Point(it.Left + e.X+ mouse_offset.X, it.Top + e.Y+ mouse_offset.Y);
+                        }
+                        break;
                     case Tools.RGB_Pick:
                         if (e.Button == MouseButtons.Left)
                         {
-                            var c = ((Bitmap)it.Image).GetPixel(e.X, e.Y);
-                            Pick_RGB(c);
+                            if (e.X > 0 && e.Y > 0&& e.X< it.Image.Width&&e.Y< it.Image.Height)
+                            {
+                                var c = ((Bitmap)it.Image).GetPixel(e.X, e.Y);
+                                Pick_RGB(c);
+                            }
+                        }
+                        break;
+                }
+            };
+            it.MouseUp += (sender, e) =>
+            {
+                switch (Tool)
+                {
+                    case Tools.Move:
+                        if (e.Button == MouseButtons.Left)
+                        {
+                            canDrag = false;
                         }
                         break;
                 }
             };
         }
-
         /// <summary>
         /// 获取[里控件]居中于[外控件]时的左上角坐标
         /// </summary>
@@ -286,7 +353,7 @@ namespace Gmage
         HashSet<string> NameHash = new HashSet<string>();
         private string reName(string name)
         {
-            string extension = Path.GetExtension(name);//扩展名 “.aspx”
+            string extension = Path.GetExtension(name);//扩展名
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(name);// 没有扩展名的文件名
             if (!NameHash.Add(name))
             {
@@ -359,6 +426,7 @@ namespace Gmage
                 RollBackMessage(Program.MyArgs);
             }
             Classifier_Load();
+            Change_pB_Color();
         }
 
         /// <summary>
@@ -558,8 +626,8 @@ namespace Gmage
                 tsmi.Click += (click_sender, click_e) =>
                 {
                     Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
-                    ResultImage = SwitchFunc(ResultImage);
-                    Open_Threshold_Config(30);
+                    //ResultImage = SwitchFunc(initBitmap);
+                    Open_Threshold_Config(0);
                 };
             }
         }
@@ -751,15 +819,14 @@ namespace Gmage
         #region 左边工具栏
         private void ToolsClickEvent()
         {
-            mFB_Select.Click+=(sender,e)=> 
+            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Select, mFB_ColorPicker, mFB_Move };
+            foreach (var flatButton in flatButtons)
             {
-                Tool = (Tools)Enum.Parse(typeof(Tools), mFB_Select.Tag.ToString());
-            };
-            mFB_ColorPicker.Click += (sender, e) =>
-            {
-                Tool = (Tools)Enum.Parse(typeof(Tools), mFB_ColorPicker.Tag.ToString());
-            };
-
+                flatButton.Click += (sender, e) =>
+                {
+                    Tool = (Tools)Enum.Parse(typeof(Tools), flatButton.Tag.ToString());
+                };
+            }
         }
 
         private System.Windows.Forms.Cursor MouseCursor()
@@ -769,6 +836,8 @@ namespace Gmage
                 default:
                 case Tools.Empty:
                     return Cursors.Default;
+                case Tools.Move:
+                    return Cursors.Hand;
                 case Tools.Cut:
                 case Tools.RGB_Pick:
                     return Cursors.Cross;
@@ -782,6 +851,7 @@ namespace Gmage
     public enum Tools
     {
         Empty,
+        Move,
         Cut,
         RGB_Pick,
     }

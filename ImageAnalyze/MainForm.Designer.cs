@@ -84,7 +84,7 @@
             this.mPB_Bar = new MaterialSkin.Controls.MaterialProgressBar();
             this.panel1 = new System.Windows.Forms.Panel();
             this.mFB_Select = new MaterialSkin.Controls.MaterialFlatButton();
-            this.materialFlatButton2 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mFB_Cut = new MaterialSkin.Controls.MaterialFlatButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.mTC_Color = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -101,6 +101,8 @@
             this.Mtb_Color = new MaterialSkin.Controls.MaterialTabSelector();
             this.mFB_ColorPicker = new MaterialSkin.Controls.MaterialFlatButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.mFB_Move = new MaterialSkin.Controls.MaterialFlatButton();
+            this.最近打开文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -157,6 +159,7 @@
             // 
             this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.选择图片ToolStripMenuItem,
+            this.最近打开文件ToolStripMenuItem,
             this.toolStripSeparator1,
             this.另存为ToolStripMenuItem});
             this.文件ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
@@ -234,55 +237,55 @@
             this.tsmi_Binarization,
             this.tsmi_Complementary});
             this.tsmi_Change.Name = "tsmi_Change";
-            this.tsmi_Change.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_Change.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Change.Text = "调整";
             // 
             // tsmi_Lighten
             // 
             this.tsmi_Lighten.Name = "tsmi_Lighten";
-            this.tsmi_Lighten.Size = new System.Drawing.Size(112, 22);
+            this.tsmi_Lighten.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Lighten.Tag = "Lighten";
             this.tsmi_Lighten.Text = "亮度";
             // 
             // tsmi_Contrast
             // 
             this.tsmi_Contrast.Name = "tsmi_Contrast";
-            this.tsmi_Contrast.Size = new System.Drawing.Size(112, 22);
+            this.tsmi_Contrast.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Contrast.Tag = "Contrast";
             this.tsmi_Contrast.Text = "对比度";
             // 
             // tsmi_Gray
             // 
             this.tsmi_Gray.Name = "tsmi_Gray";
-            this.tsmi_Gray.Size = new System.Drawing.Size(112, 22);
+            this.tsmi_Gray.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Gray.Tag = "Gray";
             this.tsmi_Gray.Text = "灰度化";
             // 
             // tsmi_Binarization
             // 
             this.tsmi_Binarization.Name = "tsmi_Binarization";
-            this.tsmi_Binarization.Size = new System.Drawing.Size(112, 22);
+            this.tsmi_Binarization.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Binarization.Tag = "Binarization";
             this.tsmi_Binarization.Text = "二值化";
             // 
             // tsmi_Complementary
             // 
             this.tsmi_Complementary.Name = "tsmi_Complementary";
-            this.tsmi_Complementary.Size = new System.Drawing.Size(112, 22);
+            this.tsmi_Complementary.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Complementary.Tag = "Complementary";
             this.tsmi_Complementary.Text = "反相";
             // 
             // tsmi_Frequency
             // 
             this.tsmi_Frequency.Name = "tsmi_Frequency";
-            this.tsmi_Frequency.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_Frequency.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Frequency.Tag = "Frequency";
             this.tsmi_Frequency.Text = "频谱图";
             // 
             // 直方图ToolStripMenuItem
             // 
             this.直方图ToolStripMenuItem.Name = "直方图ToolStripMenuItem";
-            this.直方图ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.直方图ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.直方图ToolStripMenuItem.Text = "直方图";
             this.直方图ToolStripMenuItem.Click += new System.EventHandler(this.btn_Histogram_Click);
             // 
@@ -296,7 +299,7 @@
             this.RotateNoneFlipX,
             this.RotateNoneFlipY});
             this.图像旋转ToolStripMenuItem.Name = "图像旋转ToolStripMenuItem";
-            this.图像旋转ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.图像旋转ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.图像旋转ToolStripMenuItem.Text = "图像旋转";
             // 
             // Clockwise180
@@ -360,26 +363,26 @@
             this.toolStripSeparator4,
             this.tsmi_MedianFilter});
             this.模糊ToolStripMenuItem.Name = "模糊ToolStripMenuItem";
-            this.模糊ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.模糊ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.模糊ToolStripMenuItem.Text = "模糊/滤波";
             // 
             // Tsmi_GaussBlur
             // 
             this.Tsmi_GaussBlur.Name = "Tsmi_GaussBlur";
-            this.Tsmi_GaussBlur.Size = new System.Drawing.Size(124, 22);
+            this.Tsmi_GaussBlur.Size = new System.Drawing.Size(180, 22);
             this.Tsmi_GaussBlur.Tag = "GaussBlur";
             this.Tsmi_GaussBlur.Text = "高斯模糊";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(121, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmi_MedianFilter
             // 
             this.tsmi_MedianFilter.Name = "tsmi_MedianFilter";
             this.tsmi_MedianFilter.ShortcutKeyDisplayString = "";
-            this.tsmi_MedianFilter.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_MedianFilter.Size = new System.Drawing.Size(180, 22);
             this.tsmi_MedianFilter.Tag = "MedianFilter";
             this.tsmi_MedianFilter.Text = "中值滤波";
             // 
@@ -389,20 +392,20 @@
             this.tsmi_GaussNoise,
             this.tsmi_Salt});
             this.噪声ToolStripMenuItem.Name = "噪声ToolStripMenuItem";
-            this.噪声ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.噪声ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.噪声ToolStripMenuItem.Text = "噪声";
             // 
             // tsmi_GaussNoise
             // 
             this.tsmi_GaussNoise.Name = "tsmi_GaussNoise";
-            this.tsmi_GaussNoise.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_GaussNoise.Size = new System.Drawing.Size(180, 22);
             this.tsmi_GaussNoise.Tag = "GaussNoise";
             this.tsmi_GaussNoise.Text = "高斯噪声";
             // 
             // tsmi_Salt
             // 
             this.tsmi_Salt.Name = "tsmi_Salt";
-            this.tsmi_Salt.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_Salt.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Salt.Text = "椒盐噪声";
             this.tsmi_Salt.Click += new System.EventHandler(this.btn_Salt_Click);
             // 
@@ -411,7 +414,7 @@
             this.扭曲ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Polar});
             this.扭曲ToolStripMenuItem.Name = "扭曲ToolStripMenuItem";
-            this.扭曲ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.扭曲ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.扭曲ToolStripMenuItem.Text = "扭曲";
             // 
             // tsmi_Polar
@@ -427,7 +430,7 @@
             this.tsmi_Robert,
             this.tsmi_Smoothed});
             this.边缘检测ToolStripMenuItem.Name = "边缘检测ToolStripMenuItem";
-            this.边缘检测ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.边缘检测ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.边缘检测ToolStripMenuItem.Text = "边缘检测";
             // 
             // tsmi_Robert
@@ -447,14 +450,14 @@
             // tsmi_Sharpen
             // 
             this.tsmi_Sharpen.Name = "tsmi_Sharpen";
-            this.tsmi_Sharpen.Size = new System.Drawing.Size(129, 22);
+            this.tsmi_Sharpen.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Sharpen.Tag = "Sharpen";
             this.tsmi_Sharpen.Text = "锐化";
             // 
             // 字符化ToolStripMenuItem
             // 
             this.字符化ToolStripMenuItem.Name = "字符化ToolStripMenuItem";
-            this.字符化ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.字符化ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.字符化ToolStripMenuItem.Text = "字符画";
             // 
             // 级联分类器ToolStripMenuItem
@@ -606,19 +609,19 @@
             this.mFB_Select.Text = "选";
             this.mFB_Select.UseVisualStyleBackColor = true;
             // 
-            // materialFlatButton2
+            // mFB_Cut
             // 
-            this.materialFlatButton2.Depth = 0;
-            this.materialFlatButton2.Icon = null;
-            this.materialFlatButton2.Location = new System.Drawing.Point(4, 98);
-            this.materialFlatButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialFlatButton2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFlatButton2.Name = "materialFlatButton2";
-            this.materialFlatButton2.Primary = false;
-            this.materialFlatButton2.Size = new System.Drawing.Size(25, 25);
-            this.materialFlatButton2.TabIndex = 24;
-            this.materialFlatButton2.Text = "裁";
-            this.materialFlatButton2.UseVisualStyleBackColor = true;
+            this.mFB_Cut.Depth = 0;
+            this.mFB_Cut.Icon = null;
+            this.mFB_Cut.Location = new System.Drawing.Point(4, 131);
+            this.mFB_Cut.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_Cut.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_Cut.Name = "mFB_Cut";
+            this.mFB_Cut.Primary = false;
+            this.mFB_Cut.Size = new System.Drawing.Size(25, 25);
+            this.mFB_Cut.TabIndex = 24;
+            this.mFB_Cut.Text = "裁";
+            this.mFB_Cut.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -712,7 +715,7 @@
             this.mT_B.Size = new System.Drawing.Size(36, 23);
             this.mT_B.TabIndex = 28;
             this.mT_B.TabStop = false;
-            this.mT_B.Text = "0";
+            this.mT_B.Text = "51";
             this.mT_B.UseSystemPasswordChar = false;
             // 
             // mT_G
@@ -730,7 +733,7 @@
             this.mT_G.Size = new System.Drawing.Size(36, 23);
             this.mT_G.TabIndex = 28;
             this.mT_G.TabStop = false;
-            this.mT_G.Text = "0";
+            this.mT_G.Text = "51";
             this.mT_G.UseSystemPasswordChar = false;
             // 
             // mT_R
@@ -749,7 +752,7 @@
             this.mT_R.Size = new System.Drawing.Size(36, 23);
             this.mT_R.TabIndex = 27;
             this.mT_R.TabStop = false;
-            this.mT_R.Text = "0";
+            this.mT_R.Text = "51";
             this.mT_R.UseSystemPasswordChar = false;
             // 
             // pB_Color
@@ -771,6 +774,7 @@
             this.tB_G.Size = new System.Drawing.Size(112, 25);
             this.tB_G.TabIndex = 5;
             this.tB_G.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.tB_G.Value = 51;
             // 
             // tB_R
             // 
@@ -781,6 +785,7 @@
             this.tB_R.Size = new System.Drawing.Size(112, 25);
             this.tB_R.TabIndex = 4;
             this.tB_R.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.tB_R.Value = 51;
             // 
             // tB_B
             // 
@@ -791,6 +796,7 @@
             this.tB_B.Size = new System.Drawing.Size(112, 25);
             this.tB_B.TabIndex = 6;
             this.tB_B.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.tB_B.Value = 51;
             // 
             // Mtb_Color
             // 
@@ -808,7 +814,7 @@
             // 
             this.mFB_ColorPicker.Depth = 0;
             this.mFB_ColorPicker.Icon = null;
-            this.mFB_ColorPicker.Location = new System.Drawing.Point(4, 130);
+            this.mFB_ColorPicker.Location = new System.Drawing.Point(4, 163);
             this.mFB_ColorPicker.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.mFB_ColorPicker.MouseState = MaterialSkin.MouseState.HOVER;
             this.mFB_ColorPicker.Name = "mFB_ColorPicker";
@@ -828,14 +834,36 @@
             this.pictureBox1.TabIndex = 32;
             this.pictureBox1.TabStop = false;
             // 
+            // mFB_Move
+            // 
+            this.mFB_Move.Depth = 0;
+            this.mFB_Move.Icon = null;
+            this.mFB_Move.Location = new System.Drawing.Point(4, 99);
+            this.mFB_Move.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_Move.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_Move.Name = "mFB_Move";
+            this.mFB_Move.Primary = false;
+            this.mFB_Move.Size = new System.Drawing.Size(25, 25);
+            this.mFB_Move.TabIndex = 28;
+            this.mFB_Move.Tag = "Move";
+            this.mFB_Move.Text = "移";
+            this.mFB_Move.UseVisualStyleBackColor = true;
+            // 
+            // 最近打开文件ToolStripMenuItem
+            // 
+            this.最近打开文件ToolStripMenuItem.Name = "最近打开文件ToolStripMenuItem";
+            this.最近打开文件ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.最近打开文件ToolStripMenuItem.Text = "最近打开文件";
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1174, 728);
+            this.Controls.Add(this.mFB_Move);
             this.Controls.Add(this.mFB_ColorPicker);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.materialFlatButton2);
+            this.Controls.Add(this.mFB_Cut);
             this.Controls.Add(this.mFB_Select);
             this.Controls.Add(this.mPB_Bar);
             this.Controls.Add(this.panel2);
@@ -843,6 +871,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.mTC_ImageTab);
             this.Controls.Add(this.panel1);
+            this.KeyPreview = true;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gmage";
@@ -922,7 +951,7 @@
         internal System.Windows.Forms.ToolStripMenuItem tsmi_Filter;
         private MaterialSkin.Controls.MaterialProgressBar mPB_Bar;
         private MaterialSkin.Controls.MaterialFlatButton mFB_Select;
-        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton2;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_Cut;
         private System.Windows.Forms.GroupBox groupBox1;
         private MaterialSkin.Controls.MaterialTabControl mTC_Color;
         private System.Windows.Forms.TabPage tabPage1;
@@ -939,6 +968,8 @@
         private System.Windows.Forms.Label label1;
         private MaterialSkin.Controls.MaterialFlatButton mFB_ColorPicker;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_Move;
+        private System.Windows.Forms.ToolStripMenuItem 最近打开文件ToolStripMenuItem;
     }
 }
 

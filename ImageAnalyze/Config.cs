@@ -21,7 +21,7 @@ namespace Gmage
 
         public static HashSet<string> PluginList = new HashSet<string>();
         public static HashSet<string> Classifier = new HashSet<string>();
-
+      
         /// <summary>
         /// 设置右键菜单单选
         /// </summary>
