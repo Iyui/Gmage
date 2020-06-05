@@ -17,6 +17,7 @@ namespace Gmage
         public static bool bReStart;
 
         public static int homePage;
+        public static bool WindowStateMax;
 
 
         public static HashSet<string> PluginList = new HashSet<string>();
@@ -103,8 +104,8 @@ namespace Gmage
             var val = GmageConfigXML.XmlHandle.LoadPreferences("Conventional", "HomePage","0");
             var value = int.Parse(val);
             homePage = value;
+            WindowStateMax = bool.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Conventional", "WindowState", "false"));
             return value;
-         
         }
     }
 

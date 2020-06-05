@@ -28,6 +28,12 @@ namespace Gmage
             set => MCB_ChildIndex.Checked = value;
             get => MCB_ChildIndex.Checked;
         }
+
+        public bool WindowStateMax
+        {
+            set => mCB_WindowStateMax.Checked = value;
+            get => mCB_WindowStateMax.Checked;
+        }
         #endregion
 
         public Preferences()
@@ -50,8 +56,8 @@ namespace Gmage
             Config.homePage = HomePageIndex;
             SetPreferences("Conventional", "HomePage", HomePageIndex.ToString());
             SetPreferences("Conventional", "Theme", DarkTheme.ToString().ToLower());
-            SetPreferences("Conventional", "Batch_ChildIndex", Batch_ChildIndex.ToString().ToLower());
-            
+            SetPreferences("Conventional", "HomePage", HomePageIndex.ToString());
+            SetPreferences("Conventional", "WindowState", WindowStateMax.ToString().ToLower());
         }
 
         private void SetPreferences(string val1, string val2, string val3)
@@ -67,6 +73,7 @@ namespace Gmage
             DarkTheme = bool.Parse(XmlHandle.LoadPreferences("Conventional", "Theme", "true"));
             mRB_LIght.Checked = !DarkTheme;
             Batch_ChildIndex = bool.Parse(XmlHandle.LoadPreferences("Conventional", "Batch_ChildIndex", "false"));
+            WindowStateMax = Config.WindowStateMax;
         }
 
         private void Preferences_Load(object sender, EventArgs e)

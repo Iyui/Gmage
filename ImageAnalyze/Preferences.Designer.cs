@@ -52,6 +52,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.mFB_OK = new MaterialSkin.Controls.MaterialFlatButton();
             this.materialFlatButton2 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.mCB_WindowStateMax = new MaterialSkin.Controls.MaterialCheckBox();
             this.materialTabControl1.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -63,6 +65,7 @@
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // materialTabSelector1
@@ -95,6 +98,7 @@
             // tabPage4
             // 
             this.tabPage4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPage4.Controls.Add(this.groupBox6);
             this.tabPage4.Controls.Add(this.groupBox3);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -158,6 +162,7 @@
             // 
             this.mRB_LIght.AutoSize = true;
             this.mRB_LIght.Depth = 0;
+            this.mRB_LIght.Enabled = false;
             this.mRB_LIght.Font = new System.Drawing.Font("Roboto", 10F);
             this.mRB_LIght.Location = new System.Drawing.Point(21, 26);
             this.mRB_LIght.Margin = new System.Windows.Forms.Padding(0);
@@ -216,6 +221,7 @@
             this.MCB_ChildIndex.AutoSize = true;
             this.MCB_ChildIndex.Cursor = System.Windows.Forms.Cursors.Default;
             this.MCB_ChildIndex.Depth = 0;
+            this.MCB_ChildIndex.Enabled = false;
             this.MCB_ChildIndex.Font = new System.Drawing.Font("Roboto", 10F);
             this.MCB_ChildIndex.Location = new System.Drawing.Point(18, 30);
             this.MCB_ChildIndex.Margin = new System.Windows.Forms.Padding(0);
@@ -258,6 +264,7 @@
             // 
             this.materialFlatButton6.BackColor = System.Drawing.Color.LightSeaGreen;
             this.materialFlatButton6.Depth = 0;
+            this.materialFlatButton6.Enabled = false;
             this.materialFlatButton6.Icon = null;
             this.materialFlatButton6.Location = new System.Drawing.Point(19, 28);
             this.materialFlatButton6.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -272,6 +279,7 @@
             // materialFlatButton5
             // 
             this.materialFlatButton5.Depth = 0;
+            this.materialFlatButton5.Enabled = false;
             this.materialFlatButton5.Icon = null;
             this.materialFlatButton5.Location = new System.Drawing.Point(19, 76);
             this.materialFlatButton5.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -323,6 +331,7 @@
             this.materialFlatButton4.AutoSize = true;
             this.materialFlatButton4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.materialFlatButton4.Depth = 0;
+            this.materialFlatButton4.Enabled = false;
             this.materialFlatButton4.Icon = null;
             this.materialFlatButton4.Location = new System.Drawing.Point(17, 76);
             this.materialFlatButton4.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -340,6 +349,7 @@
             this.materialFlatButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.materialFlatButton3.BackColor = System.Drawing.Color.LightSeaGreen;
             this.materialFlatButton3.Depth = 0;
+            this.materialFlatButton3.Enabled = false;
             this.materialFlatButton3.Icon = null;
             this.materialFlatButton3.Location = new System.Drawing.Point(17, 28);
             this.materialFlatButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -395,6 +405,36 @@
             this.materialFlatButton2.Text = "取消";
             this.materialFlatButton2.UseVisualStyleBackColor = true;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.mCB_WindowStateMax);
+            this.groupBox6.ForeColor = System.Drawing.Color.White;
+            this.groupBox6.Location = new System.Drawing.Point(22, 86);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(200, 243);
+            this.groupBox6.TabIndex = 3;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "启动";
+            // 
+            // mCB_WindowStateMax
+            // 
+            this.mCB_WindowStateMax.AutoSize = true;
+            this.mCB_WindowStateMax.Checked = true;
+            this.mCB_WindowStateMax.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.mCB_WindowStateMax.Cursor = System.Windows.Forms.Cursors.Default;
+            this.mCB_WindowStateMax.Depth = 0;
+            this.mCB_WindowStateMax.Font = new System.Drawing.Font("Roboto", 10F);
+            this.mCB_WindowStateMax.Location = new System.Drawing.Point(19, 26);
+            this.mCB_WindowStateMax.Margin = new System.Windows.Forms.Padding(0);
+            this.mCB_WindowStateMax.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.mCB_WindowStateMax.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mCB_WindowStateMax.Name = "mCB_WindowStateMax";
+            this.mCB_WindowStateMax.Ripple = true;
+            this.mCB_WindowStateMax.Size = new System.Drawing.Size(105, 30);
+            this.mCB_WindowStateMax.TabIndex = 6;
+            this.mCB_WindowStateMax.Text = "窗体最大化";
+            this.mCB_WindowStateMax.UseVisualStyleBackColor = true;
+            // 
             // Preferences
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -425,6 +465,8 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -455,5 +497,7 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.ListBox lB_Plugin;
         private System.Windows.Forms.ListBox lB_Classifier;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private MaterialSkin.Controls.MaterialCheckBox mCB_WindowStateMax;
     }
 }

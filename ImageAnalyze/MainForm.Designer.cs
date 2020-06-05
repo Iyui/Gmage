@@ -103,6 +103,10 @@
             this.Mtb_Color = new MaterialSkin.Controls.MaterialTabSelector();
             this.mFB_ColorPicker = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Move = new MaterialSkin.Controls.MaterialFlatButton();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.mTC_Layer = new MaterialSkin.Controls.MaterialTabControl();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -113,6 +117,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tB_G)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tB_R)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tB_B)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            this.mTC_Layer.SuspendLayout();
             this.SuspendLayout();
             // 
             // materialContextMenuStrip1
@@ -146,12 +152,12 @@
             this.tsmi_Image,
             this.tsmi_Filter,
             this.级联分类器ToolStripMenuItem,
-            this.tsmi_Batch,
             this.帮助ToolStripMenuItem,
-            this.tsmi_Index});
+            this.tsmi_Index,
+            this.tsmi_Batch});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(420, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(540, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -207,8 +213,9 @@
             // 
             // tsmi_Clear
             // 
+            this.tsmi_Clear.Enabled = false;
             this.tsmi_Clear.Name = "tsmi_Clear";
-            this.tsmi_Clear.Size = new System.Drawing.Size(148, 22);
+            this.tsmi_Clear.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Clear.Text = "清除所有效果";
             this.tsmi_Clear.Click += new System.EventHandler(this.tsmi_Clear_Click);
             // 
@@ -493,6 +500,7 @@
             // 
             // tsmi_Batch
             // 
+            this.tsmi_Batch.BackColor = System.Drawing.Color.Transparent;
             this.tsmi_Batch.ForeColor = System.Drawing.Color.White;
             this.tsmi_Batch.Name = "tsmi_Batch";
             this.tsmi_Batch.Size = new System.Drawing.Size(56, 21);
@@ -656,7 +664,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.Black;
+            this.tabPage1.BackColor = System.Drawing.Color.Gray;
             this.tabPage1.Controls.Add(this.pB_Color);
             this.tabPage1.Controls.Add(this.pictureBox1);
             this.tabPage1.Controls.Add(this.label3);
@@ -857,22 +865,68 @@
             this.mFB_Move.Text = "移";
             this.mFB_Move.UseVisualStyleBackColor = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox2.Controls.Add(this.mTC_Layer);
+            this.groupBox2.Controls.Add(this.materialTabSelector1);
+            this.groupBox2.Location = new System.Drawing.Point(919, 245);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(253, 471);
+            this.groupBox2.TabIndex = 29;
+            this.groupBox2.TabStop = false;
+            // 
+            // mTC_Layer
+            // 
+            this.mTC_Layer.Controls.Add(this.tabPage2);
+            this.mTC_Layer.Depth = 0;
+            this.mTC_Layer.Location = new System.Drawing.Point(6, 50);
+            this.mTC_Layer.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mTC_Layer.Name = "mTC_Layer";
+            this.mTC_Layer.SelectedIndex = 0;
+            this.mTC_Layer.Size = new System.Drawing.Size(245, 415);
+            this.mTC_Layer.TabIndex = 1;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.BackColor = System.Drawing.Color.Gray;
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(237, 389);
+            this.tabPage2.TabIndex = 0;
+            this.tabPage2.Text = "图层";
+            // 
+            // materialTabSelector1
+            // 
+            this.materialTabSelector1.BaseTabControl = this.mTC_Layer;
+            this.materialTabSelector1.Depth = 0;
+            this.materialTabSelector1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.materialTabSelector1.Location = new System.Drawing.Point(3, 17);
+            this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialTabSelector1.Name = "materialTabSelector1";
+            this.materialTabSelector1.Size = new System.Drawing.Size(247, 27);
+            this.materialTabSelector1.TabIndex = 0;
+            this.materialTabSelector1.Text = "materialTabSelector1";
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1174, 728);
+            this.Controls.Add(this.mPB_Bar);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.mFB_Move);
             this.Controls.Add(this.mFB_ColorPicker);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.mFB_Cut);
             this.Controls.Add(this.mFB_Select);
-            this.Controls.Add(this.mPB_Bar);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.mtS_Selected);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.mTC_ImageTab);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.groupBox1);
             this.KeyPreview = true;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -891,6 +945,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tB_G)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tB_R)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tB_B)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.mTC_Layer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -973,6 +1029,10 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private MaterialSkin.Controls.MaterialFlatButton mFB_Move;
         private System.Windows.Forms.ToolStripMenuItem tsmi_History;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private MaterialSkin.Controls.MaterialTabControl mTC_Layer;
+        private System.Windows.Forms.TabPage tabPage2;
+        private MaterialSkin.Controls.MaterialTabSelector materialTabSelector1;
     }
 }
 
