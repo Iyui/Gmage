@@ -225,6 +225,7 @@ namespace Gmage
         Loading,
         PrgressInfo,
         PathTable,
+        History,
 
         BatchError,
         BatchDeadlyError,
@@ -878,9 +879,9 @@ namespace GmageConfigXML
             return str;
         }
 
-        public static string LoadPreferences(string val1, string val2, string def)
+        public static string LoadPreferences(string val1, string val2, string def,string preNood = "Preferences")
         {
-            var value = LoadControlValue("Preferences", val1, val2);
+            var value = LoadControlValue(preNood, val1, val2);
             if (string.IsNullOrEmpty(value))
             {
                 value = def;

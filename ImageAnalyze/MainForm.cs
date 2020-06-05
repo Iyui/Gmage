@@ -28,7 +28,7 @@ namespace Gmage
 {
     public partial class MainForm : MaterialForm
     {
-        #region 变量
+       
         /// <summary>
         /// 消息处理
         /// </summary>
@@ -60,13 +60,11 @@ namespace Gmage
                     else
                         mPB_Bar.Visible = false;
                     break;
-                case MessageType.ImageInfo:
-                    break;
-                case MessageType.PrgressInfo:
+                case MessageType.History:
+                    AddHistoryItems(e.Message);
                     break;
             }
         }
-        ToolTip toolTip = new ToolTip();
 
         private void SubthreadMessageReceive(MessageEventArgs e)
         {
@@ -83,11 +81,13 @@ namespace Gmage
                 //throw new Exception("", ex);
             }
         }
-
+        #region 变量
         public Tools Tool{set; get;} = Tools.Empty;
         private Tools lastTool= Tools.Empty;
         private bool spaceUp = false;
-
+        ToolTip toolTip = new ToolTip();
+        int history_Count = 10;
+        int history_Name_index = 1;
         public Bitmap ResultImage
         {
             set => col.Image = value; get => (Bitmap)col.Image;
@@ -132,7 +132,7 @@ namespace Gmage
             SetToolTipPromot();
             this.KeyDown += (sender, e) =>
             {
-                if (e.KeyCode == Keys.Space)
+                if (e.KeyCode == Keys.Space)//空格键按下可移动图片，仿PS
                 {
                     if (spaceUp)
                     {
@@ -150,6 +150,7 @@ namespace Gmage
                     spaceUp = true ;
                 }
             };
+            LoadHistory();
         }
 
         /// <summary>
@@ -157,7 +158,6 @@ namespace Gmage
         /// </summary>
         private void SetToolTipPromot()
         {
-           
             toolTip.SetToolTip(mFB_Cut, "裁剪");
             toolTip.SetToolTip(mFB_ColorPicker, "拾色器");
         }
@@ -192,6 +192,7 @@ namespace Gmage
             {
                 RollBackMessage(++c / count * 100f);
                 SetImageShow(filename);
+                RollBackMessage(filename, MessageType.History);
             }
             CheckonIndex();
         }
@@ -221,7 +222,7 @@ namespace Gmage
                 panel1.Visible = false;
             }
             var initImage = (Bitmap)Image.FromFile(filename);
-            ResultImage = initImage.Clone() as Bitmap;
+            //ResultImage = initImage.Clone() as Bitmap; //严重的BUG 
             initBitmap = initImage.Clone() as Bitmap; ;
             SetTab(Path.GetFileNameWithoutExtension(filename));
             if (!HideTab())
@@ -265,7 +266,6 @@ namespace Gmage
             it.Location = p;
             it.Anchor = AnchorStyles.Left|AnchorStyles.Top;
             Point mouse_offset= new Point();
-            Point mouse_offset2 = p;
 
             it.MouseDown += (sender, e) =>
             {
@@ -379,6 +379,89 @@ namespace Gmage
                 return reName(fileNameWithoutExtension, original, extension, name, serialNum);
             return name;
         }
+        Queue<string> history = new Queue<string>();
+        private void SetHistory()
+        {
+            int index =1;
+            history.Clear();
+            HashSet<string> hs_history = new HashSet<string>();
+            for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)
+            {
+                SetHistory("history", $"history{index++}", tsmi_History.DropDownItems[j].Tag.ToString());
+            }
+        }
+
+        private void LoadHistory()
+        {
+            for(int i = history_Count-1; i>0; i--)
+            {
+                var h = LoadHistory("history", $"history{i}", null);
+                if (!string.IsNullOrEmpty(h))
+                {
+                    history.Enqueue(h);
+                    AddHistoryItems(i, h);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 打开图片信息添加到最近打开
+        /// </summary>
+        private void AddHistoryItems(string filename)
+        {
+            AddHistoryItems(history_Count+history_Name_index, filename);
+            history_Name_index++;//防止控件重名
+            history.Enqueue(filename);//最近打开，最多history_Count项
+            if (history.Count > history_Count)
+                history.Dequeue();
+        }
+        private void AddHistoryItems(int i,string h)
+        {
+            ToolStripMenuItem items = new ToolStripMenuItem()
+            {
+                Name = $"tsmi_history{i}",
+                Text = $"{h}",
+                Tag = h,
+            };
+            items.Click += (sender, e) =>
+            {
+                tsmi_History.DropDownItems.Remove(items);//点击后当前item提前到第一行
+               // tsmi_History.DropDownItems.Insert(0, items);
+                string[] file = new string[] { (string)items.Tag };
+                RollBackMessage(file);
+                
+                //for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)
+                //{
+                //    tsmi_History.DropDownItems[j].Text = $"{j + 1} {tsmi_History.DropDownItems[j].Tag.ToString()}";
+                //}
+            };
+            tsmi_History.DropDownItems.Insert(0, items);
+            HashSet<string> hs_history = new HashSet<string>();
+            for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)//清除相同的记录,时间复杂度N2
+            {
+                if (!hs_history.Add(tsmi_History.DropDownItems[j].Tag.ToString()))
+                {
+                    tsmi_History.DropDownItems.RemoveAt(j);
+                    j = -1;
+                    hs_history.Clear();
+                }
+            }
+            for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)
+            {
+                tsmi_History.DropDownItems[j].Text = $"{j + 1} {tsmi_History.DropDownItems[j].Tag.ToString()}";
+            }
+        }
+
+        private void SetHistory(string val1, string val2, string val3)
+        {
+            GmageConfigXML.XmlHandle.SaveControlValue("MainForm", val1, val2, val3);
+        }
+
+        private string LoadHistory(string val1, string val2, string val3)
+        {
+           return GmageConfigXML.XmlHandle.LoadPreferences(val1, val2, val3, "MainForm");
+        }
+
 
         private void btn_Histogram_Click(object sender, EventArgs e)
         {
@@ -504,8 +587,12 @@ namespace Gmage
             };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                ResultImage.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
-                MessageBox.Show("保存成功");
+                try
+                {
+                    ResultImage.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    MessageBox.Show("保存成功");
+                }
+                catch { };
             }
         }
 
@@ -843,9 +930,13 @@ namespace Gmage
                     return Cursors.Cross;
             }
         }
+
         #endregion
 
-
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SetHistory();
+        }
     }
 
     public enum Tools
