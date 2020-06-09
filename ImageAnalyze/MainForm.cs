@@ -427,7 +427,10 @@ namespace Gmage
             it.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             Point mouse_down = new Point();
             Point mouse_up = new Point();
+            Point mouse_wh = new Point();
 
+            Point Cut_StartPoint = new Point();
+            int[] RectP = DrawRectangle(0,0,0,0);
             it.MouseDown += (sender, e) =>
             {
                 switch (Tool)
@@ -436,12 +439,10 @@ namespace Gmage
                     case Tools.Empty:
                         break;
                     case Tools.Cut:
-                        if (!isCuting)
-                        {
-                            isCuting = true;
-                            mouse_down.X = e.X;
-                            mouse_down.Y = e.Y;
-                        }
+                        isCuting = true;
+                        mouse_down.X = e.X;
+                        mouse_down.Y = e.Y;
+
                         break;
                     case Tools.Move:
                         canDrag = true;
@@ -454,7 +455,6 @@ namespace Gmage
                         break;
                     case Tools.Draw:
                         _isPressed = true;
-
                         no_of_points = 0;
                         pt[no_of_points].setxy(e.X, e.Y);
                         no_of_points = no_of_points + 1;
@@ -470,7 +470,35 @@ namespace Gmage
                     case Tools.Empty:
                         break;
                     case Tools.Cut:
-                        //if (isCuting)
+                        if (isCuting && e.Button == MouseButtons.Left)
+                        {
+                            foreach (Control c in mTC_ImageTab.SelectedTab.Controls)
+                            {
+                                if (c is PictureBox)
+                                {
+                                    Graphics g = c.CreateGraphics();
+                                    c.Refresh();
+                                    var pen = new Pen(Color.Black, 1);
+                                    float[] dashValues = { 2, 3 };
+                                    // pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                                    pen.DashPattern = dashValues;
+                                    mouse_up.X = e.X;
+                                    mouse_up.Y = e.Y;
+                                    RectP = DrawRectangle(mouse_down.X, mouse_down.Y, mouse_up.X, mouse_up.Y);
+                                    Cut_StartPoint.X = RectP[0];
+                                    Cut_StartPoint.Y = RectP[1];
+                                    mouse_wh.X = RectP[2];
+                                    mouse_wh.Y = RectP[3];
+
+                                    g.DrawRectangle(pen, Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y); 
+
+                                    g.Dispose();
+                                    GC.Collect();
+                                    break;
+                                }
+
+                            }
+                        }
                         // ResultImage = (Bitmap)DrawRectangle(ResultImage, mouse_down.X, mouse_down.Y, mouse_up.X - mouse_down.X, mouse_up.Y - mouse_down.Y);
                         break;
                     case Tools.Move:
@@ -515,7 +543,7 @@ namespace Gmage
                                     x = Convert.ToInt32(splinex[i]);
                                     y = Convert.ToInt32(spliney[i]);
 
-                                    _penColor = pB_Color.BackColor;
+                                    _penColor = FrontColor;
 
                                     g.DrawEllipse(new Pen(_penColor, _penWidth), x - 1, y, _penWidth, _penWidth);
                                     g.DrawEllipse(new Pen(_penColor, _penWidth), x + 1, y, _penWidth, _penWidth);
@@ -538,8 +566,8 @@ namespace Gmage
                             }
 
                             no_of_points = no_of_points + 1;
-                        }  
-                break;
+                        }
+                        break;
                 }
             };
             it.MouseUp += (sender, e) =>
@@ -553,9 +581,7 @@ namespace Gmage
                         if (isCuting && !isCutingUp)
                         {
                             isCutingUp = true;
-                            mouse_up.X = e.X;
-                            mouse_up.Y = e.Y;
-                            DrawRectangle(ResultImage, mouse_down.X, mouse_down.Y, mouse_up.X - mouse_down.X, mouse_up.Y - mouse_down.Y);
+                            //DrawRectangle(ResultImage, mouse_down.X, mouse_down.Y, mouse_up.X - mouse_down.X, mouse_up.Y - mouse_down.Y);
                         }
                         break;
                     case Tools.Move:
@@ -581,11 +607,11 @@ namespace Gmage
                     case Tools.Cut:
                         if (!(isCuting && isCutingUp))
                             return;
-                        if (e.X > mouse_down.X && e.X < mouse_up.X
-                        && e.Y > mouse_down.Y && e.Y < mouse_up.Y)
+                        if (e.X > Cut_StartPoint.X && e.X < Cut_StartPoint.X+ mouse_wh.X
+                        && e.Y > Cut_StartPoint.Y && e.Y < Cut_StartPoint.Y + mouse_wh.Y)
                         {
                             isCuting = isCutingUp = false;
-                            Cut(mouse_down.X + 1, mouse_down.Y + 1, mouse_up.X - mouse_down.X, mouse_up.Y - mouse_down.Y);
+                            Cut(Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
                         }
                         break;
                 }
@@ -724,6 +750,13 @@ namespace Gmage
             GmageConfigXML.XmlHandle.SaveControlValue("MainForm", val1, val2, val3);
         }
 
+        private void SaveInfo()
+        {
+            GmageConfigXML.XmlHandle.SaveControlValue("MainForm", "Color", "R", Color_R.ToString());
+            GmageConfigXML.XmlHandle.SaveControlValue("MainForm", "Color", "G", Color_G.ToString());
+            GmageConfigXML.XmlHandle.SaveControlValue("MainForm", "Color", "B", Color_B.ToString());
+        }
+
         private string LoadHistory(string val1, string val2, string val3)
         {
             return GmageConfigXML.XmlHandle.LoadPreferences(val1, val2, val3, "MainForm");
@@ -776,6 +809,9 @@ namespace Gmage
                 RollBackMessage(Program.MyArgs);
             }
             Classifier_Load();
+            Color_R = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "R", "51", "MainForm"));
+            Color_G = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "G", "51", "MainForm"));
+            Color_B = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "B", "51", "MainForm"));
             Change_pB_Color();
         }
 
@@ -1013,6 +1049,11 @@ namespace Gmage
             }
         }
 
+        public Color FrontColor
+        {
+            get => pB_Color.BackColor;
+        }
+
         public int Color_R
         {
             get
@@ -1150,6 +1191,7 @@ namespace Gmage
 
         private void Change_pB_Color()
         {
+
             pB_Color.BackColor = Color.FromArgb(Color_R, Color_G, Color_B);
         }
 
@@ -1210,6 +1252,35 @@ namespace Gmage
             return image;
         }
 
+        private int[] DrawRectangle(int startX,int startY, int endX, int endY)
+        {
+            var diffX = endX - startX;
+            var diffY = endY - startY;
+
+            if (diffX > 0 && diffY > 0)
+                return new int[] { startX, startY, diffX, diffY };
+            else
+            {
+                if (diffX > 0 && diffY < 0)        //仅向上
+                {
+                    int tmpStartY = startY + diffY;
+                    return new int[] { startX, tmpStartY, diffX, -diffY };
+                }
+                else if (diffX < 0 && diffY < 0)   //向上，且向左
+                {
+                    int tmpStartX = startX + diffX;
+                    int tmpStartY = startY + diffY;
+                    return new int[] { tmpStartX, tmpStartY, -diffX, -diffY };
+                }
+                else if (diffX < 0 && diffY > 0)    //仅向左
+                {
+                    int tmpStartX = startX + diffX;
+                    return new int[] { tmpStartX, startY, -diffX, diffY };
+                }
+            }
+            return new int[] { startX, startY, diffX, diffY };
+        }
+
         public void bsp(point p1, point p2, point p3, point p4, int divisions)
         {
             double[] a = new double[5];
@@ -1257,6 +1328,7 @@ namespace Gmage
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             SetHistory();
+            SaveInfo();
         }
     }
 
