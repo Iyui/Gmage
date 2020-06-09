@@ -85,7 +85,6 @@ namespace Gmage
 
 
         private readonly MaterialSkinManager materialSkinManager;
-        private string INputPath;
         private string OUTputPath;
         DataTable dt = new DataTable();
         HashSet<string> ImagePaths = new HashSet<string>();

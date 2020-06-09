@@ -140,11 +140,12 @@ using MaterialSkin.Controls;
 using static Gmage.RollBack;
 using static Gmage.ImageProcess;
 using System.Threading;
+using System.Drawing.Drawing2D;
 namespace Gmage
 {
     public partial class MainForm : MaterialForm
     {
-       
+
         /// <summary>
         /// 消息处理
         /// </summary>
@@ -198,8 +199,8 @@ namespace Gmage
             }
         }
         #region 变量
-        public Tools Tool{set; get;} = Tools.Empty;
-        private Tools lastTool= Tools.Empty;
+        public Tools Tool { set; get; } = Tools.Empty;
+        private Tools lastTool = Tools.Empty;
         private bool spaceUp = false;
         ToolTip toolTip = new ToolTip();
         int history_Count = 10;
@@ -214,8 +215,39 @@ namespace Gmage
         private Hashtable htTabImageName = new Hashtable();
 
         bool canDrag = false;
-
+        bool isCuting = false;
+        bool isCutingUp = false;
         //Bitmap 
+        private Color _penColor = Color.Yellow;
+        private float _penWidth = 1;
+        private bool _isPressed = false;
+        private int _x_offset = 4;
+        private int _y_offset = 20;
+
+        public double[] splinex = new double[1001];
+        public double[] spliney = new double[1001];
+        public point[] pt = new point[6];
+        public int no_of_points = 0;
+        int[] a1 = new int[12];
+        int[] b1 = new int[12];
+        public enum PenType
+        {
+            k_pen = 0x1,
+            k_hight_pen = 0x2,
+            k_pai_pen
+        }
+        public struct point
+        {
+            public int x;
+            public int y;
+
+            public void setxy(int i, int j)
+            {
+                x = i;
+                y = j;
+            }
+        }
+
 
         #endregion
         private readonly MaterialSkinManager materialSkinManager;
@@ -232,7 +264,7 @@ namespace Gmage
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             menuStrip1.BackColor = ((int)Primary.BlueGrey900).ToColor();
 
-            if(Config.WindowStateMax)
+            if (Config.WindowStateMax)
                 WindowState = FormWindowState.Maximized;
             else
                 WindowState = FormWindowState.Normal;
@@ -268,7 +300,7 @@ namespace Gmage
                 if (e.KeyCode == Keys.Space)
                 {
                     Tool = lastTool;
-                    spaceUp = true ;
+                    spaceUp = true;
                 }
             };
             LoadHistory();
@@ -392,8 +424,9 @@ namespace Gmage
             it.Height = it.Image.Height;
             var p = GetControlCenterLocation(tp, it);
             it.Location = p;
-            it.Anchor = AnchorStyles.Left|AnchorStyles.Top;
-            Point mouse_offset= new Point();
+            it.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            Point mouse_down = new Point();
+            Point mouse_up = new Point();
 
             it.MouseDown += (sender, e) =>
             {
@@ -402,14 +435,29 @@ namespace Gmage
                     default:
                     case Tools.Empty:
                         break;
+                    case Tools.Cut:
+                        if (!isCuting)
+                        {
+                            isCuting = true;
+                            mouse_down.X = e.X;
+                            mouse_down.Y = e.Y;
+                        }
+                        break;
                     case Tools.Move:
                         canDrag = true;
-                        mouse_offset.X = -e.X;
-                        mouse_offset.Y = -e.Y;
+                        mouse_down.X = -e.X;
+                        mouse_down.Y = -e.Y;
                         break;
                     case Tools.RGB_Pick:
-                        var c = ((Bitmap)it.Image).GetPixel(e.X,e.Y);
+                        var c = ((Bitmap)it.Image).GetPixel(e.X, e.Y);
                         Pick_RGB(c);
+                        break;
+                    case Tools.Draw:
+                        _isPressed = true;
+
+                        no_of_points = 0;
+                        pt[no_of_points].setxy(e.X, e.Y);
+                        no_of_points = no_of_points + 1;
                         break;
                 }
             };
@@ -421,32 +469,123 @@ namespace Gmage
                     default:
                     case Tools.Empty:
                         break;
+                    case Tools.Cut:
+                        //if (isCuting)
+                        // ResultImage = (Bitmap)DrawRectangle(ResultImage, mouse_down.X, mouse_down.Y, mouse_up.X - mouse_down.X, mouse_up.Y - mouse_down.Y);
+                        break;
                     case Tools.Move:
-                        if (e.Button == MouseButtons.Left&&canDrag)
+                        if (e.Button == MouseButtons.Left && canDrag)
                         {
-                            it.Location =new Point(it.Left + e.X+ mouse_offset.X, it.Top + e.Y+ mouse_offset.Y);
+                            it.Location = new Point(it.Left + e.X + mouse_down.X, it.Top + e.Y + mouse_down.Y);
                         }
                         break;
                     case Tools.RGB_Pick:
                         if (e.Button == MouseButtons.Left)
                         {
-                            if (e.X > 0 && e.Y > 0&& e.X< it.Image.Width&&e.Y< it.Image.Height)
+                            if (e.X > 0 && e.Y > 0 && e.X < it.Image.Width && e.Y < it.Image.Height)
                             {
                                 var c = ((Bitmap)it.Image).GetPixel(e.X, e.Y);
                                 Pick_RGB(c);
                             }
                         }
                         break;
+                    case Tools.Draw:
+                        if (_isPressed)
+                        {
+                            if (no_of_points > 3)
+                            {
+                                pt[0] = pt[1]; pt[1] = pt[2]; pt[2] = pt[3];
+                                pt[3].setxy(e.X, e.Y);
+                                double temp = Math.Sqrt(Math.Pow(pt[2].x - pt[1].x, 2F) + Math.Pow(pt[2].y - pt[1].y, 2F));
+                                int interpol = System.Convert.ToInt32(temp);
+                                bsp(pt[0], pt[1], pt[2], pt[3], interpol);
+                                int i;
+                                var bmpOut = ResultImage.Clone() as Bitmap;
+
+                                Graphics g = Graphics.FromImage(bmpOut);
+
+                                int x, y;
+
+                                g.SmoothingMode = SmoothingMode.AntiAlias;  //使绘图质量最高，即消除锯齿
+                                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                g.CompositingQuality = CompositingQuality.HighQuality;
+
+                                for (i = 0; i <= interpol - 1; i++)
+                                {
+                                    x = Convert.ToInt32(splinex[i]);
+                                    y = Convert.ToInt32(spliney[i]);
+
+                                    _penColor = pB_Color.BackColor;
+
+                                    g.DrawEllipse(new Pen(_penColor, _penWidth), x - 1, y, _penWidth, _penWidth);
+                                    g.DrawEllipse(new Pen(_penColor, _penWidth), x + 1, y, _penWidth, _penWidth);
+                                    g.DrawEllipse(new Pen(_penColor, _penWidth), x, y - 1, _penWidth, _penWidth);
+                                    g.DrawEllipse(new Pen(_penColor, _penWidth), x, y + 1, _penWidth, _penWidth);
+
+
+                                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x - 1, y), new Point(x - 1 + _x_offset, y + _y_offset));
+                                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x + 1, y), new Point(x + 1 + _x_offset, y + _y_offset));
+                                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x, y - 1), new Point(x + _x_offset, y - 1 + _y_offset));
+                                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x, y + 1), new Point(x + _x_offset, y + 1 + _y_offset));  
+                                }
+                                ResultImage = bmpOut;
+                                g.Dispose();
+                                GC.Collect();
+                            }
+                            else
+                            {
+                                pt[no_of_points].setxy(e.X, e.Y);
+                            }
+
+                            no_of_points = no_of_points + 1;
+                        }  
+                break;
                 }
             };
             it.MouseUp += (sender, e) =>
             {
                 switch (Tool)
                 {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        if (isCuting && !isCutingUp)
+                        {
+                            isCutingUp = true;
+                            mouse_up.X = e.X;
+                            mouse_up.Y = e.Y;
+                            DrawRectangle(ResultImage, mouse_down.X, mouse_down.Y, mouse_up.X - mouse_down.X, mouse_up.Y - mouse_down.Y);
+                        }
+                        break;
                     case Tools.Move:
                         if (e.Button == MouseButtons.Left)
                         {
                             canDrag = false;
+                        }
+                        break;
+                    case Tools.Draw:
+                        this._isPressed = false;
+                        no_of_points = 0;
+                        break;
+
+                }
+            };
+            it.MouseDoubleClick += (sender, e) =>
+            {
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        if (!(isCuting && isCutingUp))
+                            return;
+                        if (e.X > mouse_down.X && e.X < mouse_up.X
+                        && e.Y > mouse_down.Y && e.Y < mouse_up.Y)
+                        {
+                            isCuting = isCutingUp = false;
+                            Cut(mouse_down.X + 1, mouse_down.Y + 1, mouse_up.X - mouse_down.X, mouse_up.Y - mouse_down.Y);
                         }
                         break;
                 }
@@ -458,7 +597,7 @@ namespace Gmage
         /// <param name="outC"></param>
         /// <param name="inC"></param>
         /// <returns></returns>
-        private Point GetControlCenterLocation(Control outC,Control inC)
+        private Point GetControlCenterLocation(Control outC, Control inC)
         {
             var x = 0;
             var y = 0;
@@ -510,7 +649,7 @@ namespace Gmage
         Queue<string> history = new Queue<string>();
         private void SetHistory()
         {
-            int index =1;
+            int index = 1;
             history.Clear();
             HashSet<string> hs_history = new HashSet<string>();
             for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)
@@ -521,7 +660,7 @@ namespace Gmage
 
         private void LoadHistory()
         {
-            for(int i = history_Count-1; i>0; i--)
+            for (int i = history_Count - 1; i > 0; i--)
             {
                 var h = LoadHistory("history", $"history{i}", null);
                 if (!string.IsNullOrEmpty(h))
@@ -537,13 +676,13 @@ namespace Gmage
         /// </summary>
         private void AddHistoryItems(string filename)
         {
-            AddHistoryItems(history_Count+history_Name_index, filename);
+            AddHistoryItems(history_Count + history_Name_index, filename);
             history_Name_index++;//防止控件重名
             history.Enqueue(filename);//最近打开，最多history_Count项
             if (history.Count > history_Count)
                 history.Dequeue();
         }
-        private void AddHistoryItems(int i,string h)
+        private void AddHistoryItems(int i, string h)
         {
             ToolStripMenuItem items = new ToolStripMenuItem()
             {
@@ -554,10 +693,10 @@ namespace Gmage
             items.Click += (sender, e) =>
             {
                 tsmi_History.DropDownItems.Remove(items);//点击后当前item提前到第一行
-               // tsmi_History.DropDownItems.Insert(0, items);
+                                                         // tsmi_History.DropDownItems.Insert(0, items);
                 string[] file = new string[] { (string)items.Tag };
                 RollBackMessage(file);
-                
+
                 //for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)
                 //{
                 //    tsmi_History.DropDownItems[j].Text = $"{j + 1} {tsmi_History.DropDownItems[j].Tag.ToString()}";
@@ -587,7 +726,7 @@ namespace Gmage
 
         private string LoadHistory(string val1, string val2, string val3)
         {
-           return GmageConfigXML.XmlHandle.LoadPreferences(val1, val2, val3, "MainForm");
+            return GmageConfigXML.XmlHandle.LoadPreferences(val1, val2, val3, "MainForm");
         }
 
 
@@ -814,7 +953,7 @@ namespace Gmage
 
         private void TsmiClick()
         {
-            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[] 
+            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
             {
                 tsmi_Gray,tsmi_Complementary,tsmi_Frequency,
                 Clockwise180,Clockwise90,Clockwise270,RotateNoneFlipX,RotateNoneFlipY,
@@ -849,7 +988,7 @@ namespace Gmage
 
         private void tsmi_Clear_Click(object sender, EventArgs e)
         {
-            ResultImage = initBitmap.Clone() as Bitmap ;
+            ResultImage = initBitmap.Clone() as Bitmap;
         }
 
         private void tsmi_Preferences_Click(object sender, EventArgs e)
@@ -860,7 +999,7 @@ namespace Gmage
         #endregion
 
         #region 拾色器
-#region 调色板
+        #region 调色板
         private void pB_Color_Click(object sender, EventArgs e)
         {
             ColorDialog dlgColor = new ColorDialog();
@@ -905,7 +1044,7 @@ namespace Gmage
         {
             get
             {
-                int.TryParse(mT_G.Text,out int r);
+                int.TryParse(mT_G.Text, out int r);
                 if (r > 255)
                     r = 255;
                 if (r < 0)
@@ -935,9 +1074,9 @@ namespace Gmage
             {
                 int.TryParse(mT_B.Text, out int r);
                 if (r > 255)
-                   r= 255;
+                    r = 255;
                 if (r < 0)
-                   r= 0;
+                    r = 0;
                 mT_B.Text = r.ToString();
                 return r;
             }
@@ -1018,7 +1157,7 @@ namespace Gmage
 
         #region 鼠标拾色
         Point p = MousePosition;
-        
+
         private void Pick_RGB(Color c)
         {
             Color_R = c.R;
@@ -1034,13 +1173,67 @@ namespace Gmage
         #region 左边工具栏
         private void ToolsClickEvent()
         {
-            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Select, mFB_ColorPicker, mFB_Move };
+            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Select, mFB_ColorPicker, mFB_Move, mFB_Cut, mFB_Draw };
             foreach (var flatButton in flatButtons)
             {
                 flatButton.Click += (sender, e) =>
                 {
                     Tool = (Tools)Enum.Parse(typeof(Tools), flatButton.Tag.ToString());
                 };
+            }
+        }
+
+        private void Cut(int x, int y, int width, int height)
+        {
+            Image rectg = ResultImage.Clone() as Bitmap;
+            var bmpRect = new Bitmap(rectg.Width, rectg.Height);
+            var g = Graphics.FromImage(bmpRect);
+            g.DrawImage(rectg, new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
+            g.Dispose();
+            ResultImage = bmpRect;
+        }
+
+        /// <summary>
+        /// 画矩形
+        /// </summary>
+        /// <param name="x">左上角的坐标</param>
+        /// <param name="y">右下角的坐标</param>
+        private Image DrawRectangle(Image image, int x, int y, int width, int height)
+        {
+            var g = Graphics.FromImage(image);
+            var pen = new Pen(Color.Red, 1);
+            float[] dashValues = { 2, 3 };
+            // pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            pen.DashPattern = dashValues;
+            g.DrawRectangle(pen, x, y, width, height);
+            ResultImage = (Bitmap)image;
+            return image;
+        }
+
+        public void bsp(point p1, point p2, point p3, point p4, int divisions)
+        {
+            double[] a = new double[5];
+            double[] b = new double[5];
+            a[0] = (-p1.x + 3 * p2.x - 3 * p3.x + p4.x) / 6.0;
+            a[1] = (3 * p1.x - 6 * p2.x + 3 * p3.x) / 6.0;
+            a[2] = (-3 * p1.x + 3 * p3.x) / 6.0;
+            a[3] = (p1.x + 4 * p2.x + p3.x) / 6.0;
+            b[0] = (-p1.y + 3 * p2.y - 3 * p3.y + p4.y) / 6.0;
+            b[1] = (3 * p1.y - 6 * p2.y + 3 * p3.y) / 6.0;
+            b[2] = (-3 * p1.y + 3 * p3.y) / 6.0;
+            b[3] = (p1.y + 4 * p2.y + p3.y) / 6.0;
+
+            splinex[0] = a[3];
+            spliney[0] = b[3];
+
+            int i;
+            for (i = 1; i <= divisions - 1; i++)
+            {
+                float t = System.Convert.ToSingle(i) / System.Convert.ToSingle(divisions);
+                splinex[i] = (a[2] + t * (a[1] + t * a[0])) * t + a[3];
+                spliney[i] = (b[2] + t * (b[1] + t * b[0])) * t + b[3];
+
+
             }
         }
 
@@ -1073,5 +1266,6 @@ namespace Gmage
         Move,
         Cut,
         RGB_Pick,
+        Draw,
     }
 }

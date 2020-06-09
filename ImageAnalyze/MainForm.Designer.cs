@@ -74,11 +74,11 @@
             this.级联分类器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Classifier = new System.Windows.Forms.ToolStripMenuItem();
             this.识别ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_Batch = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.辅助工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_About = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Index = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_Batch = new System.Windows.Forms.ToolStripMenuItem();
             this.mtS_Selected = new MaterialSkin.Controls.MaterialTabSelector();
             this.mTC_ImageTab = new MaterialSkin.Controls.MaterialTabControl();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -107,6 +107,7 @@
             this.mTC_Layer = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
+            this.mFB_Draw = new MaterialSkin.Controls.MaterialFlatButton();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -157,7 +158,7 @@
             this.tsmi_Batch});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(540, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(420, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -215,7 +216,7 @@
             // 
             this.tsmi_Clear.Enabled = false;
             this.tsmi_Clear.Name = "tsmi_Clear";
-            this.tsmi_Clear.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Clear.Size = new System.Drawing.Size(148, 22);
             this.tsmi_Clear.Text = "清除所有效果";
             this.tsmi_Clear.Click += new System.EventHandler(this.tsmi_Clear_Click);
             // 
@@ -498,15 +499,6 @@
             this.识别ToolStripMenuItem.Text = "识别";
             this.识别ToolStripMenuItem.Click += new System.EventHandler(this.btn_FaceRecognition_Click);
             // 
-            // tsmi_Batch
-            // 
-            this.tsmi_Batch.BackColor = System.Drawing.Color.Transparent;
-            this.tsmi_Batch.ForeColor = System.Drawing.Color.White;
-            this.tsmi_Batch.Name = "tsmi_Batch";
-            this.tsmi_Batch.Size = new System.Drawing.Size(56, 21);
-            this.tsmi_Batch.Text = "批处理";
-            this.tsmi_Batch.Click += new System.EventHandler(this.button2_Click);
-            // 
             // 帮助ToolStripMenuItem
             // 
             this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -536,6 +528,15 @@
             this.tsmi_Index.Name = "tsmi_Index";
             this.tsmi_Index.Size = new System.Drawing.Size(56, 21);
             this.tsmi_Index.Text = "选项卡";
+            // 
+            // tsmi_Batch
+            // 
+            this.tsmi_Batch.BackColor = System.Drawing.Color.Transparent;
+            this.tsmi_Batch.ForeColor = System.Drawing.Color.White;
+            this.tsmi_Batch.Name = "tsmi_Batch";
+            this.tsmi_Batch.Size = new System.Drawing.Size(56, 21);
+            this.tsmi_Batch.Text = "批处理";
+            this.tsmi_Batch.Click += new System.EventHandler(this.button2_Click);
             // 
             // mtS_Selected
             // 
@@ -602,9 +603,9 @@
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = global::Gmage.Properties.Resources.Gmage;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel1.Location = new System.Drawing.Point(46, 131);
+            this.panel1.Location = new System.Drawing.Point(46, 75);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(844, 423);
+            this.panel1.Size = new System.Drawing.Size(844, 631);
             this.panel1.TabIndex = 21;
             this.panel1.Click += new System.EventHandler(this.btn_SelectImage_Click);
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragDrop);
@@ -636,6 +637,7 @@
             this.mFB_Cut.Primary = false;
             this.mFB_Cut.Size = new System.Drawing.Size(25, 25);
             this.mFB_Cut.TabIndex = 24;
+            this.mFB_Cut.Tag = "Cut";
             this.mFB_Cut.Text = "裁";
             this.mFB_Cut.UseVisualStyleBackColor = true;
             // 
@@ -910,11 +912,27 @@
             this.materialTabSelector1.TabIndex = 0;
             this.materialTabSelector1.Text = "materialTabSelector1";
             // 
+            // mFB_Draw
+            // 
+            this.mFB_Draw.Depth = 0;
+            this.mFB_Draw.Icon = null;
+            this.mFB_Draw.Location = new System.Drawing.Point(4, 198);
+            this.mFB_Draw.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_Draw.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_Draw.Name = "mFB_Draw";
+            this.mFB_Draw.Primary = false;
+            this.mFB_Draw.Size = new System.Drawing.Size(25, 25);
+            this.mFB_Draw.TabIndex = 30;
+            this.mFB_Draw.Tag = "Draw";
+            this.mFB_Draw.Text = "笔";
+            this.mFB_Draw.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1174, 728);
+            this.Controls.Add(this.mFB_Draw);
             this.Controls.Add(this.mPB_Bar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.mFB_Move);
@@ -924,9 +942,9 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.mtS_Selected);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.mTC_ImageTab);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.groupBox1);
             this.KeyPreview = true;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1033,6 +1051,7 @@
         private MaterialSkin.Controls.MaterialTabControl mTC_Layer;
         private System.Windows.Forms.TabPage tabPage2;
         private MaterialSkin.Controls.MaterialTabSelector materialTabSelector1;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_Draw;
     }
 }
 

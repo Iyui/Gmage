@@ -5,6 +5,7 @@ using MaterialSkin.Controls;
 using MaterialSkin;
 using System.Drawing;
 using System.IO;
+using System.Collections.Generic;
 namespace Gmage
 {
     public partial class Preferences : MaterialForm
@@ -49,6 +50,33 @@ namespace Gmage
             lB_Plugin.BackColor = Color.FromArgb(255, 51, 51, 51);
             lB_Classifier.BackColor = Color.FromArgb(255, 51, 51, 51);
             Load_Classifier_Plugin();
+            mFB_AddClassifier.Click += (sender, e) =>
+            {
+                string filter = "级联分类器(*.xml) | *.xml";
+                AddClassifierAndPlugin(filter, true);
+            };
+            mFB_AddPlugin.Click += (sender, e) =>
+            {
+                string filter = "Gmage插件(*.dll) | *.dll";
+                AddClassifierAndPlugin(filter, false);
+            };
+
+            mFB_DelClassifier.Click += (sender, e) =>
+            {
+                var fileName = (string)lB_Classifier.SelectedItem;
+                if (fileName is null)
+                    return;
+                string filePath = DicNamePath[fileName];
+                DelDicNamePathKeyValue(filePath, fileName);
+            };
+            mFB_DelPlugin.Click += (sender, e) => 
+            {
+                var fileName = (string)lB_Plugin.SelectedItem;
+                if (fileName is null)
+                    return;
+                string filePath = DicNamePath[fileName];
+                DelDicNamePathKeyValue(filePath, fileName);
+            };
         }
 
         private void SetPreferences()
@@ -85,26 +113,78 @@ namespace Gmage
         {
 
         }
-
+        Dictionary<string, string> DicNamePath = new Dictionary<string, string>();
         private void Load_Classifier_Plugin()
         {
             foreach(var c in Config.Classifier)
             {
                 var name = Path.GetFileNameWithoutExtension(c);
                 lB_Classifier.Items.Add(name);
+                DicNamePathKeyValue(name, c);
             }
             foreach (var c in Config.PluginList)
             {
                 var name = Path.GetFileNameWithoutExtension(c);
-
                 lB_Plugin.Items.Add(name);
+                DicNamePathKeyValue(name, c);
             }
-            
         }
 
         private void mFB_OK_Click(object sender, EventArgs e)
         {
             SetPreferences();
+        }
+
+        private void AddClassifierAndPlugin(string filter,bool Classifier)
+        {
+
+            OpenFileDialog oi = new OpenFileDialog
+            {
+                Filter = filter,
+                RestoreDirectory = true,
+                FilterIndex = 1,
+                Multiselect = true,
+            };
+            string root = Application.StartupPath + "\\";
+            if (Classifier)
+                root += "\\Classifier\\";
+            else
+                root += "\\plug_in\\";
+            if (oi.ShowDialog() == DialogResult.OK)
+            {
+                foreach (var file in oi.FileNames)
+                {
+                    try
+                    {
+                        File.Copy(file, root + Path.GetFileName(file), true);
+                        var name = Path.GetFileNameWithoutExtension(file);
+                        if (Classifier)
+                            lB_Classifier.Items.Add(name);
+                        else
+                            lB_Plugin.Items.Add(name);
+                        DicNamePathKeyValue(name, root + Path.GetFileName(file));
+                    }
+                    catch { MessageBox.Show($"{Path.GetFileName(file)}添加失败"); }
+                }
+            }
+        }
+
+        private void DicNamePathKeyValue(string key,string value)
+        {
+            if (DicNamePath.ContainsKey(key))
+                DicNamePath[key] = value;
+            else
+                DicNamePath.Add(key,value);
+        }
+
+        private void DelDicNamePathKeyValue(string filePath, string fileName)
+        {
+            if (File.Exists(filePath))
+            {
+                //删除文件
+                File.Delete(filePath);
+                lB_Plugin.Items.Remove(fileName);
+            }
         }
     }
 }

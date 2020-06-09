@@ -31,6 +31,8 @@
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.mCB_WindowStateMax = new MaterialSkin.Controls.MaterialCheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cB_FirstForm = new System.Windows.Forms.ComboBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -42,20 +44,19 @@
             this.MCB_ChildIndex = new MaterialSkin.Controls.MaterialCheckBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.materialFlatButton6 = new MaterialSkin.Controls.MaterialFlatButton();
-            this.materialFlatButton5 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mFB_AddPlugin = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mFB_DelPlugin = new MaterialSkin.Controls.MaterialFlatButton();
             this.lB_Plugin = new System.Windows.Forms.ListBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.lB_Classifier = new System.Windows.Forms.ListBox();
-            this.materialFlatButton4 = new MaterialSkin.Controls.MaterialFlatButton();
-            this.materialFlatButton3 = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mFB_DelClassifier = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mFB_AddClassifier = new MaterialSkin.Controls.MaterialFlatButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.mFB_OK = new MaterialSkin.Controls.MaterialFlatButton();
             this.materialFlatButton2 = new MaterialSkin.Controls.MaterialFlatButton();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.mCB_WindowStateMax = new MaterialSkin.Controls.MaterialCheckBox();
             this.materialTabControl1.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -65,7 +66,6 @@
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // materialTabSelector1
@@ -107,6 +107,36 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "常规";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.mCB_WindowStateMax);
+            this.groupBox6.ForeColor = System.Drawing.Color.White;
+            this.groupBox6.Location = new System.Drawing.Point(22, 86);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(200, 243);
+            this.groupBox6.TabIndex = 3;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "启动";
+            // 
+            // mCB_WindowStateMax
+            // 
+            this.mCB_WindowStateMax.AutoSize = true;
+            this.mCB_WindowStateMax.Checked = true;
+            this.mCB_WindowStateMax.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.mCB_WindowStateMax.Cursor = System.Windows.Forms.Cursors.Default;
+            this.mCB_WindowStateMax.Depth = 0;
+            this.mCB_WindowStateMax.Font = new System.Drawing.Font("Roboto", 10F);
+            this.mCB_WindowStateMax.Location = new System.Drawing.Point(19, 26);
+            this.mCB_WindowStateMax.Margin = new System.Windows.Forms.Padding(0);
+            this.mCB_WindowStateMax.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.mCB_WindowStateMax.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mCB_WindowStateMax.Name = "mCB_WindowStateMax";
+            this.mCB_WindowStateMax.Ripple = true;
+            this.mCB_WindowStateMax.Size = new System.Drawing.Size(105, 30);
+            this.mCB_WindowStateMax.TabIndex = 6;
+            this.mCB_WindowStateMax.Text = "窗体最大化";
+            this.mCB_WindowStateMax.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -249,8 +279,8 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.materialFlatButton6);
-            this.groupBox4.Controls.Add(this.materialFlatButton5);
+            this.groupBox4.Controls.Add(this.mFB_AddPlugin);
+            this.groupBox4.Controls.Add(this.mFB_DelPlugin);
             this.groupBox4.Controls.Add(this.lB_Plugin);
             this.groupBox4.ForeColor = System.Drawing.Color.White;
             this.groupBox4.Location = new System.Drawing.Point(397, 15);
@@ -260,36 +290,35 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "插件";
             // 
-            // materialFlatButton6
+            // mFB_AddPlugin
             // 
-            this.materialFlatButton6.BackColor = System.Drawing.Color.LightSeaGreen;
-            this.materialFlatButton6.Depth = 0;
-            this.materialFlatButton6.Enabled = false;
-            this.materialFlatButton6.Icon = null;
-            this.materialFlatButton6.Location = new System.Drawing.Point(19, 28);
-            this.materialFlatButton6.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialFlatButton6.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFlatButton6.Name = "materialFlatButton6";
-            this.materialFlatButton6.Primary = false;
-            this.materialFlatButton6.Size = new System.Drawing.Size(96, 36);
-            this.materialFlatButton6.TabIndex = 6;
-            this.materialFlatButton6.Text = "加载插件";
-            this.materialFlatButton6.UseVisualStyleBackColor = false;
+            this.mFB_AddPlugin.BackColor = System.Drawing.Color.LightSeaGreen;
+            this.mFB_AddPlugin.Depth = 0;
+            this.mFB_AddPlugin.Icon = null;
+            this.mFB_AddPlugin.Location = new System.Drawing.Point(19, 28);
+            this.mFB_AddPlugin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_AddPlugin.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_AddPlugin.Name = "mFB_AddPlugin";
+            this.mFB_AddPlugin.Primary = false;
+            this.mFB_AddPlugin.Size = new System.Drawing.Size(96, 36);
+            this.mFB_AddPlugin.TabIndex = 6;
+            this.mFB_AddPlugin.Text = "加载插件";
+            this.mFB_AddPlugin.UseVisualStyleBackColor = false;
             // 
-            // materialFlatButton5
+            // mFB_DelPlugin
             // 
-            this.materialFlatButton5.Depth = 0;
-            this.materialFlatButton5.Enabled = false;
-            this.materialFlatButton5.Icon = null;
-            this.materialFlatButton5.Location = new System.Drawing.Point(19, 76);
-            this.materialFlatButton5.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialFlatButton5.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFlatButton5.Name = "materialFlatButton5";
-            this.materialFlatButton5.Primary = false;
-            this.materialFlatButton5.Size = new System.Drawing.Size(96, 36);
-            this.materialFlatButton5.TabIndex = 7;
-            this.materialFlatButton5.Text = "卸载插件";
-            this.materialFlatButton5.UseVisualStyleBackColor = true;
+            this.mFB_DelPlugin.Depth = 0;
+            this.mFB_DelPlugin.Enabled = false;
+            this.mFB_DelPlugin.Icon = null;
+            this.mFB_DelPlugin.Location = new System.Drawing.Point(19, 76);
+            this.mFB_DelPlugin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_DelPlugin.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_DelPlugin.Name = "mFB_DelPlugin";
+            this.mFB_DelPlugin.Primary = false;
+            this.mFB_DelPlugin.Size = new System.Drawing.Size(96, 36);
+            this.mFB_DelPlugin.TabIndex = 7;
+            this.mFB_DelPlugin.Text = "卸载插件";
+            this.mFB_DelPlugin.UseVisualStyleBackColor = true;
             // 
             // lB_Plugin
             // 
@@ -305,8 +334,8 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.lB_Classifier);
-            this.groupBox5.Controls.Add(this.materialFlatButton4);
-            this.groupBox5.Controls.Add(this.materialFlatButton3);
+            this.groupBox5.Controls.Add(this.mFB_DelClassifier);
+            this.groupBox5.Controls.Add(this.mFB_AddClassifier);
             this.groupBox5.ForeColor = System.Drawing.Color.White;
             this.groupBox5.Location = new System.Drawing.Point(22, 15);
             this.groupBox5.Name = "groupBox5";
@@ -326,40 +355,38 @@
             this.lB_Classifier.Size = new System.Drawing.Size(200, 259);
             this.lB_Classifier.TabIndex = 0;
             // 
-            // materialFlatButton4
+            // mFB_DelClassifier
             // 
-            this.materialFlatButton4.AutoSize = true;
-            this.materialFlatButton4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialFlatButton4.Depth = 0;
-            this.materialFlatButton4.Enabled = false;
-            this.materialFlatButton4.Icon = null;
-            this.materialFlatButton4.Location = new System.Drawing.Point(17, 76);
-            this.materialFlatButton4.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialFlatButton4.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFlatButton4.Name = "materialFlatButton4";
-            this.materialFlatButton4.Primary = false;
-            this.materialFlatButton4.Size = new System.Drawing.Size(96, 36);
-            this.materialFlatButton4.TabIndex = 4;
-            this.materialFlatButton4.Text = "删除分类器";
-            this.materialFlatButton4.UseVisualStyleBackColor = true;
+            this.mFB_DelClassifier.AutoSize = true;
+            this.mFB_DelClassifier.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.mFB_DelClassifier.Depth = 0;
+            this.mFB_DelClassifier.Icon = null;
+            this.mFB_DelClassifier.Location = new System.Drawing.Point(17, 76);
+            this.mFB_DelClassifier.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_DelClassifier.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_DelClassifier.Name = "mFB_DelClassifier";
+            this.mFB_DelClassifier.Primary = false;
+            this.mFB_DelClassifier.Size = new System.Drawing.Size(96, 36);
+            this.mFB_DelClassifier.TabIndex = 4;
+            this.mFB_DelClassifier.Text = "删除分类器";
+            this.mFB_DelClassifier.UseVisualStyleBackColor = true;
             // 
-            // materialFlatButton3
+            // mFB_AddClassifier
             // 
-            this.materialFlatButton3.AutoSize = true;
-            this.materialFlatButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialFlatButton3.BackColor = System.Drawing.Color.LightSeaGreen;
-            this.materialFlatButton3.Depth = 0;
-            this.materialFlatButton3.Enabled = false;
-            this.materialFlatButton3.Icon = null;
-            this.materialFlatButton3.Location = new System.Drawing.Point(17, 28);
-            this.materialFlatButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialFlatButton3.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFlatButton3.Name = "materialFlatButton3";
-            this.materialFlatButton3.Primary = false;
-            this.materialFlatButton3.Size = new System.Drawing.Size(96, 36);
-            this.materialFlatButton3.TabIndex = 3;
-            this.materialFlatButton3.Text = "添加分类器";
-            this.materialFlatButton3.UseVisualStyleBackColor = false;
+            this.mFB_AddClassifier.AutoSize = true;
+            this.mFB_AddClassifier.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.mFB_AddClassifier.BackColor = System.Drawing.Color.LightSeaGreen;
+            this.mFB_AddClassifier.Depth = 0;
+            this.mFB_AddClassifier.Icon = null;
+            this.mFB_AddClassifier.Location = new System.Drawing.Point(17, 28);
+            this.mFB_AddClassifier.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_AddClassifier.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_AddClassifier.Name = "mFB_AddClassifier";
+            this.mFB_AddClassifier.Primary = false;
+            this.mFB_AddClassifier.Size = new System.Drawing.Size(96, 36);
+            this.mFB_AddClassifier.TabIndex = 3;
+            this.mFB_AddClassifier.Text = "添加分类器";
+            this.mFB_AddClassifier.UseVisualStyleBackColor = false;
             // 
             // panel1
             // 
@@ -405,36 +432,6 @@
             this.materialFlatButton2.Text = "取消";
             this.materialFlatButton2.UseVisualStyleBackColor = true;
             // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.mCB_WindowStateMax);
-            this.groupBox6.ForeColor = System.Drawing.Color.White;
-            this.groupBox6.Location = new System.Drawing.Point(22, 86);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(200, 243);
-            this.groupBox6.TabIndex = 3;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "启动";
-            // 
-            // mCB_WindowStateMax
-            // 
-            this.mCB_WindowStateMax.AutoSize = true;
-            this.mCB_WindowStateMax.Checked = true;
-            this.mCB_WindowStateMax.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mCB_WindowStateMax.Cursor = System.Windows.Forms.Cursors.Default;
-            this.mCB_WindowStateMax.Depth = 0;
-            this.mCB_WindowStateMax.Font = new System.Drawing.Font("Roboto", 10F);
-            this.mCB_WindowStateMax.Location = new System.Drawing.Point(19, 26);
-            this.mCB_WindowStateMax.Margin = new System.Windows.Forms.Padding(0);
-            this.mCB_WindowStateMax.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.mCB_WindowStateMax.MouseState = MaterialSkin.MouseState.HOVER;
-            this.mCB_WindowStateMax.Name = "mCB_WindowStateMax";
-            this.mCB_WindowStateMax.Ripple = true;
-            this.mCB_WindowStateMax.Size = new System.Drawing.Size(105, 30);
-            this.mCB_WindowStateMax.TabIndex = 6;
-            this.mCB_WindowStateMax.Text = "窗体最大化";
-            this.mCB_WindowStateMax.UseVisualStyleBackColor = true;
-            // 
             // Preferences
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -453,6 +450,8 @@
             this.Load += new System.EventHandler(this.Preferences_Load);
             this.materialTabControl1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -465,8 +464,6 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -490,10 +487,10 @@
         private MaterialSkin.Controls.MaterialRadioButton mRB_Dark;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.GroupBox groupBox5;
-        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton4;
-        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton3;
-        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton5;
-        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton6;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_DelClassifier;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_AddClassifier;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_DelPlugin;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_AddPlugin;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.ListBox lB_Plugin;
         private System.Windows.Forms.ListBox lB_Classifier;

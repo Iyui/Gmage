@@ -66,23 +66,29 @@ namespace Gmage
             //搜索某路径下所有dll
             foreach (string fn in Directory.GetFiles(path, "*.dll"))
             {
-                //获取程序集
-                Assembly ass = Assembly.LoadFrom(fn);
-                //遍历包含的类型
-                foreach (Type t in ass.GetTypes())
+                try
                 {
-                    //判断是否是实现了插件接口
-                    if (t.GetInterface("IGmage",true) !=null)
+                    //获取程序集
+                    Assembly ass = Assembly.LoadFrom(fn);
+                    //遍历包含的类型
+                    foreach (Type t in ass.GetTypes())
                     {
-                        Config.PluginList.Add(fn);
-                        //创建实例
-                        object o = ass.CreateInstance(t.ToString());   
-                        //执行方法
-                        Set_MenuItem(mf,o,t);
+                        //判断是否是实现了插件接口
+                        if (t.GetInterface("IGmage", true) != null)
+                        {
+                            Config.PluginList.Add(fn);
+                            //创建实例
+                            object o = ass.CreateInstance(t.ToString());
+                            //执行方法
+                            Set_MenuItem(mf, o, t);
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"插件加载失败，插件名{Path.GetFileName(fn)}");  
+                }
             }
-
             Classifier_Load(cf);
         }
 
