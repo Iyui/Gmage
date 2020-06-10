@@ -84,7 +84,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.mPB_Bar = new MaterialSkin.Controls.MaterialProgressBar();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.mFB_Select = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mFB_Empty = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Cut = new MaterialSkin.Controls.MaterialFlatButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.mTC_Color = new MaterialSkin.Controls.MaterialTabControl();
@@ -108,6 +108,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.mFB_Draw = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mFB_Select = new MaterialSkin.Controls.MaterialFlatButton();
+            this.tsmi_Copy = new System.Windows.Forms.ToolStripMenuItem();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -158,7 +160,7 @@
             this.tsmi_Batch});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(420, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(540, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -206,7 +208,8 @@
             this.编辑ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Clear,
             this.toolStripSeparator2,
-            this.tsmi_Preferences});
+            this.tsmi_Preferences,
+            this.tsmi_Copy});
             this.编辑ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
             this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
@@ -216,19 +219,19 @@
             // 
             this.tsmi_Clear.Enabled = false;
             this.tsmi_Clear.Name = "tsmi_Clear";
-            this.tsmi_Clear.Size = new System.Drawing.Size(148, 22);
+            this.tsmi_Clear.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Clear.Text = "清除所有效果";
             this.tsmi_Clear.Click += new System.EventHandler(this.tsmi_Clear_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // tsmi_Preferences
             // 
             this.tsmi_Preferences.Name = "tsmi_Preferences";
-            this.tsmi_Preferences.Size = new System.Drawing.Size(148, 22);
+            this.tsmi_Preferences.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Preferences.Text = "首选项";
             this.tsmi_Preferences.Click += new System.EventHandler(this.tsmi_Preferences_Click);
             // 
@@ -611,20 +614,20 @@
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragDrop);
             this.panel1.DragOver += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragOver);
             // 
-            // mFB_Select
+            // mFB_Empty
             // 
-            this.mFB_Select.Depth = 0;
-            this.mFB_Select.Icon = null;
-            this.mFB_Select.Location = new System.Drawing.Point(4, 68);
-            this.mFB_Select.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.mFB_Select.MouseState = MaterialSkin.MouseState.HOVER;
-            this.mFB_Select.Name = "mFB_Select";
-            this.mFB_Select.Primary = false;
-            this.mFB_Select.Size = new System.Drawing.Size(25, 25);
-            this.mFB_Select.TabIndex = 23;
-            this.mFB_Select.Tag = "Empty";
-            this.mFB_Select.Text = "选";
-            this.mFB_Select.UseVisualStyleBackColor = true;
+            this.mFB_Empty.Depth = 0;
+            this.mFB_Empty.Icon = null;
+            this.mFB_Empty.Location = new System.Drawing.Point(4, 68);
+            this.mFB_Empty.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_Empty.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_Empty.Name = "mFB_Empty";
+            this.mFB_Empty.Primary = false;
+            this.mFB_Empty.Size = new System.Drawing.Size(25, 25);
+            this.mFB_Empty.TabIndex = 23;
+            this.mFB_Empty.Tag = "Empty";
+            this.mFB_Empty.Text = "空";
+            this.mFB_Empty.UseVisualStyleBackColor = true;
             // 
             // mFB_Cut
             // 
@@ -927,18 +930,42 @@
             this.mFB_Draw.Text = "笔";
             this.mFB_Draw.UseVisualStyleBackColor = true;
             // 
+            // mFB_Select
+            // 
+            this.mFB_Select.Depth = 0;
+            this.mFB_Select.Icon = null;
+            this.mFB_Select.Location = new System.Drawing.Point(4, 235);
+            this.mFB_Select.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_Select.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_Select.Name = "mFB_Select";
+            this.mFB_Select.Primary = false;
+            this.mFB_Select.Size = new System.Drawing.Size(25, 25);
+            this.mFB_Select.TabIndex = 31;
+            this.mFB_Select.Tag = "Select";
+            this.mFB_Select.Text = "选";
+            this.mFB_Select.UseVisualStyleBackColor = true;
+            // 
+            // tsmi_Copy
+            // 
+            this.tsmi_Copy.Name = "tsmi_Copy";
+            this.tsmi_Copy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.tsmi_Copy.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Copy.Text = "复制";
+            this.tsmi_Copy.Click += new System.EventHandler(this.tsmi_Copy_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1174, 728);
+            this.Controls.Add(this.mFB_Select);
             this.Controls.Add(this.mFB_Draw);
             this.Controls.Add(this.mPB_Bar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.mFB_Move);
             this.Controls.Add(this.mFB_ColorPicker);
             this.Controls.Add(this.mFB_Cut);
-            this.Controls.Add(this.mFB_Select);
+            this.Controls.Add(this.mFB_Empty);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.mtS_Selected);
             this.Controls.Add(this.menuStrip1);
@@ -1027,7 +1054,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         internal System.Windows.Forms.ToolStripMenuItem tsmi_Filter;
         private MaterialSkin.Controls.MaterialProgressBar mPB_Bar;
-        private MaterialSkin.Controls.MaterialFlatButton mFB_Select;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_Empty;
         private MaterialSkin.Controls.MaterialFlatButton mFB_Cut;
         private System.Windows.Forms.GroupBox groupBox1;
         private MaterialSkin.Controls.MaterialTabControl mTC_Color;
@@ -1052,6 +1079,8 @@
         private System.Windows.Forms.TabPage tabPage2;
         private MaterialSkin.Controls.MaterialTabSelector materialTabSelector1;
         private MaterialSkin.Controls.MaterialFlatButton mFB_Draw;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_Select;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_Copy;
     }
 }
 

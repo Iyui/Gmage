@@ -121,6 +121,12 @@ v_`      ...''  '_``````'-'`~++vv>~~O=---_=7C~-:=~~===~~^_-'`..`'..`.....`^'.  .
  * 20200603:新增首选项设置
  * 20200604:新增拾色器、图片移动
  * 20200605:新增"最近打开过的文件"
+ * 20200609:新增"裁剪"和"画笔"
+ * 
+ * 预计更新
+ * 抠图
+ * 复制、粘贴
+ * 
  */
 using System;
 using System.Collections.Generic;
@@ -141,6 +147,7 @@ using static Gmage.RollBack;
 using static Gmage.ImageProcess;
 using System.Threading;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 namespace Gmage
 {
     public partial class MainForm : MaterialForm
@@ -294,6 +301,10 @@ namespace Gmage
                         Tool = Tools.Move;
                     }
                 }
+                else if (e.KeyCode == Keys.Menu)
+                {
+                    
+                }
             };
             this.KeyUp += (sender, e) =>
             {
@@ -302,10 +313,16 @@ namespace Gmage
                     Tool = lastTool;
                     spaceUp = true;
                 }
+                else if (e.KeyCode == Keys.Menu)
+                {
+                    Tool = lastTool;
+                    spaceUp = true;
+                }
             };
+            this.MouseWheel += Zoom_MouseWheel;
             LoadHistory();
         }
-
+        
         /// <summary>
         /// 设置按钮的提示文本
         /// </summary>
@@ -418,7 +435,7 @@ namespace Gmage
             htTabImageName.Add(t.Name, it.Name);
             mTC_ImageTab.SelectedTab = tp;
             it.Dock = DockStyle.None;
-            it.SizeMode = PictureBoxSizeMode.CenterImage;
+            it.SizeMode = PictureBoxSizeMode.Zoom;
             it.Image = initBitmap.Clone() as Image;
             it.Width = it.Image.Width;
             it.Height = it.Image.Height;
@@ -442,7 +459,6 @@ namespace Gmage
                         isCuting = true;
                         mouse_down.X = e.X;
                         mouse_down.Y = e.Y;
-
                         break;
                     case Tools.Move:
                         canDrag = true;
@@ -499,7 +515,6 @@ namespace Gmage
 
                             }
                         }
-                        // ResultImage = (Bitmap)DrawRectangle(ResultImage, mouse_down.X, mouse_down.Y, mouse_up.X - mouse_down.X, mouse_up.Y - mouse_down.Y);
                         break;
                     case Tools.Move:
                         if (e.Button == MouseButtons.Left && canDrag)
@@ -637,8 +652,8 @@ namespace Gmage
             x = (outW - inW) / 2;
             y = (outH - inH) / 2;
 
-            x = x > 0 ? x : 0;
-            y = y > 0 ? y : 0;
+            //x = x > 0 ? x : 0;
+            //y = y > 0 ? y : 0;
 
             return new Point(x, y);
         }
@@ -1215,7 +1230,7 @@ namespace Gmage
         #region 左边工具栏
         private void ToolsClickEvent()
         {
-            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Select, mFB_ColorPicker, mFB_Move, mFB_Cut, mFB_Draw };
+            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Empty, mFB_ColorPicker, mFB_Move, mFB_Cut, mFB_Draw,mFB_Select };
             foreach (var flatButton in flatButtons)
             {
                 flatButton.Click += (sender, e) =>
@@ -1308,6 +1323,57 @@ namespace Gmage
             }
         }
 
+        [DllImport("user32.dll")]
+        public static extern int WindowFromPoint(int xPoint, int yPoint);
+
+        void Zoom_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (Tool != Tools.Zoom)
+                return;
+            Control c = this.GetChildAtPoint(new Point(e.X, e.Y));
+            Point p = PointToScreen(e.Location);
+            if (!(c is null) || WindowFromPoint(p.X, p.Y) == this.Handle.ToInt32())
+            {
+                //向前
+                if (e.Delta < 0)
+                {
+                    Zoom(true,e.X,e.Y);
+
+                }
+                //向后
+                else if (e.Delta > 0)
+                {
+                    Zoom(false, e.X, e.Y);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 放大缩小
+        /// </summary>
+        /// <param name="isReduce">true为缩小，false为放大</param>
+        void Zoom(bool isReduce,int X=0,int Y=0)
+        {
+            //col.Location = new Point(col.Location.X-X - 50, col.Location.Y - Y - 80);
+            if (isReduce)
+            {
+                float w = this.col.Width * 0.9f; 
+                float h = this.col.Height * 0.9f;
+                this.col.Size = Size.Ceiling(new SizeF(w, h));
+                var p = GetControlCenterLocation(mTC_ImageTab.SelectedTab, col);
+                col.Location = p;
+            }
+            else
+            {
+                float w = this.col.Width * 1.1f; 
+                float h = this.col.Height * 1.1f;
+                this.col.Size = Size.Ceiling(new SizeF(w, h));
+                col.Invalidate();
+                var p = GetControlCenterLocation(mTC_ImageTab.SelectedTab, col);
+                col.Location = p;
+            }
+        }
+
         private System.Windows.Forms.Cursor MouseCursor()
         {
             switch (Tool)
@@ -1316,9 +1382,10 @@ namespace Gmage
                 case Tools.Empty:
                     return Cursors.Default;
                 case Tools.Move:
-                    return Cursors.Hand;
+                    return Cursors.SizeAll;
                 case Tools.Cut:
                 case Tools.RGB_Pick:
+                case Tools.Select:
                     return Cursors.Cross;
             }
         }
@@ -1330,7 +1397,28 @@ namespace Gmage
             SetHistory();
             SaveInfo();
         }
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (keyData == (Keys.Alt | Keys.RButton | Keys.ShiftKey))
+            {
+                if (spaceUp)
+                {
+                    lastTool = Tool;
+                    spaceUp = false;
+                    Tool = Tools.Zoom;
+                }
+                return true;
+            }
+            return base.ProcessDialogKey(keyData);
+        }
+
+        private void tsmi_Copy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetImage(ResultImage);
+        }
     }
+
+
 
     public enum Tools
     {
@@ -1339,5 +1427,7 @@ namespace Gmage
         Cut,
         RGB_Pick,
         Draw,
+        Select,
+        Zoom,
     }
 }
