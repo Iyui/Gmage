@@ -79,6 +79,24 @@ namespace Gmage
                 case FunctionType.Clockwise90:
                     b = Clockwise90(b);
                     break;
+                case FunctionType.Line:
+                    b = MedianFilter(b);
+                    break;
+                case FunctionType.Corrode:
+                    b = ToErosion(b);
+                    break;
+                case FunctionType.Expand:
+                    b = ToSwell(b);
+                    break;
+                case FunctionType.Skeleton:
+                    b = EdgeDetector_Skeleton(b);
+                    break; 
+                        case FunctionType.Tophap:
+                    b = EdgeDetector_TopHap(b);
+                    break;
+                case FunctionType.Boundary:
+                    b = EdgeDetector_Boundary(b);
+                    break;
             }
             return b;
         }
@@ -657,6 +675,28 @@ namespace Gmage
         {
             return Filter.Filter.MedianFilter(initBitmap);
         }
+
+        /// <summary>
+        /// 腐蚀（来消除小且无意义的物体）
+        /// </summary>
+        /// <param name="image">二值化图片</param>
+        /// <returns></returns>
+        public static Bitmap ToErosion(Bitmap initBitmap)
+        {
+            return EdgeDetector.ToErosion(initBitmap);
+        }
+
+        /// <summary>
+        /// 膨胀
+        /// </summary>
+        /// <param name="img"></param>
+        /// <returns></returns>
+        public static Bitmap ToSwell(Bitmap initBitmap)
+        {
+            return EdgeDetector.ToSwell(initBitmap);
+        }
+        
+
         #endregion
 
         #region 边缘检测
@@ -678,6 +718,40 @@ namespace Gmage
         public static Bitmap EdgeDetector_Smoothed(Bitmap initBitmap)
         {
             return EdgeDetector.Smoothed(initBitmap);
+        }
+        /// <summary>
+        /// 边界
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap EdgeDetector_Boundary(Bitmap initBitmap)
+        {
+            return EdgeDetector.ToBoundary(initBitmap);
+        }
+
+        /// <summary>
+        /// 骨架提取
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap EdgeDetector_Skeleton(Bitmap initBitmap)
+        {
+            return EdgeDetector.ToSkeleton(initBitmap);
+        }
+
+        /// <summary>
+        /// 高帽
+        /// </summary>
+        /// <param name="initBitmap"></param>
+        /// <returns></returns>
+        public static Bitmap EdgeDetector_TopHap(Bitmap initBitmap)
+        {
+            return EdgeDetector.ToTopHap(initBitmap);
+        }
+
+        public static Bitmap EdgeDetector_Line(Bitmap initBitmap, int Threshold = 80)
+        {
+            return Process.Thin.ToThinner(initBitmap);
         }
         #endregion
 
@@ -800,5 +874,22 @@ namespace Gmage
         #endregion
 
         #endregion
+    }
+
+    class Picture
+    {
+        public static Bitmap GetPicture(Bitmap img, int[,] result)
+        {
+            for (int i = 0; i < img.Width; i++)
+            {
+                for (int j = 0; j < img.Height; j++)
+                {
+                    int gray = 0;
+                    gray = result[i, j];
+                    img.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
+                }
+            }
+            return img;
+        }
     }
 }

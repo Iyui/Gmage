@@ -96,6 +96,7 @@ namespace Gmage
                 case FunctionType.MedianFilter:
                     b = MedianFilter(b);
                     break;
+                
             }
             return b;
         }

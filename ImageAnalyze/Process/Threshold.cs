@@ -89,6 +89,9 @@ namespace Gmage.Process
                 case FunctionType.Contrast:
                     ResultBitmap = Contrast(InitBitmap, Hold);
                     break;
+                case FunctionType.Line:
+                    ResultBitmap = EdgeDetector_Line(InitBitmap, Hold);
+                    break;
             }
             return ResultBitmap;
         }

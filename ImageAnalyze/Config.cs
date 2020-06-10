@@ -159,6 +159,10 @@ namespace Gmage
         /// </summary>
         Smoothed,
         /// <summary>
+        /// 指定位图的轮廓图像
+        /// </summary>
+        Line,
+        /// <summary>
         /// 椒盐噪声
         /// </summary>
         Salt,
@@ -210,6 +214,23 @@ namespace Gmage
         /// 水平镜像
         /// </summary>
         RotateNoneFlipY,
+        /// <summary>
+        /// 腐蚀
+        /// </summary>
+        Corrode,
+        /// <summary>
+        /// 膨胀
+        /// </summary>
+        Expand,
+        /// <summary>
+        /// 高帽
+        /// </summary>
+        Tophap,
+        /// <summary>
+        /// 骨架提取
+        /// </summary>
+        Skeleton,
+        Boundary,
     }
 
     public enum MessageType

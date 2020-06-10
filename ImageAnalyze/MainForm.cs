@@ -217,6 +217,11 @@ namespace Gmage
             set => col.Image = value; get => (Bitmap)col.Image;
         }
 
+        public Bitmap CopyImage
+        {
+            set; get;
+        }
+
         public Bitmap initBitmap { set; get; }
 
         private Hashtable htTabImageName = new Hashtable();
@@ -506,7 +511,7 @@ namespace Gmage
                                     mouse_wh.X = RectP[2];
                                     mouse_wh.Y = RectP[3];
 
-                                    g.DrawRectangle(pen, Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y); 
+                                    g.DrawRectangle(pen, Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
 
                                     g.Dispose();
                                     GC.Collect();
@@ -593,11 +598,7 @@ namespace Gmage
                     case Tools.Empty:
                         break;
                     case Tools.Cut:
-                        if (isCuting && !isCutingUp)
-                        {
-                            isCutingUp = true;
-                            //DrawRectangle(ResultImage, mouse_down.X, mouse_down.Y, mouse_up.X - mouse_down.X, mouse_up.Y - mouse_down.Y);
-                        }
+                        CopyImage = Cut(Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y).Clone() as Bitmap;
                         break;
                     case Tools.Move:
                         if (e.Button == MouseButtons.Left)
@@ -626,7 +627,7 @@ namespace Gmage
                         && e.Y > Cut_StartPoint.Y && e.Y < Cut_StartPoint.Y + mouse_wh.Y)
                         {
                             isCuting = isCutingUp = false;
-                            Cut(Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
+                            ResultImage = Cut(Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
                         }
                         break;
                 }
@@ -1002,13 +1003,17 @@ namespace Gmage
             }
         }
 
+        /// <summary>
+        /// BUTTON事件
+        /// </summary>
         private void TsmiClick()
         {
             ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
             {
                 tsmi_Gray,tsmi_Complementary,tsmi_Frequency,
                 Clockwise180,Clockwise90,Clockwise270,RotateNoneFlipX,RotateNoneFlipY,
-                Tsmi_GaussBlur,tsmi_MedianFilter,tsmi_GaussNoise,tsmi_Smoothed
+                Tsmi_GaussBlur,tsmi_MedianFilter,tsmi_GaussNoise,tsmi_Smoothed,
+                tsmi_Corrode,tsmi_Expand,tsmi_Boundary,tsmi_TopHat,tsmi_Skeleton,
             };
             foreach (var tsmi in toolStripMenuItems)
             {
@@ -1024,7 +1029,7 @@ namespace Gmage
         {
             ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
             {
-               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen
+               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen,tsmi_Line,
             };
             foreach (var tsmi in toolStripMenuItems)
             {
@@ -1240,14 +1245,14 @@ namespace Gmage
             }
         }
 
-        private void Cut(int x, int y, int width, int height)
+        private Bitmap Cut(int x, int y, int width, int height)
         {
             Image rectg = ResultImage.Clone() as Bitmap;
-            var bmpRect = new Bitmap(rectg.Width, rectg.Height);
+            var bmpRect = new Bitmap(width, height);
             var g = Graphics.FromImage(bmpRect);
             g.DrawImage(rectg, new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
             g.Dispose();
-            ResultImage = bmpRect;
+            return bmpRect;
         }
 
         /// <summary>
@@ -1414,11 +1419,12 @@ namespace Gmage
 
         private void tsmi_Copy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetImage(ResultImage);
+            if(Tool==Tools.Cut)
+                Clipboard.SetImage(CopyImage);
+            else
+                Clipboard.SetImage(ResultImage);
         }
     }
-
-
 
     public enum Tools
     {

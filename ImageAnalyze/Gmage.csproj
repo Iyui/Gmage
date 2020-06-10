@@ -91,6 +91,12 @@
       <DependentUpon>BatchModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
+    <Compile Include="Controls\BitMapLayer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BitMapLayer.Designer.cs">
+      <DependentUpon>BitMapLayer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ImageTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -144,6 +150,7 @@
     <Compile Include="Noise\Probability.Designer.cs">
       <DependentUpon>Probability.cs</DependentUpon>
     </Compile>
+    <Compile Include="Process\thin.cs" />
     <Compile Include="Process\Threshold.cs">
       <SubType>Form</SubType>
     </Compile>
