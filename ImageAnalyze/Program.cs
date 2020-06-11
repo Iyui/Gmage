@@ -22,6 +22,7 @@ namespace Gmage
             MyArgs = args;
             GmageConfigXML.XmlHandle.LoadGmageConfig();
             Config.Read_Init_Preferences();
+            Config.Pack();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Config.bReStart = false;

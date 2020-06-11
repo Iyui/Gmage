@@ -416,7 +416,8 @@ namespace Gmage
                 try
                 {
                     var image = (Bitmap)Image.FromFile(path[i]);
-                    var TouchedImage = SwitchFunc(image).Clone() as Bitmap;
+                    var TouchedImage = Config.graphCommand.Execute(Config.Model, image);
+
                     TouchedImage.Save(SavePath + "\\" + Path.GetFileName(path[i]));
                     TouchedImage.Dispose();
                     GC.Collect();

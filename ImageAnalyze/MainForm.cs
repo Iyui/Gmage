@@ -1,6 +1,33 @@
-﻿/* Title:Gmage
+﻿#region Gorgeous Gmage
+/* Title:Gmage
  * Author:Iyui
- * Iyui.Github.com
+ * Homepage:Iyui.Github.com
+ * Rate of progress:PhotoShop 0.2%
+ * Background:网上的批处理软件太不好用，自己写了一个，
+ * 结果功能越来越多，干脆仿一个PhotoShop好了
+ * 
+ * 20200521:第一版
+ * 20200602:完善批处理
+ * 20200603:新增首选项设置
+ * 20200604:新增拾色器、图片移动
+ * 20200605:新增"最近打开过的文件"
+ * 20200609:新增"裁剪"和"画笔"
+ * 20200610:新增"腐蚀"、"膨胀"、"骨架提取"等功能
+ * 20200611:使用命令模式重构代码
+ * 
+ * 未来的更新
+ * 
+ * 1、撤销
+ * 2、抠图
+ * 3、图层
+ * 4、重写部分算法以加快处理速度
+ * 5、修改插件插拔部分
+ * 
+ * 未来的未来的更新
+ * 
+ * 自动循迹算法（看着很有意思）
+ * 
+ * 
  *           ~BBX0: :B0BXB?O?H7=OHOO?7COOCOB0O?OCC7?O77HO>7?C>7>C7>>CC>++>>>777v+7C7O7'`'-:=>7777777CCCCCOCCCCCCC77CC7777>7>'.``.^??O
          ~0BX?_  vX0BBHO?HHv~7HO?OCOOOCC0X??C77C?C>CHC7O?7>>>C>>>OC>>>>>>C7>v+>77O+```'--=777777CCCCCCCCCCCCCCC777777>>>7_.```.~HH
         ~XBB7`   >B0BBO?HHBv~vOO?CCOOOCCHX0O7C7O?7>OH77?O>>>77>>7OC>>>7>7C7>vvv>7C=`````-vC7777>>7CCCCCCCCCCCCC7777>>v~=>^`'``. =B
@@ -116,18 +143,13 @@ v_`      ...''  '_``````'-'`~++vv>~~O=---_=7C~-:=~~===~~^_-'`..`'..`.....`^'.  .
            ..^~_--``````-_'-==~^>^-=CO+:-_-_:____----''''```'''''''`    . `'_'...         .....`````''''`..`'^___'.`...-+~::`.`-_:
            .``'---`````'-_-^~:_:7v>7v:--_''-____----'''``_:'''```..   .```.`':'`.    ...``````'''''``'`''--_:_-_-'.``.`v+__:.   .`
            ..`_---'````'--^^_--^CCv_--__'..`'-----'-'`^>v+~-.    .. .``````.`-:``.````````'''-'`......```-::_-_-'`.`'`=7_-:' ...   
- * 20200521:第一版
- * 20200602:完善批处理
- * 20200603:新增首选项设置
- * 20200604:新增拾色器、图片移动
- * 20200605:新增"最近打开过的文件"
- * 20200609:新增"裁剪"和"画笔"
- * 
- * 预计更新
- * 抠图
- * 复制、粘贴
- * 
+
  */
+#endregion
+
+#region 以下为正文
+
+#region 引用
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -148,67 +170,73 @@ using static Gmage.ImageProcess;
 using System.Threading;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using static Gmage.Config;
+#endregion
 namespace Gmage
 {
     public partial class MainForm : MaterialForm
     {
-
-        GraphCommand.GraphCommand graphCommand = new GraphCommand.GraphCommand();
-
-        private void Packaging()
+        #region 注册事件
+        /// <summary>
+        /// BUTTON事件
+        /// </summary>
+        private void TsmiClick()
         {
-            GraphCommand.Clockwise90 clockwise90 = new GraphCommand.Clockwise90();
-            graphCommand.AddCommand(FunctionType.Clockwise90, clockwise90);
-            GraphCommand.Clockwise180 clockwise180 = new GraphCommand.Clockwise180();
-            graphCommand.AddCommand(FunctionType.Clockwise180, clockwise180);
-            GraphCommand.Clockwise270 clockwise270 = new GraphCommand.Clockwise270();
-            graphCommand.AddCommand(FunctionType.Clockwise270, clockwise270);
-            GraphCommand.RotateNoneFlipX rotatenoneflipx = new GraphCommand.RotateNoneFlipX();
-            graphCommand.AddCommand(FunctionType.RotateNoneFlipX, rotatenoneflipx);
-            GraphCommand.RotateNoneFlipY rotatenoneflipy = new GraphCommand.RotateNoneFlipY();
-            graphCommand.AddCommand(FunctionType.RotateNoneFlipY, rotatenoneflipy);
-            GraphCommand.ComplementaryP complementaryp = new GraphCommand.ComplementaryP();
-            graphCommand.AddCommand(FunctionType.Complementary, complementaryp);
-            GraphCommand.ImageToGreyP imagetogreyp = new GraphCommand.ImageToGreyP();
-            graphCommand.AddCommand(FunctionType.Grey, imagetogreyp);
-            GraphCommand.BinarizationP binarizationp = new GraphCommand.BinarizationP();
-            graphCommand.AddCommand(FunctionType.Binarization, binarizationp);
-            GraphCommand.Lighten lighten = new GraphCommand.Lighten();
-            graphCommand.AddCommand(FunctionType.Lighten, lighten);
-            GraphCommand.Contrast contrast = new GraphCommand.Contrast();
-            graphCommand.AddCommand(FunctionType.Contrast, contrast);
-            GraphCommand.Sharpen sharpen = new GraphCommand.Sharpen();
-            graphCommand.AddCommand(FunctionType.Sharpen, sharpen);
-            GraphCommand.SaltNoise saltnoise = new GraphCommand.SaltNoise();
-            graphCommand.AddCommand(FunctionType.Salt, saltnoise);
-            GraphCommand.GaussNoise gaussnoise = new GraphCommand.GaussNoise();
-            graphCommand.AddCommand(FunctionType.GaussNoise, gaussnoise);
-            GraphCommand.GaussBlurP gaussblurp = new GraphCommand.GaussBlurP();
-            graphCommand.AddCommand(FunctionType.GaussBlur, gaussblurp);
-            GraphCommand.MedianFilter medianfilter = new GraphCommand.MedianFilter();
-            graphCommand.AddCommand(FunctionType.MedianFilter, medianfilter);
-            GraphCommand.Erosion erosion = new GraphCommand.Erosion();
-            graphCommand.AddCommand(FunctionType.Erosion, erosion);
-            GraphCommand.Swell swell = new GraphCommand.Swell();
-            graphCommand.AddCommand(FunctionType.Swell, swell);
-            GraphCommand.Robert robert = new GraphCommand.Robert();
-            graphCommand.AddCommand(FunctionType.Robert, robert);
-            GraphCommand.Smoothed smoothed = new GraphCommand.Smoothed();
-            graphCommand.AddCommand(FunctionType.Smoothed, smoothed);
-            GraphCommand.Boundary boundary = new GraphCommand.Boundary();
-            graphCommand.AddCommand(FunctionType.Boundary, boundary);
-            GraphCommand.Skeleton skeleton = new GraphCommand.Skeleton();
-            graphCommand.AddCommand(FunctionType.Skeleton, skeleton);
-            GraphCommand.TopHap tophap = new GraphCommand.TopHap();
-            graphCommand.AddCommand(FunctionType.Tophap, tophap);
-            GraphCommand.FFT fft = new GraphCommand.FFT();
-            graphCommand.AddCommand(FunctionType.Frequency, fft);
-            GraphCommand.Polar polar = new GraphCommand.Polar();
-            graphCommand.AddCommand(FunctionType.Polar, polar);
-            GraphCommand.Recognite recognite = new GraphCommand.Recognite();
-            graphCommand.AddCommand(FunctionType.Recognition, recognite);
+            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
+            {
+                tsmi_Gray,tsmi_Complementary,tsmi_Frequency,
+                Clockwise180,Clockwise90,Clockwise270,RotateNoneFlipX,RotateNoneFlipY,
+                Tsmi_GaussBlur,tsmi_MedianFilter,tsmi_GaussNoise,tsmi_Smoothed,
+                tsmi_Corrode,tsmi_Expand,tsmi_Boundary,tsmi_TopHat,tsmi_Skeleton,
+            };
+            foreach (var tsmi in toolStripMenuItems)
+            {
+                tsmi.Click += (click_sender, click_e) =>
+                {
+                    Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
+                    ResultImage = graphCommand.Execute(Config.Model, ResultImage);
+                    GC.Collect();
+                };
+            }
         }
 
+        /// <summary>
+        /// 带阈值功能的事件注册
+        /// </summary>
+        private void TsmiThresholdClick()
+        {
+            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
+            {
+               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen,
+            };
+            foreach (var tsmi in toolStripMenuItems)
+            {
+                tsmi.Click += (click_sender, click_e) =>
+                {
+                    Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
+                    //ResultImage = SwitchFunc(initBitmap);
+                    Open_Threshold_Config(0);
+                };
+            }
+        }
+
+        /// <summary>
+        /// 工具栏事件
+        /// </summary>
+        private void ToolsClickEvent()
+        {
+            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Empty, mFB_ColorPicker, mFB_Move, mFB_Cut, mFB_Draw, mFB_Select };
+            foreach (var flatButton in flatButtons)
+            {
+                flatButton.Click += (sender, e) =>
+                {
+                    Tool = (Tools)Enum.Parse(typeof(Tools), flatButton.Tag.ToString());
+                };
+            }
+        }
+        #endregion
+
+        #region 消息处理
         /// <summary>
         /// 消息处理
         /// </summary>
@@ -261,13 +289,16 @@ namespace Gmage
                 //throw new Exception("", ex);
             }
         }
+        #endregion
+
         #region 变量
-        public Tools Tool { set; get; } = Tools.Empty;
-        private Tools lastTool = Tools.Empty;
-        private bool spaceUp = false;
+        private readonly MaterialSkinManager materialSkinManager;
+        Tools _lastTool = Tools.Empty;
+        bool _spaceUp = false;
         ToolTip toolTip = new ToolTip();
-        int history_Count = 10;
-        int history_Name_index = 1;
+        int _history_Count = 10;
+        int _history_Name_index = 1;
+        public Tools Tool { set; get; } = Tools.Empty;
         public Bitmap ResultImage
         {
             set => col.Image = value; get => (Bitmap)col.Image;
@@ -280,45 +311,26 @@ namespace Gmage
 
         public Bitmap initBitmap { set; get; }
 
-        private Hashtable htTabImageName = new Hashtable();
-
+        Hashtable _htTabImageName = new Hashtable();
+        //剪切
         bool canDrag = false;
         bool isCuting = false;
         bool isCutingUp = false;
-        //Bitmap 
-        private Color _penColor = Color.Yellow;
-        private float _penWidth = 1;
-        private bool _isPressed = false;
-        private int _x_offset = 4;
-        private int _y_offset = 20;
-
-        public double[] splinex = new double[1001];
-        public double[] spliney = new double[1001];
+        //画笔
+        bool _isPressed = false;
         public point[] pt = new point[6];
         public int no_of_points = 0;
-        int[] a1 = new int[12];
-        int[] b1 = new int[12];
+
         public enum PenType
         {
             k_pen = 0x1,
             k_hight_pen = 0x2,
             k_pai_pen
         }
-        public struct point
-        {
-            public int x;
-            public int y;
-
-            public void setxy(int i, int j)
-            {
-                x = i;
-                y = j;
-            }
-        }
-
 
         #endregion
-        private readonly MaterialSkinManager materialSkinManager;
+
+        #region 初始化
         public MainForm()
         {
             InitializeComponent();
@@ -332,7 +344,7 @@ namespace Gmage
                 Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             menuStrip1.BackColor = ((int)Primary.BlueGrey900).ToColor();
 
-            if (Config.WindowStateMax)
+            if (WindowStateMax)
                 WindowState = FormWindowState.Maximized;
             else
                 WindowState = FormWindowState.Normal;
@@ -352,41 +364,52 @@ namespace Gmage
             ToolsClickEvent();
             SetToolTipPromot();
 
-            Packaging();
-
             this.KeyDown += (sender, e) =>
             {
                 if (e.KeyCode == Keys.Space)//空格键按下可移动图片，仿PS
                 {
-                    if (spaceUp)
+                    if (_spaceUp)
                     {
-                        lastTool = Tool;
-                        spaceUp = false;
+                        _lastTool = Tool;
+                        _spaceUp = false;
                         Tool = Tools.Move;
                     }
                 }
                 else if (e.KeyCode == Keys.Menu)
                 {
-                    
+
                 }
             };
             this.KeyUp += (sender, e) =>
             {
                 if (e.KeyCode == Keys.Space)
                 {
-                    Tool = lastTool;
-                    spaceUp = true;
+                    Tool = _lastTool;
+                    _spaceUp = true;
                 }
                 else if (e.KeyCode == Keys.Menu)
                 {
-                    Tool = lastTool;
-                    spaceUp = true;
+                    Tool = _lastTool;
+                    _spaceUp = true;
                 }
             };
             this.MouseWheel += Zoom_MouseWheel;
             LoadHistory();
         }
-        
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            if (Program.MyArgs.Length > 0)
+            {
+                RollBackMessage(Program.MyArgs);
+            }
+            Classifier_Load();
+            Color_R = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "R", "51", "MainForm"));
+            Color_G = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "G", "51", "MainForm"));
+            Color_B = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "B", "51", "MainForm"));
+            Change_pB_Color();
+        }
+
         /// <summary>
         /// 设置按钮的提示文本
         /// </summary>
@@ -396,7 +419,14 @@ namespace Gmage
             toolTip.SetToolTip(mFB_ColorPicker, "拾色器");
         }
 
-        #region mtS_Selected及以上的控件功能
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SetHistory();
+            SaveInfo();
+        }
+        #endregion
+
+        #region 选项卡及以上的控件功能注册
         private void btn_SelectImage_Click(object sender, EventArgs e)
         {
             ReadInitImage();
@@ -489,30 +519,30 @@ namespace Gmage
                 Name = "tp_" + imageName
             };
             mTC_ImageTab.TabPages.Add(t);
-            PictureBox it = new PictureBox()
+            PictureBox _PictureBox = new PictureBox()
             {
                 Name = "pb_" + imageName,
             };
             var tp = mTC_ImageTab.TabPages[t.Name];
-            tp.Controls.Add(it);
+            tp.Controls.Add(_PictureBox);
             tp.BackColor = Color.FromArgb(255, 51, 51, 51);
-            htTabImageName.Add(t.Name, it.Name);
+            _htTabImageName.Add(t.Name, _PictureBox.Name);
             mTC_ImageTab.SelectedTab = tp;
-            it.Dock = DockStyle.None;
-            it.SizeMode = PictureBoxSizeMode.Zoom;
-            it.Image = initBitmap.Clone() as Image;
-            it.Width = it.Image.Width;
-            it.Height = it.Image.Height;
-            var p = GetControlCenterLocation(tp, it);
-            it.Location = p;
-            it.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            _PictureBox.Dock = DockStyle.None;
+            _PictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            _PictureBox.Image = initBitmap.Clone() as Image;
+            _PictureBox.Width = _PictureBox.Image.Width;
+            _PictureBox.Height = _PictureBox.Image.Height;
+            var p = GetControlCenterLocation(tp, _PictureBox);
+            _PictureBox.Location = p;
+            _PictureBox.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             Point mouse_down = new Point();
             Point mouse_up = new Point();
             Point mouse_wh = new Point();
 
             Point Cut_StartPoint = new Point();
-            int[] RectP = DrawRectangle(0,0,0,0);
-            it.MouseDown += (sender, e) =>
+            int[] RectP = DrawRectangle(0, 0, 0, 0);
+            _PictureBox.MouseDown += (sender, e) =>
             {
                 switch (Tool)
                 {
@@ -530,7 +560,7 @@ namespace Gmage
                         mouse_down.Y = -e.Y;
                         break;
                     case Tools.RGB_Pick:
-                        var c = ((Bitmap)it.Image).GetPixel(e.X, e.Y);
+                        var c = ((Bitmap)_PictureBox.Image).GetPixel(e.X, e.Y);
                         Pick_RGB(c);
                         break;
                     case Tools.Draw:
@@ -541,9 +571,9 @@ namespace Gmage
                         break;
                 }
             };
-            it.MouseMove += (sender, e) =>
+            _PictureBox.MouseMove += (sender, e) =>
             {
-                it.Cursor = MouseCursor();
+                _PictureBox.Cursor = MouseCursor();
                 switch (Tool)
                 {
                     default:
@@ -552,46 +582,38 @@ namespace Gmage
                     case Tools.Cut:
                         if (isCuting && e.Button == MouseButtons.Left)
                         {
-                            foreach (Control c in mTC_ImageTab.SelectedTab.Controls)
-                            {
-                                if (c is PictureBox)
-                                {
-                                    Graphics g = c.CreateGraphics();
-                                    c.Refresh();
-                                    var pen = new Pen(Color.Black, 1);
-                                    float[] dashValues = { 2, 3 };
-                                    // pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-                                    pen.DashPattern = dashValues;
-                                    mouse_up.X = e.X;
-                                    mouse_up.Y = e.Y;
-                                    RectP = DrawRectangle(mouse_down.X, mouse_down.Y, mouse_up.X, mouse_up.Y);
-                                    Cut_StartPoint.X = RectP[0];
-                                    Cut_StartPoint.Y = RectP[1];
-                                    mouse_wh.X = RectP[2];
-                                    mouse_wh.Y = RectP[3];
-
-                                    g.DrawRectangle(pen, Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
-
-                                    g.Dispose();
-                                    GC.Collect();
-                                    break;
-                                }
-
-                            }
+                            Graphics g = _PictureBox.CreateGraphics();
+                            _PictureBox.Refresh();
+                            var pen = new Pen(Color.Black, 1);
+                            float[] dashValues = { 2, 3 };
+                            // pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                            pen.DashPattern = dashValues;
+                            mouse_up.X = e.X;
+                            mouse_up.Y = e.Y;
+                            RectP = DrawRectangle(mouse_down.X, mouse_down.Y, mouse_up.X, mouse_up.Y);
+                            Cut_StartPoint.X = RectP[0];
+                            Cut_StartPoint.Y = RectP[1];
+                            mouse_wh.X = RectP[2];
+                            mouse_wh.Y = RectP[3];
+                            g.DrawRectangle(pen, Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
+                            g.Dispose();
+                            GC.Collect();
+                            break;
                         }
+
                         break;
                     case Tools.Move:
                         if (e.Button == MouseButtons.Left && canDrag)
                         {
-                            it.Location = new Point(it.Left + e.X + mouse_down.X, it.Top + e.Y + mouse_down.Y);
+                            _PictureBox.Location = new Point(_PictureBox.Left + e.X + mouse_down.X, _PictureBox.Top + e.Y + mouse_down.Y);
                         }
                         break;
                     case Tools.RGB_Pick:
                         if (e.Button == MouseButtons.Left)
                         {
-                            if (e.X > 0 && e.Y > 0 && e.X < it.Image.Width && e.Y < it.Image.Height)
+                            if (e.X > 0 && e.Y > 0 && e.X < _PictureBox.Image.Width && e.Y < _PictureBox.Image.Height)
                             {
-                                var c = ((Bitmap)it.Image).GetPixel(e.X, e.Y);
+                                var c = ((Bitmap)_PictureBox.Image).GetPixel(e.X, e.Y);
                                 Pick_RGB(c);
                             }
                         }
@@ -599,57 +621,18 @@ namespace Gmage
                     case Tools.Draw:
                         if (_isPressed)
                         {
-                            if (no_of_points > 3)
-                            {
-                                pt[0] = pt[1]; pt[1] = pt[2]; pt[2] = pt[3];
-                                pt[3].setxy(e.X, e.Y);
-                                double temp = Math.Sqrt(Math.Pow(pt[2].x - pt[1].x, 2F) + Math.Pow(pt[2].y - pt[1].y, 2F));
-                                int interpol = System.Convert.ToInt32(temp);
-                                bsp(pt[0], pt[1], pt[2], pt[3], interpol);
-                                int i;
-                                var bmpOut = ResultImage.Clone() as Bitmap;
-
-                                Graphics g = Graphics.FromImage(bmpOut);
-
-                                int x, y;
-
-                                g.SmoothingMode = SmoothingMode.AntiAlias;  //使绘图质量最高，即消除锯齿
-                                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                                g.CompositingQuality = CompositingQuality.HighQuality;
-
-                                for (i = 0; i <= interpol - 1; i++)
-                                {
-                                    x = Convert.ToInt32(splinex[i]);
-                                    y = Convert.ToInt32(spliney[i]);
-
-                                    _penColor = FrontColor;
-
-                                    g.DrawEllipse(new Pen(_penColor, _penWidth), x - 1, y, _penWidth, _penWidth);
-                                    g.DrawEllipse(new Pen(_penColor, _penWidth), x + 1, y, _penWidth, _penWidth);
-                                    g.DrawEllipse(new Pen(_penColor, _penWidth), x, y - 1, _penWidth, _penWidth);
-                                    g.DrawEllipse(new Pen(_penColor, _penWidth), x, y + 1, _penWidth, _penWidth);
-
-
-                                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x - 1, y), new Point(x - 1 + _x_offset, y + _y_offset));
-                                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x + 1, y), new Point(x + 1 + _x_offset, y + _y_offset));
-                                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x, y - 1), new Point(x + _x_offset, y - 1 + _y_offset));
-                                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x, y + 1), new Point(x + _x_offset, y + 1 + _y_offset));  
-                                }
-                                ResultImage = bmpOut;
-                                g.Dispose();
-                                GC.Collect();
-                            }
-                            else
-                            {
-                                pt[no_of_points].setxy(e.X, e.Y);
-                            }
-
-                            no_of_points = no_of_points + 1;
+                            Config.Model = FunctionType.Pen;
+                            int[] iparameter = new int[] { no_of_points, e.X, e.Y };
+                            parameter.iParameter = iparameter;
+                            parameter.Points = pt;
+                            parameter.Color = FrontColor;
+                            ResultImage = graphCommand.Execute(Config.Model, ResultImage, parameter).Clone() as Bitmap;
+                            no_of_points++;
                         }
                         break;
                 }
             };
-            it.MouseUp += (sender, e) =>
+            _PictureBox.MouseUp += (sender, e) =>
             {
                 switch (Tool)
                 {
@@ -657,7 +640,11 @@ namespace Gmage
                     case Tools.Empty:
                         break;
                     case Tools.Cut:
-                        CopyImage = Cut(Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y).Clone() as Bitmap;
+                        Config.Model = FunctionType.Cut;
+                        int[] Location = new int[] { Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y };
+                        parameter.iParameter = Location;
+                        CopyImage = graphCommand.Execute(Config.Model, ResultImage, parameter).Clone() as Bitmap;
+                        isCutingUp = true;
                         break;
                     case Tools.Move:
                         if (e.Button == MouseButtons.Left)
@@ -672,7 +659,7 @@ namespace Gmage
 
                 }
             };
-            it.MouseDoubleClick += (sender, e) =>
+            _PictureBox.MouseDoubleClick += (sender, e) =>
             {
                 switch (Tool)
                 {
@@ -682,11 +669,15 @@ namespace Gmage
                     case Tools.Cut:
                         if (!(isCuting && isCutingUp))
                             return;
-                        if (e.X > Cut_StartPoint.X && e.X < Cut_StartPoint.X+ mouse_wh.X
+                        if (e.X > Cut_StartPoint.X && e.X < Cut_StartPoint.X + mouse_wh.X
                         && e.Y > Cut_StartPoint.Y && e.Y < Cut_StartPoint.Y + mouse_wh.Y)
                         {
                             isCuting = isCutingUp = false;
-                            ResultImage = Cut(Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
+                            ResultImage = CopyImage;
+                            _PictureBox.Width = ResultImage.Width;
+                            _PictureBox.Height = ResultImage.Height;
+                            _PictureBox.Location = GetControlCenterLocation(tp, _PictureBox);
+                            //Cut(Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
                         }
                         break;
                 }
@@ -761,7 +752,7 @@ namespace Gmage
 
         private void LoadHistory()
         {
-            for (int i = history_Count - 1; i > 0; i--)
+            for (int i = _history_Count - 1; i > 0; i--)
             {
                 var h = LoadHistory("history", $"history{i}", null);
                 if (!string.IsNullOrEmpty(h))
@@ -777,10 +768,10 @@ namespace Gmage
         /// </summary>
         private void AddHistoryItems(string filename)
         {
-            AddHistoryItems(history_Count + history_Name_index, filename);
-            history_Name_index++;//防止控件重名
+            AddHistoryItems(_history_Count + _history_Name_index, filename);
+            _history_Name_index++;//防止控件重名
             history.Enqueue(filename);//最近打开，最多history_Count项
-            if (history.Count > history_Count)
+            if (history.Count > _history_Count)
                 history.Dequeue();
         }
         private void AddHistoryItems(int i, string h)
@@ -820,6 +811,13 @@ namespace Gmage
             }
         }
 
+        private void tsmi_Copy_Click(object sender, EventArgs e)
+        {
+            if (Tool == Tools.Cut)
+                Clipboard.SetImage(CopyImage);
+            else
+                Clipboard.SetImage(ResultImage);
+        }
         private void SetHistory(string val1, string val2, string val3)
         {
             GmageConfigXML.XmlHandle.SaveControlValue("MainForm", val1, val2, val3);
@@ -877,18 +875,7 @@ namespace Gmage
                 MessageBox.Show("请先选择分类器", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            if (Program.MyArgs.Length > 0)
-            {
-                RollBackMessage(Program.MyArgs);
-            }
-            Classifier_Load();
-            Color_R = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "R", "51", "MainForm"));
-            Color_G = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "G", "51", "MainForm"));
-            Color_B = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "B", "51", "MainForm"));
-            Change_pB_Color();
-        }
+
 
         /// <summary>
         /// 
@@ -999,7 +986,7 @@ namespace Gmage
             if (mTC_ImageTab.SelectedTab is null)
                 return;
             var TabName = mTC_ImageTab.SelectedTab.Name;
-            var selectedTabName = (string)htTabImageName[TabName];
+            var selectedTabName = (string)_htTabImageName[TabName];
 
             config.IsCheckedControl(tsmi_Index, TabName);
             col = (PictureBox)mTC_ImageTab.SelectedTab.Controls.Find(selectedTabName, true)[0];
@@ -1029,7 +1016,7 @@ namespace Gmage
                 var SelectedTabName = mTC_ImageTab.SelectedTab.Name;
                 var TabName = SelectedTabName.Substring(3);
                 //使用TabControl控件的TabPages属性的Remove方法移除指定的选项卡
-                htTabImageName.Remove(SelectedTabName);
+                _htTabImageName.Remove(SelectedTabName);
                 tsmi_Index.DropDownItems.RemoveByKey("tsmi_" + TabName);
                 NameHash.Remove(TabName);
                 mTC_ImageTab.TabPages.Remove(mTC_ImageTab.SelectedTab);
@@ -1061,46 +1048,6 @@ namespace Gmage
                 RollBackMessage(file);
             }
         }
-        /// <summary>
-        /// BUTTON事件
-        /// </summary>
-        private void TsmiClick()
-        {
-            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
-            {
-                tsmi_Gray,tsmi_Complementary,tsmi_Frequency,
-                Clockwise180,Clockwise90,Clockwise270,RotateNoneFlipX,RotateNoneFlipY,
-                Tsmi_GaussBlur,tsmi_MedianFilter,tsmi_GaussNoise,tsmi_Smoothed,
-                tsmi_Corrode,tsmi_Expand,tsmi_Boundary,tsmi_TopHat,tsmi_Skeleton,
-            };
-            foreach (var tsmi in toolStripMenuItems)
-            {
-                tsmi.Click += (click_sender, click_e) =>
-                {
-                    Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
-                    //ResultImage = SwitchFunc(ResultImage);
-                    ResultImage = graphCommand.Execute(Config.Model, ResultImage);
-                    GC.Collect();
-                };
-            }
-        }
-
-        private void TsmiThresholdClick()
-        {
-            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
-            {
-               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen,tsmi_Line,
-            };
-            foreach (var tsmi in toolStripMenuItems)
-            {
-                tsmi.Click += (click_sender, click_e) =>
-                {
-                    Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
-                    //ResultImage = SwitchFunc(initBitmap);
-                    Open_Threshold_Config(0);
-                };
-            }
-        }
 
         private void tsmi_Clear_Click(object sender, EventArgs e)
         {
@@ -1113,6 +1060,8 @@ namespace Gmage
             preferences.ShowDialog();
         }
         #endregion
+
+        #region 工具栏
 
         #region 拾色器
         #region 调色板
@@ -1245,9 +1194,9 @@ namespace Gmage
             mT_B.KeyPress += InputLimit;
 
             tB_R.Scroll += (sender, e) =>
-             {
-                 Color_R = tB_R.Value;
-             };
+            {
+                Color_R = tB_R.Value;
+            };
 
             tB_G.Scroll += (sender, e) =>
             {
@@ -1292,29 +1241,7 @@ namespace Gmage
         #endregion
         #endregion
 
-        #region 左边工具栏
-        private void ToolsClickEvent()
-        {
-            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Empty, mFB_ColorPicker, mFB_Move, mFB_Cut, mFB_Draw,mFB_Select };
-            foreach (var flatButton in flatButtons)
-            {
-                flatButton.Click += (sender, e) =>
-                {
-                    Tool = (Tools)Enum.Parse(typeof(Tools), flatButton.Tag.ToString());
-                };
-            }
-        }
-
-        private Bitmap Cut(int x, int y, int width, int height)
-        {
-            Image rectg = ResultImage.Clone() as Bitmap;
-            var bmpRect = new Bitmap(width, height);
-            var g = Graphics.FromImage(bmpRect);
-            g.DrawImage(rectg, new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
-            g.Dispose();
-            return bmpRect;
-        }
-
+        #region 裁剪
         /// <summary>
         /// 画矩形
         /// </summary>
@@ -1332,7 +1259,7 @@ namespace Gmage
             return image;
         }
 
-        private int[] DrawRectangle(int startX,int startY, int endX, int endY)
+        private int[] DrawRectangle(int startX, int startY, int endX, int endY)
         {
             var diffX = endX - startX;
             var diffY = endY - startY;
@@ -1360,33 +1287,9 @@ namespace Gmage
             }
             return new int[] { startX, startY, diffX, diffY };
         }
+        #endregion
 
-        public void bsp(point p1, point p2, point p3, point p4, int divisions)
-        {
-            double[] a = new double[5];
-            double[] b = new double[5];
-            a[0] = (-p1.x + 3 * p2.x - 3 * p3.x + p4.x) / 6.0;
-            a[1] = (3 * p1.x - 6 * p2.x + 3 * p3.x) / 6.0;
-            a[2] = (-3 * p1.x + 3 * p3.x) / 6.0;
-            a[3] = (p1.x + 4 * p2.x + p3.x) / 6.0;
-            b[0] = (-p1.y + 3 * p2.y - 3 * p3.y + p4.y) / 6.0;
-            b[1] = (3 * p1.y - 6 * p2.y + 3 * p3.y) / 6.0;
-            b[2] = (-3 * p1.y + 3 * p3.y) / 6.0;
-            b[3] = (p1.y + 4 * p2.y + p3.y) / 6.0;
-
-            splinex[0] = a[3];
-            spliney[0] = b[3];
-
-            int i;
-            for (i = 1; i <= divisions - 1; i++)
-            {
-                float t = System.Convert.ToSingle(i) / System.Convert.ToSingle(divisions);
-                splinex[i] = (a[2] + t * (a[1] + t * a[0])) * t + a[3];
-                spliney[i] = (b[2] + t * (b[1] + t * b[0])) * t + b[3];
-
-
-            }
-        }
+        #region 放大缩小
 
         [DllImport("user32.dll")]
         public static extern int WindowFromPoint(int xPoint, int yPoint);
@@ -1402,7 +1305,7 @@ namespace Gmage
                 //向前
                 if (e.Delta < 0)
                 {
-                    Zoom(true,e.X,e.Y);
+                    Zoom(true, e.X, e.Y);
 
                 }
                 //向后
@@ -1417,12 +1320,12 @@ namespace Gmage
         /// 放大缩小
         /// </summary>
         /// <param name="isReduce">true为缩小，false为放大</param>
-        void Zoom(bool isReduce,int X=0,int Y=0)
+        private void Zoom(bool isReduce, int X = 0, int Y = 0)
         {
             //col.Location = new Point(col.Location.X-X - 50, col.Location.Y - Y - 80);
             if (isReduce)
             {
-                float w = this.col.Width * 0.9f; 
+                float w = this.col.Width * 0.9f;
                 float h = this.col.Height * 0.9f;
                 this.col.Size = Size.Ceiling(new SizeF(w, h));
                 var p = GetControlCenterLocation(mTC_ImageTab.SelectedTab, col);
@@ -1430,7 +1333,7 @@ namespace Gmage
             }
             else
             {
-                float w = this.col.Width * 1.1f; 
+                float w = this.col.Width * 1.1f;
                 float h = this.col.Height * 1.1f;
                 this.col.Size = Size.Ceiling(new SizeF(w, h));
                 col.Invalidate();
@@ -1438,7 +1341,13 @@ namespace Gmage
                 col.Location = p;
             }
         }
+        #endregion
 
+        #region 鼠标光标样式
+        /// <summary>
+        /// 鼠标光标样式
+        /// </summary>
+        /// <returns></returns>
         private System.Windows.Forms.Cursor MouseCursor()
         {
             switch (Tool)
@@ -1454,47 +1363,32 @@ namespace Gmage
                     return Cursors.Cross;
             }
         }
+        #endregion
 
         #endregion
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            SetHistory();
-            SaveInfo();
-        }
+        #region 杂项
+        /// <summary>
+        /// 禁止menustrip响应部分按键
+        /// </summary>
+        /// <param name="keyData"></param>
+        /// <returns></returns>
         protected override bool ProcessDialogKey(Keys keyData)
         {
             if (keyData == (Keys.Alt | Keys.RButton | Keys.ShiftKey))
             {
-                if (spaceUp)
+                if (_spaceUp)
                 {
-                    lastTool = Tool;
-                    spaceUp = false;
+                    _lastTool = Tool;
+                    _spaceUp = false;
                     Tool = Tools.Zoom;
                 }
                 return true;
             }
             return base.ProcessDialogKey(keyData);
         }
-
-        private void tsmi_Copy_Click(object sender, EventArgs e)
-        {
-            if(Tool==Tools.Cut)
-                Clipboard.SetImage(CopyImage);
-            else
-                Clipboard.SetImage(ResultImage);
-        }
+        #endregion
     }
-
-    public enum Tools
-    {
-        Empty,
-        Move,
-        Cut,
-        RGB_Pick,
-        Draw,
-        Select,
-        Zoom,
-    }
-
 }
+
+#endregion

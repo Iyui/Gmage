@@ -4,12 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Windows.Forms;
 using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 using static Gmage.ImageProcess;
 namespace Gmage.GraphCommand
 {
+   
+
+    /// <summary>
+    /// 参数
+    /// </summary>
+    public class Parameter
+    {
+        public point[] Points { set; get; }
+        public int[] iParameter { set; get; }
+        public int Hold { set; get; }
+        public PictureBox PictureBox { set; get; }
+        public Color Color { set; get; }
+        public Bitmap OutBitmap { set; get; }
+        public Parameter()
+        {
+
+        }
+    }
+
     public class GraphCommand
     {
+        Graphics graphics = new Graphics();
+
         public IDictionary<FunctionType, IGraphCommand> Commands = new Dictionary<FunctionType, IGraphCommand>();
 
         public void AddCommand(FunctionType functionType, IGraphCommand graphCommand)
@@ -20,9 +43,17 @@ namespace Gmage.GraphCommand
         public Bitmap Execute(FunctionType functionType, Bitmap bitmap)
         {
             Commands[functionType].bitmap = bitmap.Clone() as Bitmap;
-            return Commands[functionType].Draw();
+            return graphics.Draw(Commands[functionType]);
+        }
+
+        public Bitmap Execute(FunctionType functionType, Bitmap bitmap, Parameter Parameter)
+        {
+            Commands[functionType].bitmap = bitmap.Clone() as Bitmap;
+            Commands[functionType].Parameter = Parameter;
+            return graphics.Draw(Commands[functionType]);
         }
     }
+
     /// <summary>
     /// 命令接收
     /// </summary>
@@ -30,10 +61,10 @@ namespace Gmage.GraphCommand
     {
         Stack<IGraphCommand> commands = new Stack<IGraphCommand>();
 
-        public void Draw(IGraphCommand command)
+        public Bitmap Draw(IGraphCommand command)
         {
-            command.Draw();
             commands.Push(command);
+            return command.Draw();
         }
 
         public void Undo()
@@ -43,15 +74,24 @@ namespace Gmage.GraphCommand
         }
     }
 
+    #region 命令接口
     public interface IGraphCommand
     {
         Bitmap bitmap
         {
             set; get;
         }
+        Parameter Parameter
+        {
+            set; get;
+        }
+
         Bitmap Draw();
         void Undo();
     }
+
+    #endregion
+
     #region 翻转和旋转
 
     /// <summary>
@@ -62,11 +102,15 @@ namespace Gmage.GraphCommand
         //
         public Bitmap bitmap
         {
-            set;get;
+            set; get;
+        }
+        public Parameter Parameter
+        {
+            set; get;
         }
         public Clockwise90()
         {
-            
+
         }
 
         public Bitmap Draw()
@@ -77,7 +121,7 @@ namespace Gmage.GraphCommand
 
         public void Undo()
         {
-            
+
         }
     }
 
@@ -86,13 +130,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Clockwise180 : IGraphCommand
     {
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Clockwise180()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -111,14 +159,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Clockwise270 : IGraphCommand
     {
- 
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
-        public Clockwise270( )
+        public Clockwise270()
         {
-           
+
         }
         public Bitmap Draw()
         {
@@ -137,14 +188,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class RotateNoneFlipX : IGraphCommand
     {
- 
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public RotateNoneFlipX()
         {
-             
+
         }
         public Bitmap Draw()
         {
@@ -163,14 +217,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class RotateNoneFlipY : IGraphCommand
     {
-        
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public RotateNoneFlipY()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -191,14 +248,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Complementary : IGraphCommand
     {
-        
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Complementary()
         {
-             
+
         }
         public Bitmap Draw()
         {
@@ -217,14 +277,18 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class ComplementaryP : IGraphCommand
     {
-        
+        public Parameter Parameter
+        {
+            set; get;
+        }
+
         public Bitmap bitmap
         {
             set; get;
         }
         public ComplementaryP()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -243,14 +307,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class ImageToGrey : IGraphCommand
     {
-        
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public ImageToGrey()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -263,20 +330,23 @@ namespace Gmage.GraphCommand
 
         }
     }
-  
+
     /// <summary>
     /// 灰度化 指针法
     /// </summary>
     public class ImageToGreyP : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public ImageToGreyP()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -295,6 +365,10 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Binarization : IGraphCommand
     {
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
@@ -302,7 +376,7 @@ namespace Gmage.GraphCommand
 
         public Binarization()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -321,19 +395,22 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class BinarizationP : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public BinarizationP()
         {
-            
+
         }
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return BinarizationP(_bitmap);
+            return BinarizationP(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -347,19 +424,22 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Lighten : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Lighten()
         {
-            
+
         }
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Lighten(_bitmap);
+            return Lighten(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -373,19 +453,22 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Contrast : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Contrast()
         {
-            
+
         }
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Contrast(_bitmap);
+            return Contrast(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -393,25 +476,30 @@ namespace Gmage.GraphCommand
 
         }
     }
+    #endregion
 
+    #region 滤镜
     /// <summary>
     /// 锐化
     /// </summary>
     public class Sharpen : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Sharpen()
         {
-            
+
         }
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Sharpen(_bitmap);
+            return Sharpen(_bitmap, Parameter.Hold / 25.5f);
         }
 
         public void Undo()
@@ -425,14 +513,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class SaltNoise : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public SaltNoise()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -451,14 +542,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class GaussNoise : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public GaussNoise()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -477,14 +571,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class GaussBlur : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public GaussBlur()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -503,14 +600,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class GaussBlurP : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public GaussBlurP()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -529,14 +629,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class MedianFilter : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public MedianFilter()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -555,14 +658,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Erosion : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Erosion()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -581,14 +687,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Swell : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Swell()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -601,25 +710,30 @@ namespace Gmage.GraphCommand
 
         }
     }
+    #endregion
 
+    #region 边缘检测
     /// <summary>
     /// 边缘检测Robert算子
     /// </summary>
     public class Robert : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Robert()
         {
-            
+
         }
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return EdgeDetector_Robert(_bitmap);
+            return EdgeDetector_Robert(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -632,14 +746,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Smoothed : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Smoothed()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -657,6 +774,10 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Boundary : IGraphCommand
     {
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
@@ -664,7 +785,7 @@ namespace Gmage.GraphCommand
 
         public Boundary()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -682,6 +803,10 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Skeleton : IGraphCommand
     {
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
@@ -689,7 +814,7 @@ namespace Gmage.GraphCommand
 
         public Skeleton()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -707,14 +832,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class TopHap : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public TopHap()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -727,11 +855,19 @@ namespace Gmage.GraphCommand
 
         }
     }
+
+    #endregion
+
+    #region 其他变换
     /// <summary>
     /// 傅里叶变换 频率谱
     /// </summary>
     public class FFT : IGraphCommand
     {
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
@@ -739,7 +875,7 @@ namespace Gmage.GraphCommand
 
         public FFT()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -758,14 +894,17 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Polar : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Polar()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -778,20 +917,25 @@ namespace Gmage.GraphCommand
 
         }
     }
+    #endregion
 
+    #region 级联分类器
     /// <summary>
     /// 识别
     /// </summary>
     public class Recognite : IGraphCommand
     {
-
+        public Parameter Parameter
+        {
+            set; get;
+        }
         public Bitmap bitmap
         {
             set; get;
         }
         public Recognite()
         {
-            
+
         }
         public Bitmap Draw()
         {
@@ -804,6 +948,173 @@ namespace Gmage.GraphCommand
 
         }
     }
- 
+
     #endregion
+
+    #region 工具栏
+    /// <summary>
+    /// 裁剪
+    /// </summary>
+    public class Cut : IGraphCommand
+    {
+        public Parameter Parameter
+        {
+            set; get;
+        }
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public Cut()
+        {
+
+        }
+        public Bitmap Draw()
+        {
+            var Location = Parameter.iParameter;
+            var _bitmap = bitmap.Clone() as Bitmap;
+            return CutImage(_bitmap, Location[0], Location[1], Location[2], Location[3]);
+        }
+
+        private Bitmap CutImage(Bitmap bitmap, int x, int y, int width, int height)
+        {
+            Image rectg = bitmap;
+            var bmpRect = new Bitmap(width, height);
+            var g = System.Drawing.Graphics.FromImage(bmpRect);
+            g.DrawImage(rectg, new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
+            g.Dispose();
+            return bmpRect;
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 画笔
+    /// </summary>
+    public class PenDraw : IGraphCommand
+    {
+        public Parameter Parameter
+        {
+            set; get;
+        }
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public PenDraw()
+        {
+
+        }
+        Color _penColor = Color.Yellow;
+        float _penWidth = 1;
+
+        public double[] splinex = new double[1001];
+        public double[] spliney = new double[1001];
+        public int no_of_points = 0;
+        int[] a1 = new int[12];
+        int[] b1 = new int[12];
+        public void bsp(point p1, point p2, point p3, point p4, int divisions)
+        {
+            double[] a = new double[5];
+            double[] b = new double[5];
+            a[0] = (-p1.x + 3 * p2.x - 3 * p3.x + p4.x) / 6.0;
+            a[1] = (3 * p1.x - 6 * p2.x + 3 * p3.x) / 6.0;
+            a[2] = (-3 * p1.x + 3 * p3.x) / 6.0;
+            a[3] = (p1.x + 4 * p2.x + p3.x) / 6.0;
+            b[0] = (-p1.y + 3 * p2.y - 3 * p3.y + p4.y) / 6.0;
+            b[1] = (3 * p1.y - 6 * p2.y + 3 * p3.y) / 6.0;
+            b[2] = (-3 * p1.y + 3 * p3.y) / 6.0;
+            b[3] = (p1.y + 4 * p2.y + p3.y) / 6.0;
+
+            splinex[0] = a[3];
+            spliney[0] = b[3];
+
+            int i;
+            for (i = 1; i <= divisions - 1; i++)
+            {
+                float t = System.Convert.ToSingle(i) / System.Convert.ToSingle(divisions);
+                splinex[i] = (a[2] + t * (a[1] + t * a[0])) * t + a[3];
+                spliney[i] = (b[2] + t * (b[1] + t * b[0])) * t + b[3];
+
+
+            }
+        }
+        public Bitmap Draw()
+        {
+            var parameter = Parameter.iParameter;
+            no_of_points = parameter[0];
+            var eX = parameter[1];
+            var eY = parameter[2];
+            var pt = Parameter.Points;
+            var FrontColor = Parameter.Color;
+            var _bitmap = bitmap.Clone() as Bitmap;
+            Parameter.OutBitmap = _bitmap;
+            if (no_of_points > 3)
+            {
+                pt[0] = pt[1]; pt[1] = pt[2]; pt[2] = pt[3];
+                pt[3].setxy(eX, eY);
+                double temp = Math.Sqrt(Math.Pow(pt[2].x - pt[1].x, 2F) + Math.Pow(pt[2].y - pt[1].y, 2F));
+                int interpol = System.Convert.ToInt32(temp);
+                bsp(pt[0], pt[1], pt[2], pt[3], interpol);
+                int i;
+                var bmpOut = _bitmap;
+
+                System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmpOut);
+
+                int x, y;
+
+                g.SmoothingMode = SmoothingMode.AntiAlias;  //使绘图质量最高，即消除锯齿
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+
+                for (i = 0; i <= interpol - 1; i++)
+                {
+                    x = Convert.ToInt32(splinex[i]);
+                    y = Convert.ToInt32(spliney[i]);
+
+                    _penColor = FrontColor;
+
+                    g.DrawEllipse(new Pen(_penColor, _penWidth), x - 1, y, _penWidth, _penWidth);
+                    g.DrawEllipse(new Pen(_penColor, _penWidth), x + 1, y, _penWidth, _penWidth);
+                    g.DrawEllipse(new Pen(_penColor, _penWidth), x, y - 1, _penWidth, _penWidth);
+                    g.DrawEllipse(new Pen(_penColor, _penWidth), x, y + 1, _penWidth, _penWidth);
+
+
+                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x - 1, y), new Point(x - 1 + _x_offset, y + _y_offset));
+                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x + 1, y), new Point(x + 1 + _x_offset, y + _y_offset));
+                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x, y - 1), new Point(x + _x_offset, y - 1 + _y_offset));
+                    //g.DrawLine(new Pen(_penColor, _penWidth), new Point(x, y + 1), new Point(x + _x_offset, y + 1 + _y_offset));  
+                }
+                Parameter.OutBitmap = bmpOut;
+                g.Dispose();
+                GC.Collect();
+            }
+            else
+            {
+                pt[no_of_points].setxy(eX, eY);
+            }
+            return Parameter.OutBitmap;
+        }
+
+        private Bitmap CutImage(Bitmap bitmap, int x, int y, int width, int height)
+        {
+            Image rectg = bitmap;
+            var bmpRect = new Bitmap(width, height);
+            var g = System.Drawing.Graphics.FromImage(bmpRect);
+            g.DrawImage(rectg, new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);
+            g.Dispose();
+            return bmpRect;
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
+    #endregion
+
 }

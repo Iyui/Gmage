@@ -15,6 +15,7 @@ namespace Gmage.Process
     public partial class Threshold : MaterialForm
     {
         private MainForm f;
+        private GraphCommand.GraphCommand _g;
         public int Hold
         {
             set => tB_Threshold.Value = value;
@@ -39,6 +40,15 @@ namespace Gmage.Process
             this.PointToScreen(p);
             this.Location = p;
             button2.BackColor = button1.BackColor = ((int)Primary.BlueGrey800).ToColor();
+            _g = Config.graphCommand;
+        }
+        //GraphCommand.Parameter parameter = new GraphCommand.Parameter();
+        private Bitmap SetThreshold()
+        {
+            GC.Collect();
+            Config.parameter.Hold = Hold;
+            ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter);
+            return ResultBitmap;
         }
 
         private void SetScrollStyle()
@@ -64,37 +74,6 @@ namespace Gmage.Process
             SetThresholdText();
         }
 
-        private Bitmap SetThreshold()
-        {
-            GC.Collect();
-            switch (Config.Model)
-            {
-                default:
-                    break;
-                case FunctionType.Binarization:
-                    ResultBitmap = BinarizationP(InitBitmap, Hold);
-                    break;
-                case FunctionType.Robert:
-                    ResultBitmap = EdgeDetector_Robert(InitBitmap, Hold);
-                    break;
-                case FunctionType.Polar:
-                    ResultBitmap = Polar(InitBitmap, Hold);
-                    break;
-                case FunctionType.Sharpen:
-                    ResultBitmap = Sharpen(InitBitmap, Hold / 25.5f);
-                    break;
-                case FunctionType.Lighten:
-                    ResultBitmap = Lighten(InitBitmap, Hold);
-                    break;
-                case FunctionType.Contrast:
-                    ResultBitmap = Contrast(InitBitmap, Hold);
-                    break;
-                case FunctionType.Line:
-                    ResultBitmap = EdgeDetector_Line(InitBitmap, Hold);
-                    break;
-            }
-            return ResultBitmap;
-        }
 
         private int LoadThreshold()
         {

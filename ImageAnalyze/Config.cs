@@ -12,6 +12,73 @@ namespace Gmage
 {
     public class Config
     {
+        #region 功能组装
+        public static GraphCommand.GraphCommand graphCommand = new GraphCommand.GraphCommand();
+        public static GraphCommand.Parameter parameter = new GraphCommand.Parameter();
+        /// <summary>
+        /// 功能组装
+        /// </summary>
+        public static void Pack(){ Packaging(); }
+        private static void Packaging()
+        {
+            GraphCommand.Clockwise90 clockwise90 = new GraphCommand.Clockwise90();
+            graphCommand.AddCommand(FunctionType.Clockwise90, clockwise90);
+            GraphCommand.Clockwise180 clockwise180 = new GraphCommand.Clockwise180();
+            graphCommand.AddCommand(FunctionType.Clockwise180, clockwise180);
+            GraphCommand.Clockwise270 clockwise270 = new GraphCommand.Clockwise270();
+            graphCommand.AddCommand(FunctionType.Clockwise270, clockwise270);
+            GraphCommand.RotateNoneFlipX rotatenoneflipx = new GraphCommand.RotateNoneFlipX();
+            graphCommand.AddCommand(FunctionType.RotateNoneFlipX, rotatenoneflipx);
+            GraphCommand.RotateNoneFlipY rotatenoneflipy = new GraphCommand.RotateNoneFlipY();
+            graphCommand.AddCommand(FunctionType.RotateNoneFlipY, rotatenoneflipy);
+            GraphCommand.ComplementaryP complementaryp = new GraphCommand.ComplementaryP();
+            graphCommand.AddCommand(FunctionType.Complementary, complementaryp);
+            GraphCommand.ImageToGreyP imagetogreyp = new GraphCommand.ImageToGreyP();
+            graphCommand.AddCommand(FunctionType.Grey, imagetogreyp);
+            GraphCommand.BinarizationP binarizationp = new GraphCommand.BinarizationP();
+            graphCommand.AddCommand(FunctionType.Binarization, binarizationp);
+            GraphCommand.Lighten lighten = new GraphCommand.Lighten();
+            graphCommand.AddCommand(FunctionType.Lighten, lighten);
+            GraphCommand.Contrast contrast = new GraphCommand.Contrast();
+            graphCommand.AddCommand(FunctionType.Contrast, contrast);
+            GraphCommand.Sharpen sharpen = new GraphCommand.Sharpen();
+            graphCommand.AddCommand(FunctionType.Sharpen, sharpen);
+            GraphCommand.SaltNoise saltnoise = new GraphCommand.SaltNoise();
+            graphCommand.AddCommand(FunctionType.Salt, saltnoise);
+            GraphCommand.GaussNoise gaussnoise = new GraphCommand.GaussNoise();
+            graphCommand.AddCommand(FunctionType.GaussNoise, gaussnoise);
+            GraphCommand.GaussBlurP gaussblurp = new GraphCommand.GaussBlurP();
+            graphCommand.AddCommand(FunctionType.GaussBlur, gaussblurp);
+            GraphCommand.MedianFilter medianfilter = new GraphCommand.MedianFilter();
+            graphCommand.AddCommand(FunctionType.MedianFilter, medianfilter);
+            GraphCommand.Erosion erosion = new GraphCommand.Erosion();
+            graphCommand.AddCommand(FunctionType.Erosion, erosion);
+            GraphCommand.Swell swell = new GraphCommand.Swell();
+            graphCommand.AddCommand(FunctionType.Swell, swell);
+            GraphCommand.Robert robert = new GraphCommand.Robert();
+            graphCommand.AddCommand(FunctionType.Robert, robert);
+            GraphCommand.Smoothed smoothed = new GraphCommand.Smoothed();
+            graphCommand.AddCommand(FunctionType.Smoothed, smoothed);
+            GraphCommand.Boundary boundary = new GraphCommand.Boundary();
+            graphCommand.AddCommand(FunctionType.Boundary, boundary);
+            GraphCommand.Skeleton skeleton = new GraphCommand.Skeleton();
+            graphCommand.AddCommand(FunctionType.Skeleton, skeleton);
+            GraphCommand.TopHap tophap = new GraphCommand.TopHap();
+            graphCommand.AddCommand(FunctionType.Tophap, tophap);
+            GraphCommand.FFT fft = new GraphCommand.FFT();
+            graphCommand.AddCommand(FunctionType.Frequency, fft);
+            GraphCommand.Polar polar = new GraphCommand.Polar();
+            graphCommand.AddCommand(FunctionType.Polar, polar);
+            GraphCommand.Recognite recognite = new GraphCommand.Recognite();
+            graphCommand.AddCommand(FunctionType.Recognition, recognite);
+            GraphCommand.Cut cut = new GraphCommand.Cut();
+            graphCommand.AddCommand(FunctionType.Cut, cut);
+            GraphCommand.PenDraw pen = new GraphCommand.PenDraw();
+            graphCommand.AddCommand(FunctionType.Pen, pen);
+        }
+        #endregion
+
+        #region 杂项
         public static FunctionType Model;
         public static string ClassifierPath;
         public static bool bReStart;
@@ -22,7 +89,7 @@ namespace Gmage
 
         public static HashSet<string> PluginList = new HashSet<string>();
         public static HashSet<string> Classifier = new HashSet<string>();
-      
+
         /// <summary>
         /// 设置右键菜单单选
         /// </summary>
@@ -107,6 +174,7 @@ namespace Gmage
             WindowStateMax = bool.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Conventional", "WindowState", "false"));
             return value;
         }
+        #endregion
     }
 
     public enum Theme
@@ -230,9 +298,43 @@ namespace Gmage
         /// 骨架提取
         /// </summary>
         Skeleton,
+        /// <summary>
+        /// 边界
+        /// </summary>
         Boundary,
+        /// <summary>
+        /// 裁剪
+        /// </summary>
+        Cut,
+        /// <summary>
+        /// 画笔
+        /// </summary>
+        Pen,
+    }
+    public struct point
+    {
+        public int x;
+        public int y;
+
+        public void setxy(int i, int j)
+        {
+            x = i;
+            y = j;
+        }
     }
 
+    public enum Tools
+    {
+        Empty,
+        Move,
+        Cut,
+        RGB_Pick,
+        Draw,
+        Select,
+        Zoom,
+    }
+
+    #region 回调
     public enum MessageType
     {
         ImageReading,
@@ -334,8 +436,10 @@ namespace Gmage
         }
 
     }
+    #endregion
 }
 
+#region XML保存设置
 namespace GmageGeneral
 {
 
@@ -917,3 +1021,4 @@ namespace GmageConfigXML
         }
     }
 }
+#endregion
