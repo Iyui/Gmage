@@ -129,7 +129,7 @@ namespace Gmage
         /// <summary>
         /// 灰度化
         /// </summary>
-        Gray,
+        Grey,
         /// <summary>
         /// 二值化
         /// </summary>
@@ -193,7 +193,7 @@ namespace Gmage
         /// <summary>
         /// 面部识别
         /// </summary>
-        FaceRecognition,
+        Recognition,
         /// <summary>
         /// 旋转180度
         /// </summary>
@@ -217,11 +217,11 @@ namespace Gmage
         /// <summary>
         /// 腐蚀
         /// </summary>
-        Corrode,
+        Erosion,
         /// <summary>
         /// 膨胀
         /// </summary>
-        Expand,
+        Swell,
         /// <summary>
         /// 高帽
         /// </summary>

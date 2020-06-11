@@ -51,7 +51,7 @@ namespace Gmage
             {
                 default:
                     break;
-                case FunctionType.Gray:
+                case FunctionType.Grey:
                     b = ImageToGreyP(b);
                     break;
                 case FunctionType.Binarization:
@@ -81,7 +81,7 @@ namespace Gmage
                 case FunctionType.Polar:
                     b = Polar(b);
                     break;
-                case FunctionType.FaceRecognition:
+                case FunctionType.Recognition:
                     b = Recognite_Face(b); 
                     break;
                 case FunctionType.Sharpen:

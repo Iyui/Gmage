@@ -19,7 +19,7 @@ namespace Gmage
             {
                 default:
                     break;
-                case FunctionType.Gray:
+                case FunctionType.Grey:
                     b = ImageToGreyP(b);
                     break;
                 case FunctionType.Binarization:
@@ -49,7 +49,7 @@ namespace Gmage
                 case FunctionType.Polar:
                     b = Polar(b);
                     break;
-                case FunctionType.FaceRecognition:
+                case FunctionType.Recognition:
                     b = Recognite_Face(b);
                     break;
                 case FunctionType.Sharpen:
@@ -82,10 +82,10 @@ namespace Gmage
                 case FunctionType.Line:
                     b = MedianFilter(b);
                     break;
-                case FunctionType.Corrode:
+                case FunctionType.Erosion:
                     b = ToErosion(b);
                     break;
-                case FunctionType.Expand:
+                case FunctionType.Swell:
                     b = ToSwell(b);
                     break;
                 case FunctionType.Skeleton:

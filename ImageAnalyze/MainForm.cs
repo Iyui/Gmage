@@ -153,6 +153,62 @@ namespace Gmage
     public partial class MainForm : MaterialForm
     {
 
+        GraphCommand.GraphCommand graphCommand = new GraphCommand.GraphCommand();
+
+        private void Packaging()
+        {
+            GraphCommand.Clockwise90 clockwise90 = new GraphCommand.Clockwise90();
+            graphCommand.AddCommand(FunctionType.Clockwise90, clockwise90);
+            GraphCommand.Clockwise180 clockwise180 = new GraphCommand.Clockwise180();
+            graphCommand.AddCommand(FunctionType.Clockwise180, clockwise180);
+            GraphCommand.Clockwise270 clockwise270 = new GraphCommand.Clockwise270();
+            graphCommand.AddCommand(FunctionType.Clockwise270, clockwise270);
+            GraphCommand.RotateNoneFlipX rotatenoneflipx = new GraphCommand.RotateNoneFlipX();
+            graphCommand.AddCommand(FunctionType.RotateNoneFlipX, rotatenoneflipx);
+            GraphCommand.RotateNoneFlipY rotatenoneflipy = new GraphCommand.RotateNoneFlipY();
+            graphCommand.AddCommand(FunctionType.RotateNoneFlipY, rotatenoneflipy);
+            GraphCommand.ComplementaryP complementaryp = new GraphCommand.ComplementaryP();
+            graphCommand.AddCommand(FunctionType.Complementary, complementaryp);
+            GraphCommand.ImageToGreyP imagetogreyp = new GraphCommand.ImageToGreyP();
+            graphCommand.AddCommand(FunctionType.Grey, imagetogreyp);
+            GraphCommand.BinarizationP binarizationp = new GraphCommand.BinarizationP();
+            graphCommand.AddCommand(FunctionType.Binarization, binarizationp);
+            GraphCommand.Lighten lighten = new GraphCommand.Lighten();
+            graphCommand.AddCommand(FunctionType.Lighten, lighten);
+            GraphCommand.Contrast contrast = new GraphCommand.Contrast();
+            graphCommand.AddCommand(FunctionType.Contrast, contrast);
+            GraphCommand.Sharpen sharpen = new GraphCommand.Sharpen();
+            graphCommand.AddCommand(FunctionType.Sharpen, sharpen);
+            GraphCommand.SaltNoise saltnoise = new GraphCommand.SaltNoise();
+            graphCommand.AddCommand(FunctionType.Salt, saltnoise);
+            GraphCommand.GaussNoise gaussnoise = new GraphCommand.GaussNoise();
+            graphCommand.AddCommand(FunctionType.GaussNoise, gaussnoise);
+            GraphCommand.GaussBlurP gaussblurp = new GraphCommand.GaussBlurP();
+            graphCommand.AddCommand(FunctionType.GaussBlur, gaussblurp);
+            GraphCommand.MedianFilter medianfilter = new GraphCommand.MedianFilter();
+            graphCommand.AddCommand(FunctionType.MedianFilter, medianfilter);
+            GraphCommand.Erosion erosion = new GraphCommand.Erosion();
+            graphCommand.AddCommand(FunctionType.Erosion, erosion);
+            GraphCommand.Swell swell = new GraphCommand.Swell();
+            graphCommand.AddCommand(FunctionType.Swell, swell);
+            GraphCommand.Robert robert = new GraphCommand.Robert();
+            graphCommand.AddCommand(FunctionType.Robert, robert);
+            GraphCommand.Smoothed smoothed = new GraphCommand.Smoothed();
+            graphCommand.AddCommand(FunctionType.Smoothed, smoothed);
+            GraphCommand.Boundary boundary = new GraphCommand.Boundary();
+            graphCommand.AddCommand(FunctionType.Boundary, boundary);
+            GraphCommand.Skeleton skeleton = new GraphCommand.Skeleton();
+            graphCommand.AddCommand(FunctionType.Skeleton, skeleton);
+            GraphCommand.TopHap tophap = new GraphCommand.TopHap();
+            graphCommand.AddCommand(FunctionType.Tophap, tophap);
+            GraphCommand.FFT fft = new GraphCommand.FFT();
+            graphCommand.AddCommand(FunctionType.Frequency, fft);
+            GraphCommand.Polar polar = new GraphCommand.Polar();
+            graphCommand.AddCommand(FunctionType.Polar, polar);
+            GraphCommand.Recognite recognite = new GraphCommand.Recognite();
+            graphCommand.AddCommand(FunctionType.Recognition, recognite);
+        }
+
         /// <summary>
         /// 消息处理
         /// </summary>
@@ -295,6 +351,9 @@ namespace Gmage
             TsmiThresholdClick();
             ToolsClickEvent();
             SetToolTipPromot();
+
+            Packaging();
+
             this.KeyDown += (sender, e) =>
             {
                 if (e.KeyCode == Keys.Space)//空格键按下可移动图片，仿PS
@@ -811,7 +870,7 @@ namespace Gmage
 
         private void btn_FaceRecognition_Click(object sender, EventArgs e)
         {
-            Config.Model = FunctionType.FaceRecognition;
+            Config.Model = FunctionType.Recognition;
             if (Path.GetExtension(Config.ClassifierPath) == ".xml")
                 ResultImage = Recognite_Face(ResultImage, Config.ClassifierPath);
             else
@@ -1002,7 +1061,6 @@ namespace Gmage
                 RollBackMessage(file);
             }
         }
-
         /// <summary>
         /// BUTTON事件
         /// </summary>
@@ -1020,7 +1078,9 @@ namespace Gmage
                 tsmi.Click += (click_sender, click_e) =>
                 {
                     Config.Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
-                    ResultImage = SwitchFunc(ResultImage);
+                    //ResultImage = SwitchFunc(ResultImage);
+                    ResultImage = graphCommand.Execute(Config.Model, ResultImage);
+                    GC.Collect();
                 };
             }
         }
@@ -1436,4 +1496,5 @@ namespace Gmage
         Select,
         Zoom,
     }
+
 }

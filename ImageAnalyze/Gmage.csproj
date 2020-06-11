@@ -109,6 +109,7 @@
     <Compile Include="Controls\Progress.Designer.cs">
       <DependentUpon>Progress.cs</DependentUpon>
     </Compile>
+    <Compile Include="GraphCommand\GraphCommand.cs" />
     <Compile Include="LoadForm.cs">
       <SubType>Form</SubType>
     </Compile>

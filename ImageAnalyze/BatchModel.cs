@@ -41,7 +41,7 @@ namespace Gmage
 
         private void SetDic()
         {
-            SetDic("灰度化", FunctionType.Gray);
+            SetDic("灰度化", FunctionType.Grey);
             SetDic("二值化", FunctionType.Binarization);
             SetDic("反色", FunctionType.Complementary);
             SetDic("Smoothed边缘检测", FunctionType.Smoothed);
