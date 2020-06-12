@@ -8,6 +8,8 @@ using System.Drawing;
 using System.IO;
 using System.Xml;
 using System.Data;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 namespace Gmage
 {
     public class Config
@@ -16,65 +18,86 @@ namespace Gmage
         public static GraphCommand.GraphCommand graphCommand = new GraphCommand.GraphCommand();
         public static GraphCommand.Parameter parameter = new GraphCommand.Parameter();
         /// <summary>
-        /// 功能组装
+        /// 功能组装代码由脚本生成至剪切板
         /// </summary>
         public static void Pack(){ Packaging(); }
+        public static void Void()
+        {
+            var ss = "";
+            foreach (int v in Enum.GetValues(typeof(FunctionType)))
+            {
+                var str = Enum.GetName(typeof(FunctionType), v);
+                var s = str.ToString().Trim();
+                ss += $"GraphCommand.{s} {s.ToLower()}= new GraphCommand.{s}();\r\n" +
+                    $"graphCommand.AddCommand(FunctionType.{s}, {s.ToLower()});\r\n";
+            }
+            Clipboard.Clear();
+            Clipboard.SetText(ss);
+        }
         private static void Packaging()
         {
-            GraphCommand.Clockwise90 clockwise90 = new GraphCommand.Clockwise90();
-            graphCommand.AddCommand(FunctionType.Clockwise90, clockwise90);
+            GraphCommand.Gray gray = new GraphCommand.Gray();
+            graphCommand.AddCommand(FunctionType.Gray, gray);
+            GraphCommand.Binarization binarization = new GraphCommand.Binarization();
+            graphCommand.AddCommand(FunctionType.Binarization, binarization);
+            GraphCommand.Complementary complementary = new GraphCommand.Complementary();
+            graphCommand.AddCommand(FunctionType.Complementary, complementary);
+            GraphCommand.Sharpen sharpen = new GraphCommand.Sharpen();
+            graphCommand.AddCommand(FunctionType.Sharpen, sharpen);
+            GraphCommand.Lighten lighten = new GraphCommand.Lighten();
+            graphCommand.AddCommand(FunctionType.Lighten, lighten);
+            GraphCommand.Contrast contrast = new GraphCommand.Contrast();
+            graphCommand.AddCommand(FunctionType.Contrast, contrast);
+            GraphCommand.Robert robert = new GraphCommand.Robert();
+            graphCommand.AddCommand(FunctionType.Robert, robert);
+            GraphCommand.Smoothed smoothed = new GraphCommand.Smoothed();
+            graphCommand.AddCommand(FunctionType.Smoothed, smoothed);
+            GraphCommand.SaltNoise saltnoise = new GraphCommand.SaltNoise();
+            graphCommand.AddCommand(FunctionType.SaltNoise, saltnoise);
+            GraphCommand.GaussNoise gaussnoise = new GraphCommand.GaussNoise();
+            graphCommand.AddCommand(FunctionType.GaussNoise, gaussnoise);
+            GraphCommand.MedianFilter medianfilter = new GraphCommand.MedianFilter();
+            graphCommand.AddCommand(FunctionType.MedianFilter, medianfilter);
+            GraphCommand.GaussBlur gaussblur = new GraphCommand.GaussBlur();
+            graphCommand.AddCommand(FunctionType.GaussBlur, gaussblur);
+            GraphCommand.Polar polar = new GraphCommand.Polar();
+            graphCommand.AddCommand(FunctionType.Polar, polar);
+            GraphCommand.FFT fft = new GraphCommand.FFT();
+            graphCommand.AddCommand(FunctionType.FFT, fft);
+            GraphCommand.Recognition recognition = new GraphCommand.Recognition();
+            graphCommand.AddCommand(FunctionType.Recognition, recognition);
             GraphCommand.Clockwise180 clockwise180 = new GraphCommand.Clockwise180();
             graphCommand.AddCommand(FunctionType.Clockwise180, clockwise180);
+            GraphCommand.Clockwise90 clockwise90 = new GraphCommand.Clockwise90();
+            graphCommand.AddCommand(FunctionType.Clockwise90, clockwise90);
             GraphCommand.Clockwise270 clockwise270 = new GraphCommand.Clockwise270();
             graphCommand.AddCommand(FunctionType.Clockwise270, clockwise270);
             GraphCommand.RotateNoneFlipX rotatenoneflipx = new GraphCommand.RotateNoneFlipX();
             graphCommand.AddCommand(FunctionType.RotateNoneFlipX, rotatenoneflipx);
             GraphCommand.RotateNoneFlipY rotatenoneflipy = new GraphCommand.RotateNoneFlipY();
             graphCommand.AddCommand(FunctionType.RotateNoneFlipY, rotatenoneflipy);
-            GraphCommand.ComplementaryP complementaryp = new GraphCommand.ComplementaryP();
-            graphCommand.AddCommand(FunctionType.Complementary, complementaryp);
-            GraphCommand.ImageToGreyP imagetogreyp = new GraphCommand.ImageToGreyP();
-            graphCommand.AddCommand(FunctionType.Grey, imagetogreyp);
-            GraphCommand.BinarizationP binarizationp = new GraphCommand.BinarizationP();
-            graphCommand.AddCommand(FunctionType.Binarization, binarizationp);
-            GraphCommand.Lighten lighten = new GraphCommand.Lighten();
-            graphCommand.AddCommand(FunctionType.Lighten, lighten);
-            GraphCommand.Contrast contrast = new GraphCommand.Contrast();
-            graphCommand.AddCommand(FunctionType.Contrast, contrast);
-            GraphCommand.Sharpen sharpen = new GraphCommand.Sharpen();
-            graphCommand.AddCommand(FunctionType.Sharpen, sharpen);
-            GraphCommand.SaltNoise saltnoise = new GraphCommand.SaltNoise();
-            graphCommand.AddCommand(FunctionType.Salt, saltnoise);
-            GraphCommand.GaussNoise gaussnoise = new GraphCommand.GaussNoise();
-            graphCommand.AddCommand(FunctionType.GaussNoise, gaussnoise);
-            GraphCommand.GaussBlurP gaussblurp = new GraphCommand.GaussBlurP();
-            graphCommand.AddCommand(FunctionType.GaussBlur, gaussblurp);
-            GraphCommand.MedianFilter medianfilter = new GraphCommand.MedianFilter();
-            graphCommand.AddCommand(FunctionType.MedianFilter, medianfilter);
             GraphCommand.Erosion erosion = new GraphCommand.Erosion();
             graphCommand.AddCommand(FunctionType.Erosion, erosion);
             GraphCommand.Swell swell = new GraphCommand.Swell();
             graphCommand.AddCommand(FunctionType.Swell, swell);
-            GraphCommand.Robert robert = new GraphCommand.Robert();
-            graphCommand.AddCommand(FunctionType.Robert, robert);
-            GraphCommand.Smoothed smoothed = new GraphCommand.Smoothed();
-            graphCommand.AddCommand(FunctionType.Smoothed, smoothed);
-            GraphCommand.Boundary boundary = new GraphCommand.Boundary();
-            graphCommand.AddCommand(FunctionType.Boundary, boundary);
+            GraphCommand.Tophap tophap = new GraphCommand.Tophap();
+            graphCommand.AddCommand(FunctionType.Tophap, tophap);
             GraphCommand.Skeleton skeleton = new GraphCommand.Skeleton();
             graphCommand.AddCommand(FunctionType.Skeleton, skeleton);
-            GraphCommand.TopHap tophap = new GraphCommand.TopHap();
-            graphCommand.AddCommand(FunctionType.Tophap, tophap);
-            GraphCommand.FFT fft = new GraphCommand.FFT();
-            graphCommand.AddCommand(FunctionType.Frequency, fft);
-            GraphCommand.Polar polar = new GraphCommand.Polar();
-            graphCommand.AddCommand(FunctionType.Polar, polar);
-            GraphCommand.Recognite recognite = new GraphCommand.Recognite();
-            graphCommand.AddCommand(FunctionType.Recognition, recognite);
+            GraphCommand.Boundary boundary = new GraphCommand.Boundary();
+            graphCommand.AddCommand(FunctionType.Boundary, boundary);
             GraphCommand.Cut cut = new GraphCommand.Cut();
             graphCommand.AddCommand(FunctionType.Cut, cut);
-            GraphCommand.PenDraw pen = new GraphCommand.PenDraw();
-            graphCommand.AddCommand(FunctionType.Pen, pen);
+            GraphCommand.PenDraw pendraw = new GraphCommand.PenDraw();
+            graphCommand.AddCommand(FunctionType.PenDraw, pendraw);
+            GraphCommand.Mosaic mosaic = new GraphCommand.Mosaic();
+            graphCommand.AddCommand(FunctionType.Mosaic, mosaic);
+            GraphCommand.Soften soften = new GraphCommand.Soften();
+            graphCommand.AddCommand(FunctionType.Soften, soften);
+            GraphCommand.Atomization atomization = new GraphCommand.Atomization();
+            graphCommand.AddCommand(FunctionType.Atomization, atomization);
+            GraphCommand.Embossment embossment = new GraphCommand.Embossment();
+            graphCommand.AddCommand(FunctionType.Embossment, embossment);
         }
         #endregion
 
@@ -175,6 +198,165 @@ namespace Gmage
             return value;
         }
         #endregion
+
+        #region 内存法类
+        public class LockBitmap
+        {
+            Bitmap source = null;
+            IntPtr Iptr = IntPtr.Zero;
+            BitmapData bitmapData = null;
+
+            public byte[] Pixels { get; set; }
+            public int Depth { get; private set; }
+            public int Width { get; private set; }
+            public int Height { get; private set; }
+
+            public LockBitmap(Bitmap source)
+            {
+                this.source = source;
+            }
+
+            /// <summary>
+            /// Lock bitmap data
+            /// </summary>
+            public void LockBits()
+            {
+                try
+                {
+                    // Get width and height of bitmap
+                    Width = source.Width;
+                    Height = source.Height;
+
+                    // get total locked pixels count
+                    int PixelCount = Width * Height;
+
+                    // Create rectangle to lock
+                    Rectangle rect = new Rectangle(0, 0, Width, Height);
+
+                    // get source bitmap pixel format size
+                    Depth = System.Drawing.Bitmap.GetPixelFormatSize(source.PixelFormat);
+
+                    // Check if bpp (Bits Per Pixel) is 8, 24, or 32
+                    if (Depth != 8 && Depth != 24 && Depth != 32)
+                    {
+                        throw new ArgumentException("Only 8, 24 and 32 bpp images are supported.");
+                    }
+
+                    // Lock bitmap and return bitmap data
+                    bitmapData = source.LockBits(rect, ImageLockMode.ReadWrite,
+                                                 source.PixelFormat);
+
+                    // create byte array to copy pixel values
+                    int step = Depth / 8;
+                    Pixels = new byte[PixelCount * step];
+                    Iptr = bitmapData.Scan0;
+
+                    // Copy data from pointer to array
+                    Marshal.Copy(Iptr, Pixels, 0, Pixels.Length);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            /// <summary>
+            /// Unlock bitmap data
+            /// </summary>
+            public void UnlockBits()
+            {
+                try
+                {
+                    // Copy data from byte array to pointer
+                    Marshal.Copy(Pixels, 0, Iptr, Pixels.Length);
+
+                    // Unlock bitmap data
+                    source.UnlockBits(bitmapData);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            /// <summary>
+            /// Get the color of the specified pixel
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <returns></returns>
+            public Color GetPixel(int x, int y)
+            {
+                Color clr = Color.Empty;
+
+                // Get color components count
+                int cCount = Depth / 8;
+
+                // Get start index of the specified pixel
+                int i = ((y * Width) + x) * cCount;
+
+                if (i > Pixels.Length - cCount)
+                    throw new IndexOutOfRangeException();
+
+                if (Depth == 32) // For 32 bpp get Red, Green, Blue and Alpha
+                {
+                    byte b = Pixels[i];
+                    byte g = Pixels[i + 1];
+                    byte r = Pixels[i + 2];
+                    byte a = Pixels[i + 3]; // a
+                    clr = Color.FromArgb(a, r, g, b);
+                }
+                if (Depth == 24) // For 24 bpp get Red, Green and Blue
+                {
+                    byte b = Pixels[i];
+                    byte g = Pixels[i + 1];
+                    byte r = Pixels[i + 2];
+                    clr = Color.FromArgb(r, g, b);
+                }
+                if (Depth == 8)
+                // For 8 bpp get color value (Red, Green and Blue values are the same)
+                {
+                    byte c = Pixels[i];
+                    clr = Color.FromArgb(c, c, c);
+                }
+                return clr;
+            }
+
+            /// <summary>
+            /// Set the color of the specified pixel
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <param name="color"></param>
+            public void SetPixel(int x, int y, Color color)
+            {
+                // Get color components count
+                int cCount = Depth / 8;
+
+                // Get start index of the specified pixel
+                int i = ((y * Width) + x) * cCount;
+
+                if (Depth == 32) // For 32 bpp set Red, Green, Blue and Alpha
+                {
+                    Pixels[i] = color.B;
+                    Pixels[i + 1] = color.G;
+                    Pixels[i + 2] = color.R;
+                    Pixels[i + 3] = color.A;
+                }
+                if (Depth == 24) // For 24 bpp set Red, Green and Blue
+                {
+                    Pixels[i] = color.B;
+                    Pixels[i + 1] = color.G;
+                    Pixels[i + 2] = color.R;
+                }
+                if (Depth == 8)
+                // For 8 bpp set color value (Red, Green and Blue values are the same)
+                {
+                    Pixels[i] = color.B;
+                }
+            }
+        }
+        #endregion
     }
 
     public enum Theme
@@ -197,7 +379,7 @@ namespace Gmage
         /// <summary>
         /// 灰度化
         /// </summary>
-        Grey,
+        Gray,
         /// <summary>
         /// 二值化
         /// </summary>
@@ -229,11 +411,11 @@ namespace Gmage
         /// <summary>
         /// 指定位图的轮廓图像
         /// </summary>
-        Line,
+        //Line,
         /// <summary>
         /// 椒盐噪声
         /// </summary>
-        Salt,
+        SaltNoise,
         /// <summary>
         /// 高斯噪声
         /// </summary>
@@ -253,11 +435,11 @@ namespace Gmage
         /// <summary>
         /// 傅里叶变换（频率谱）
         /// </summary>
-        Frequency,
+        FFT,
         /// <summary>
         /// 傅里叶逆变换
         /// </summary>
-        BFT,
+        //BFT,
         /// <summary>
         /// 面部识别
         /// </summary>
@@ -309,7 +491,23 @@ namespace Gmage
         /// <summary>
         /// 画笔
         /// </summary>
-        Pen,
+        PenDraw,
+        /// <summary>
+        /// 马赛克
+        /// </summary>
+        Mosaic,
+        /// <summary>
+        /// 柔化
+        /// </summary>
+        Soften,
+        /// <summary>
+        /// 雾化
+        /// </summary>
+        Atomization,
+        /// <summary>
+        /// 浮雕
+        /// </summary>
+        Embossment,
     }
     public struct point
     {

@@ -2,9 +2,9 @@
 /* Title:Gmage
  * Author:Iyui
  * Homepage:Iyui.Github.com
- * Rate of progress:PhotoShop 0.3%
  * Background:网上的批处理软件太不好用，自己写了一个，
- * 结果功能越来越多，干脆仿一个PhotoShop好了
+ *            结果功能越来越多，干脆仿一个PhotoShop好了
+ * Rate of progress:PhotoShop 0.3%
  * 
  * 20200521:第一版
  * 20200602:完善批处理
@@ -14,10 +14,15 @@
  * 20200609:新增"裁剪"和"画笔"
  * 20200610:新增"腐蚀"、"膨胀"、"骨架提取"等功能
  * 20200611:使用命令模式重构代码
+ * 20200612:发现了严重的BUG：
+ *          当图片的高度或者宽度或者宽高比值在某个区间内时，
+ *          高斯模糊会导致程序闪退、卡死、报错或不能正确处理图片，
+ *          具体原因未知，现改用了其他算法
+ * 20200612:新增了一些滤镜，新增"撤销全部"和"重做全部"
  * 
  * 未来的更新
  * 
- * 1、撤销
+ * 1、完善撤销、重做
  * 2、抠图
  * 3、图层
  * 4、重写部分算法以加快处理速度
@@ -188,6 +193,7 @@ namespace Gmage
                 Clockwise180,Clockwise90,Clockwise270,RotateNoneFlipX,RotateNoneFlipY,
                 Tsmi_GaussBlur,tsmi_MedianFilter,tsmi_GaussNoise,tsmi_Smoothed,
                 tsmi_Corrode,tsmi_Expand,tsmi_Boundary,tsmi_TopHat,tsmi_Skeleton,
+                tsmi_Soften,tsmi_Atomization,tsmi_Embossment,
             };
             foreach (var tsmi in toolStripMenuItems)
             {
@@ -207,7 +213,7 @@ namespace Gmage
         {
             ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
             {
-               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen,
+               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen,tsmi_Mosaic,
             };
             foreach (var tsmi in toolStripMenuItems)
             {
@@ -628,7 +634,7 @@ namespace Gmage
                     case Tools.Draw:
                         if (_isPressed)
                         {
-                            Config.Model = FunctionType.Pen;
+                            Config.Model = FunctionType.PenDraw;
                             int[] iparameter = new int[] { no_of_points, e.X, e.Y };
                             parameter.iParameter = iparameter;
                             parameter.Points = pt;
@@ -855,7 +861,7 @@ namespace Gmage
 
         private void btn_Salt_Click(object sender, EventArgs e)
         {
-            Config.Model = FunctionType.Salt;
+            Config.Model = FunctionType.SaltNoise;
             Probability py = new Probability(this, MousePosition)
             {
                 InitBitmap = ResultImage,
@@ -1060,10 +1066,6 @@ namespace Gmage
             }
         }
 
-        private void tsmi_Clear_Click(object sender, EventArgs e)
-        {
-            ResultImage = initBitmap.Clone() as Bitmap;
-        }
 
         private void tsmi_Preferences_Click(object sender, EventArgs e)
         {
@@ -1424,6 +1426,32 @@ namespace Gmage
         {
             var bitmap = ResultImage;
             if (graphCommand.Redo(ref bitmap))
+            {
+                ResultImage = bitmap;
+                col.Width = ResultImage.Width;
+                col.Height = ResultImage.Height;
+                SetLocationCenter();
+            }
+            GC.Collect();
+        }
+
+        private void tsmi_UndoAll_Click(object sender, EventArgs e)
+        {
+            var bitmap = ResultImage;
+            while (graphCommand.Undo(ref bitmap))
+            {
+                ResultImage = bitmap;
+                col.Width = ResultImage.Width;
+                col.Height = ResultImage.Height;
+                SetLocationCenter();
+            }
+            GC.Collect();
+        }
+
+        private void tsmi_RedoAll_Click(object sender, EventArgs e)
+        {
+            var bitmap = ResultImage;
+            while (graphCommand.Redo(ref bitmap))
             {
                 ResultImage = bitmap;
                 col.Width = ResultImage.Width;

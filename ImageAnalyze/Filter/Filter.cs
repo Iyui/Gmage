@@ -83,7 +83,7 @@ namespace Gmage.Filter
         /// <returns>返回平滑处理后的位图</returns>
         public Bitmap GaussSmooth(Bitmap bitmap)
         {
-            Bitmap src = (Bitmap)bitmap.Clone(); // 加载图像
+            Bitmap src = bitmap.Clone() as Bitmap; // 加载图像
             Bitmap srcResult = new Bitmap(src.Width, src.Height); // 加载图像
 
             BitmapData srcdat = src.LockBits(new Rectangle(Point.Empty, src.Size), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb); // 锁定位图
@@ -126,6 +126,7 @@ namespace Gmage.Filter
             src.UnlockBits(srcdat); // 解锁
             srcResult.UnlockBits(srcdatResult); // 解锁
             return srcResult;
+
         }
 
         /// <summary>
@@ -248,6 +249,41 @@ namespace Gmage.Filter
             return pic;
         }
 
-       
+        public static Bitmap Mosaic(Bitmap b, int val)
+        {
+            int w = b.Width;
+            int h = b.Height;
+            int stdR, stdG, stdB;
+            stdR = 0; stdG = 0; stdB = 0;
+            if (val == 0)
+               return b;
+            BitmapData srcData = b.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            unsafe
+            {
+                byte* p = (byte*)srcData.Scan0.ToPointer();
+                for (int y = 0; y < h; y++)
+                {
+                    for (int x = 0; x < w; x++)
+                    {
+                        if (y % val == 0)
+                        {
+                            if (x % val == 0) { stdR = p[2]; stdG = p[1]; stdB = p[0]; }
+                            else { p[0] = (byte)stdB; p[1] = (byte)stdG; p[2] = (byte)stdR; }
+                        }
+                        else
+                        {
+                            byte* pTemp = p - srcData.Stride;
+                            p[0] = (byte)pTemp[0];
+                            p[1] = (byte)pTemp[1];
+                            p[2] = (byte)pTemp[2];
+                        }
+                        p += 3;
+                    }
+                    p += srcData.Stride - w * 3;
+                }
+                b.UnlockBits(srcData);
+            }
+            return b;
+        }
     }
 }

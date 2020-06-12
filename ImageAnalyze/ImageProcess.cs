@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using static Gmage.Config;
 using static Gmage.Noise.Noise;
 namespace Gmage
 {
@@ -19,7 +20,7 @@ namespace Gmage
             {
                 default:
                     break;
-                case FunctionType.Grey:
+                case FunctionType.Gray:
                     b = ImageToGreyP(b);
                     break;
                 case FunctionType.Binarization:
@@ -28,7 +29,7 @@ namespace Gmage
                 case FunctionType.Complementary:
                     b = ComplementaryP(b);
                     break;
-                case FunctionType.Frequency:
+                case FunctionType.FFT:
                     b = FFT(b);
                     break;
                 case FunctionType.GaussBlur:
@@ -40,7 +41,7 @@ namespace Gmage
                 case FunctionType.Smoothed:
                     b = EdgeDetector_Smoothed(b);
                     break;
-                case FunctionType.Salt:
+                case FunctionType.SaltNoise:
                     b = SaltNoise(b);
                     break;
                 case FunctionType.GaussNoise:
@@ -78,9 +79,6 @@ namespace Gmage
                     break;
                 case FunctionType.Clockwise90:
                     b = Clockwise90(b);
-                    break;
-                case FunctionType.Line:
-                    b = MedianFilter(b);
                     break;
                 case FunctionType.Erosion:
                     b = ToErosion(b);
@@ -337,6 +335,187 @@ namespace Gmage
             return bitmap;
         }
 
+        /// <summary>
+        /// 浮雕
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <returns></returns>
+        public static Bitmap Embossment(Bitmap bitmap)
+        {
+            int w = bitmap.Width;
+            int h = bitmap.Height;
+            Bitmap dstBitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            BitmapData srcData = bitmap.LockBits(new Rectangle
+             (0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+           BitmapData dstData = dstBitmap.LockBits(new Rectangle
+             (0, 0, w, h), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+            unsafe
+            {
+                byte* pIn = (byte*)srcData.Scan0.ToPointer();
+                byte* pOut = (byte*)dstData.Scan0.ToPointer();
+                byte* p;
+                int stride = srcData.Stride;
+                for (int y = 0; y < h; y++)
+                {
+                    for (int x = 0; x < w; x++)
+                    {
+                        //边缘八个点像素不变
+                        if (x == 0 || x == w - 1 || y == 0 || y == h - 1)
+                        {
+                            pOut[0] = pIn[0];
+                            pOut[1] = pIn[1];
+                            pOut[2] = pIn[2];
+                        }
+                        else
+                        {
+                            int r0, r1;
+                            int g1, g0;
+                            int b1, b0;
+                            double vR, vG, vB;
+                            //右
+                            p = pIn - 3;
+                            r1 = p[2];
+                            g1 = p[1];
+                            b1 = p[0];
+
+                            //中心点
+                            p = pIn;
+                            r0 = p[2];
+                            g0 = p[1];
+                            b0 = p[0];
+                            //使用模板
+                            vR = Math.Abs(r0 - r1 + 128);
+                            vG = Math.Abs((g0 - g1 + 128));
+                            vB = Math.Abs((b0 - b1 + 128));
+                            if (vR > 0)
+                            {
+                                vR = Math.Min(255, vR);
+                            }
+                            else
+                            {
+                                vR = Math.Max(0, vR);
+                            }
+
+                            if (vG > 0)
+                            {
+                                vG = Math.Min(255, vG);
+                            }
+                            else
+                            {
+                                vG = Math.Max(0, vG);
+                            }
+                            if (vB > 0)
+                            {
+                                vB = Math.Min(255, vB);
+                            }
+                            else
+                            {
+                                vB = Math.Max(0, vB);
+                            }
+                            pOut[0] = (byte)vB;
+                            pOut[1] = (byte)vG;
+                            pOut[2] = (byte)vR;
+                        }
+                        pIn += 3;
+                        pOut += 3;
+                    }
+                    pIn += srcData.Stride - w * 3;
+                    pOut += srcData.Stride - w * 3;
+                }
+            }
+            bitmap.UnlockBits(srcData);
+            dstBitmap.UnlockBits(dstData);
+            return dstBitmap;
+        }
+
+        /// <summary>
+        /// 雾化
+        /// </summary>
+        /// <param name="bmp"></param>
+        /// <returns></returns>
+        public static Bitmap Atomization(Bitmap bmp)
+        {
+            int height = bmp.Height;
+            int width = bmp.Width;
+            Bitmap newbmp = new Bitmap(width, height);
+
+            LockBitmap lbmp = new LockBitmap(bmp);
+            LockBitmap newlbmp = new LockBitmap(newbmp);
+            lbmp.LockBits();
+            newlbmp.LockBits();
+
+            System.Random MyRandom = new Random();
+            Color pixel;
+            for (int x = 1; x < width - 1; x++)
+            {
+                for (int y = 1; y < height - 1; y++)
+                {
+                    int k = MyRandom.Next(123456);
+                    //像素块大小
+                    int dx = x + k % 19;
+                    int dy = y + k % 19;
+                    if (dx >= width)
+                        dx = width - 1;
+                    if (dy >= height)
+                        dy = height - 1;
+                    pixel = lbmp.GetPixel(dx, dy);
+                    newlbmp.SetPixel(x, y, pixel);
+                }
+            }
+            lbmp.UnlockBits();
+            newlbmp.UnlockBits();
+            return newbmp;
+        }
+
+        //柔化
+        public static Bitmap Soften(Bitmap bmp)
+        {
+            int height = bmp.Height;
+            int width = bmp.Width;
+            Bitmap newbmp = new Bitmap(width, height);
+
+            LockBitmap lbmp = new LockBitmap(bmp);
+            LockBitmap newlbmp = new LockBitmap(newbmp);
+            lbmp.LockBits();
+            newlbmp.LockBits();
+
+            Color pixel;
+            //高斯模板
+            int[] Gauss = { 1, 2, 1, 2, 4, 2, 1, 2, 1 };
+            for (int x = 1; x < width - 1; x++)
+            {
+                for (int y = 1; y < height - 1; y++)
+                {
+                    int r = 0, g = 0, b = 0;
+                    int Index = 0;
+                    for (int col = -1; col <= 1; col++)
+                    {
+                        for (int row = -1; row <= 1; row++)
+                        {
+                            pixel = lbmp.GetPixel(x + row, y + col);
+                            r += pixel.R * Gauss[Index];
+                            g += pixel.G * Gauss[Index];
+                            b += pixel.B * Gauss[Index];
+                            Index++;
+                        }
+                    }
+                    r /= 16;
+                    g /= 16;
+                    b /= 16;
+                    //处理颜色值溢出
+                    r = r > 255 ? 255 : r;
+                    r = r < 0 ? 0 : r;
+                    g = g > 255 ? 255 : g;
+                    g = g < 0 ? 0 : g;
+                    b = b > 255 ? 255 : b;
+                    b = b < 0 ? 0 : b;
+                    newlbmp.SetPixel(x - 1, y - 1, Color.FromArgb(r, g, b));
+                }
+            }
+            lbmp.UnlockBits();
+            newlbmp.UnlockBits();
+            return newbmp;
+        }
         #endregion
 
         #region 
@@ -696,6 +875,10 @@ namespace Gmage
             return EdgeDetector.ToSwell(initBitmap);
         }
         
+        public static Bitmap Mosaic(Bitmap initBitmap, int Threshold)
+        {
+            return Filter.Filter.Mosaic(initBitmap, Threshold);
+        }
 
         #endregion
 

@@ -71,11 +71,12 @@ namespace Gmage
             };
             mFB_DelPlugin.Click += (sender, e) => 
             {
-                var fileName = (string)lB_Plugin.SelectedItem;
-                if (fileName is null)
-                    return;
-                string filePath = DicNamePath[fileName];
-                DelDicNamePathKeyValue(filePath, fileName);
+                //var fileName = (string)lB_Plugin.SelectedItem;
+                //if (fileName is null)
+                //    return;
+                //string filePath = DicNamePath[fileName];
+                //DelDicNamePathKeyValue(filePath, fileName);
+                MessageBox.Show("暂不支持热插拔插件");
             };
         }
 

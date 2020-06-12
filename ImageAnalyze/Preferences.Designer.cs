@@ -308,7 +308,6 @@
             // mFB_DelPlugin
             // 
             this.mFB_DelPlugin.Depth = 0;
-            this.mFB_DelPlugin.Enabled = false;
             this.mFB_DelPlugin.Icon = null;
             this.mFB_DelPlugin.Location = new System.Drawing.Point(19, 76);
             this.mFB_DelPlugin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);

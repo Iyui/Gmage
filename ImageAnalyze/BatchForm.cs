@@ -128,7 +128,7 @@ namespace Gmage
 
         private void mFB_Output_Click(object sender, EventArgs e)
         {
-            OUTputPath = ImageTouch.GetFolderPath();
+            OUTputPath = ImageTouch.GetFolderPath(true);
             if (Directory.Exists(OUTputPath))
                 mFB_OpenFolder.Enabled = true;
             mL_Output.Text = "输出至：" + OUTputPath;
@@ -136,7 +136,7 @@ namespace Gmage
 
         private void mFB_Index_Click(object sender, EventArgs e)
         {
-            var paths = ImageTouch.GetImagePath();
+            var paths = ImageTouch.GetImagePath(false);
             if (paths is null)
                 return;
             ThreadSetPathView();
@@ -356,12 +356,15 @@ namespace Gmage
         /// <summary>
         /// 获取文件夹路径
         /// </summary>
-        /// <param name="hint"></param>
+        /// <param name="ShowNewFolderButton">是否显示新建文件夹按钮</param>
         /// <returns></returns>
-        public static string GetFolderPath()
+        public static string GetFolderPath(bool ShowNewFolderButton)
         {
             string Path = lastPath;
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            FolderBrowserDialog dialog = new FolderBrowserDialog()
+            {
+                ShowNewFolderButton = ShowNewFolderButton,
+            };
             if (lastPath != "")
                 dialog.SelectedPath = lastPath;
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -380,10 +383,10 @@ namespace Gmage
 
         }
 
-        public static HashSet<string> GetImagePath()
+        public static HashSet<string> GetImagePath(bool ShowNewFolderButton = true)
         {
             FolderPath = "";
-            FolderPath = GetFolderPath();
+            FolderPath = GetFolderPath(ShowNewFolderButton);
             if (FolderPath == "")
             {
                 //MessageBox.Show("文件夹路径不能为空", "提示");

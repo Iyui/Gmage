@@ -51,7 +51,7 @@ namespace Gmage
             {
                 default:
                     break;
-                case FunctionType.Grey:
+                case FunctionType.Gray:
                     b = ImageToGreyP(b);
                     break;
                 case FunctionType.Binarization:
@@ -60,7 +60,7 @@ namespace Gmage
                 case FunctionType.Complementary:
                     b = ComplementaryP(b);
                     break;
-                case FunctionType.Frequency:
+                case FunctionType.FFT:
                     b = FFT(b);
                     break;
                 case FunctionType.GaussBlur:
@@ -72,7 +72,7 @@ namespace Gmage
                 case FunctionType.Smoothed:
                     b = EdgeDetector_Smoothed(b);
                     break;
-                case FunctionType.Salt:
+                case FunctionType.SaltNoise:
                     b = SaltNoise(b);
                     break;
                 case FunctionType.GaussNoise:

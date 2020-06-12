@@ -41,11 +41,11 @@ namespace Gmage
 
         private void SetDic()
         {
-            SetDic("灰度化", FunctionType.Grey);
+            SetDic("灰度化", FunctionType.Gray);
             SetDic("二值化", FunctionType.Binarization);
             SetDic("反色", FunctionType.Complementary);
             SetDic("Smoothed边缘检测", FunctionType.Smoothed);
-            SetDic("频率谱", FunctionType.Frequency);
+            SetDic("频率谱", FunctionType.FFT);
             SetDic("旋转180度", FunctionType.Clockwise180);
             SetDic("顺时针旋转90度", FunctionType.Clockwise90);
             SetDic("逆时针旋转90度", FunctionType.Clockwise270);

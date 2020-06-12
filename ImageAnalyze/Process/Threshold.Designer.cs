@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.tB_Threshold = new System.Windows.Forms.TrackBar();
-            this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.mT_T = new MaterialSkin.Controls.MaterialSingleLineTextField();
             ((System.ComponentModel.ISupportInitialize)(this.tB_Threshold)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,15 +46,6 @@
             this.tB_Threshold.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tB_Threshold.Value = 128;
             this.tB_Threshold.Scroll += new System.EventHandler(this.tB_Threshold_Scroll);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(56, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "label1";
             // 
             // button1
             // 
@@ -82,14 +73,33 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.materialFlatButton1_Click);
             // 
+            // mT_T
+            // 
+            this.mT_T.Depth = 0;
+            this.mT_T.ForeColor = System.Drawing.Color.White;
+            this.mT_T.Hint = "";
+            this.mT_T.Location = new System.Drawing.Point(56, 32);
+            this.mT_T.MaxLength = 32767;
+            this.mT_T.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mT_T.Name = "mT_T";
+            this.mT_T.PasswordChar = '\0';
+            this.mT_T.SelectedText = "";
+            this.mT_T.SelectionLength = 0;
+            this.mT_T.SelectionStart = 0;
+            this.mT_T.Size = new System.Drawing.Size(36, 23);
+            this.mT_T.TabIndex = 28;
+            this.mT_T.TabStop = false;
+            this.mT_T.Text = "51";
+            this.mT_T.UseSystemPasswordChar = false;
+            // 
             // Threshold
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(411, 64);
+            this.Controls.Add(this.mT_T);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.tB_Threshold);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -100,14 +110,13 @@
             this.Load += new System.EventHandler(this.Threshold_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tB_Threshold)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.TrackBar tB_Threshold;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private MaterialSkin.Controls.MaterialSingleLineTextField mT_T;
     }
 }

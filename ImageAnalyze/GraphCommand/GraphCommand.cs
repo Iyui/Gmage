@@ -375,7 +375,7 @@ namespace Gmage.GraphCommand
     /// <summary>
     /// 灰度化c.R * .3 + c.G * .59 + c.B * .11 像素法
     /// </summary>
-    public class ImageToGrey : IGraphCommand
+    public class Gray : IGraphCommand
     {
         public string _Name { get; } = "";
         public Parameter Parameter
@@ -386,7 +386,7 @@ namespace Gmage.GraphCommand
         {
             set; get;
         }
-        public ImageToGrey()
+        public Gray()
         {
 
         }
@@ -577,6 +577,96 @@ namespace Gmage.GraphCommand
         {
             var _bitmap = bitmap.Clone() as Bitmap;
             return Sharpen(_bitmap, Parameter.Hold / 25.5f);
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 柔化
+    /// </summary>
+    public class Soften : IGraphCommand
+    {
+        public string _Name { get; } = "";
+        public Parameter Parameter
+        {
+            set; get;
+        }
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public Soften()
+        {
+
+        }
+        public Bitmap Draw()
+        {
+            var _bitmap = bitmap.Clone() as Bitmap;
+            return Soften(_bitmap);
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 雾化
+    /// </summary>
+    public class Atomization: IGraphCommand
+    {
+        public string _Name { get; } = "";
+        public Parameter Parameter
+        {
+            set; get;
+        }
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public Atomization()
+        {
+
+        }
+        public Bitmap Draw()
+        {
+            var _bitmap = bitmap.Clone() as Bitmap;
+            return Atomization(_bitmap);
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 柔化
+    /// </summary>
+    public class Embossment : IGraphCommand
+    {
+        public string _Name { get; } = "";
+        public Parameter Parameter
+        {
+            set; get;
+        }
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public Embossment()
+        {
+
+        }
+        public Bitmap Draw()
+        {
+            var _bitmap = bitmap.Clone() as Bitmap;
+            return Embossment(_bitmap);
         }
 
         public void Undo()
@@ -794,6 +884,33 @@ namespace Gmage.GraphCommand
 
         }
     }
+
+    public class Mosaic : IGraphCommand
+    {
+        public string _Name { get; } = "";
+        public Parameter Parameter
+        {
+            set; get;
+        }
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public Mosaic()
+        {
+
+        }
+        public Bitmap Draw()
+        {
+            var _bitmap = bitmap.Clone() as Bitmap;
+            return Mosaic(_bitmap,Parameter.Hold/5);
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
     #endregion
 
     #region 边缘检测
@@ -918,7 +1035,7 @@ namespace Gmage.GraphCommand
     /// <summary>
     /// 高帽
     /// </summary>
-    public class TopHap : IGraphCommand
+    public class Tophap : IGraphCommand
     {
         public string _Name { get; } = "";
         public Parameter Parameter
@@ -929,7 +1046,7 @@ namespace Gmage.GraphCommand
         {
             set; get;
         }
-        public TopHap()
+        public Tophap()
         {
 
         }
@@ -1014,7 +1131,7 @@ namespace Gmage.GraphCommand
     /// <summary>
     /// 识别
     /// </summary>
-    public class Recognite : IGraphCommand
+    public class Recognition : IGraphCommand
     {
         public string _Name { get; } = "";
         public Parameter Parameter
@@ -1025,7 +1142,7 @@ namespace Gmage.GraphCommand
         {
             set; get;
         }
-        public Recognite()
+        public Recognition()
         {
 
         }
