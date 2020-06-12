@@ -2,7 +2,7 @@
 /* Title:Gmage
  * Author:Iyui
  * Homepage:Iyui.Github.com
- * Rate of progress:PhotoShop 0.2%
+ * Rate of progress:PhotoShop 0.3%
  * Background:网上的批处理软件太不好用，自己写了一个，
  * 结果功能越来越多，干脆仿一个PhotoShop好了
  * 

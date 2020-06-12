@@ -167,7 +167,7 @@
             this.tsmi_Batch});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(540, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(420, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -243,9 +243,9 @@
             // tsmi_Redo
             // 
             this.tsmi_Redo.Name = "tsmi_Redo";
-            this.tsmi_Redo.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.Space)));
-            this.tsmi_Redo.Size = new System.Drawing.Size(201, 22);
+            this.tsmi_Redo.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Z)));
+            this.tsmi_Redo.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Redo.Text = "重做";
             this.tsmi_Redo.Click += new System.EventHandler(this.tsmi_Redo_Click);
             // 

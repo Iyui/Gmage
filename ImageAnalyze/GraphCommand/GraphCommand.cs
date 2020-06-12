@@ -41,10 +41,17 @@ namespace Gmage.GraphCommand
             Commands.Add(functionType, graphCommand);
         }
 
-        public Bitmap Execute(FunctionType functionType, Bitmap bitmap)
+        /// <summary>
+        /// 根据FunctionType执行命令
+        /// </summary>
+        /// <param name="functionType">处理类型</param>
+        /// <param name="bitmap">原图</param>
+        /// <param name="AddUndo">是否能够执行撤回</param>
+        /// <returns></returns>
+        public Bitmap Execute(FunctionType functionType, Bitmap bitmap, bool AddUndo = true)
         {
             Commands[functionType].bitmap = bitmap.Clone() as Bitmap;
-            return graphics.Draw(Commands[functionType]);
+            return graphics.Draw(Commands[functionType],AddUndo);
         }
 
         public Bitmap Execute(FunctionType functionType, Bitmap bitmap, Parameter Parameter, bool AddUndo = true)
