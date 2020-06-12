@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BatchForm));
             this.mFB_Index = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Image = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_SelectTask = new MaterialSkin.Controls.MaterialFlatButton();
@@ -428,6 +429,7 @@
             this.Controls.Add(this.mFB_RemoveImg);
             this.Controls.Add(this.mFB_Index);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BatchForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gmage批处理";

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.materialContextMenuStrip1 = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.tsm_CloseTabPage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -41,6 +42,7 @@
             this.tsmi_Undo = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Redo = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_UndoAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_RedoAll = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmi_Preferences = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Image = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,7 +123,6 @@
             this.mFB_Draw = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Select = new MaterialSkin.Controls.MaterialFlatButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tsmi_RedoAll = new System.Windows.Forms.ToolStripMenuItem();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -172,7 +173,7 @@
             this.tsmi_Batch});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(540, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(420, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -262,6 +263,13 @@
             this.tsmi_UndoAll.Text = "撤销所有效果";
             this.tsmi_UndoAll.Click += new System.EventHandler(this.tsmi_UndoAll_Click);
             // 
+            // tsmi_RedoAll
+            // 
+            this.tsmi_RedoAll.Name = "tsmi_RedoAll";
+            this.tsmi_RedoAll.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RedoAll.Text = "重做所有效果";
+            this.tsmi_RedoAll.Click += new System.EventHandler(this.tsmi_RedoAll_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -295,7 +303,7 @@
             this.tsmi_Binarization,
             this.tsmi_Complementary});
             this.tsmi_Change.Name = "tsmi_Change";
-            this.tsmi_Change.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Change.Size = new System.Drawing.Size(124, 22);
             this.tsmi_Change.Text = "调整";
             // 
             // tsmi_Lighten
@@ -343,7 +351,7 @@
             this.RotateNoneFlipX,
             this.RotateNoneFlipY});
             this.图像旋转ToolStripMenuItem.Name = "图像旋转ToolStripMenuItem";
-            this.图像旋转ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.图像旋转ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.图像旋转ToolStripMenuItem.Text = "图像旋转";
             // 
             // Clockwise180
@@ -389,14 +397,14 @@
             // tsmi_Frequency
             // 
             this.tsmi_Frequency.Name = "tsmi_Frequency";
-            this.tsmi_Frequency.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Frequency.Size = new System.Drawing.Size(124, 22);
             this.tsmi_Frequency.Tag = "FFT";
             this.tsmi_Frequency.Text = "频谱图";
             // 
             // 直方图ToolStripMenuItem
             // 
             this.直方图ToolStripMenuItem.Name = "直方图ToolStripMenuItem";
-            this.直方图ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.直方图ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.直方图ToolStripMenuItem.Text = "直方图";
             this.直方图ToolStripMenuItem.Click += new System.EventHandler(this.btn_Histogram_Click);
             // 
@@ -1058,13 +1066,6 @@
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragDrop);
             this.panel1.DragOver += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragOver);
             // 
-            // tsmi_RedoAll
-            // 
-            this.tsmi_RedoAll.Name = "tsmi_RedoAll";
-            this.tsmi_RedoAll.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_RedoAll.Text = "重做所有效果";
-            this.tsmi_RedoAll.Click += new System.EventHandler(this.tsmi_RedoAll_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -1084,6 +1085,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.mTC_ImageTab);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BatchModel));
             this.lB_Task = new System.Windows.Forms.ListBox();
             this.materialFlatButton1 = new MaterialSkin.Controls.MaterialFlatButton();
             this.SuspendLayout();
@@ -71,6 +72,7 @@
             this.ClientSize = new System.Drawing.Size(212, 271);
             this.Controls.Add(this.materialFlatButton1);
             this.Controls.Add(this.lB_Task);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BatchModel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "任务选择";
