@@ -304,6 +304,12 @@ namespace Gmage
             set => col.Image = value; get => (Bitmap)col.Image;
         }
 
+        public TabPage SelectedTab
+        {
+            set => mTC_ImageTab.SelectedTab = value;
+            get => mTC_ImageTab.SelectedTab;
+        }
+
         public Bitmap CopyImage
         {
             set; get;
@@ -527,7 +533,7 @@ namespace Gmage
             tp.Controls.Add(_PictureBox);
             tp.BackColor = Color.FromArgb(255, 51, 51, 51);
             _htTabImageName.Add(t.Name, _PictureBox.Name);
-            mTC_ImageTab.SelectedTab = tp;
+            SelectedTab = tp;
             _PictureBox.Dock = DockStyle.None;
             _PictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             _PictureBox.Image = initBitmap.Clone() as Image;
@@ -551,6 +557,7 @@ namespace Gmage
                         break;
                     case Tools.Cut:
                         isCuting = true;
+                        _PictureBox.Refresh();
                         mouse_down.X = e.X;
                         mouse_down.Y = e.Y;
                         break;
@@ -643,7 +650,7 @@ namespace Gmage
                         Config.Model = FunctionType.Cut;
                         int[] Location = new int[] { Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y };
                         parameter.iParameter = Location;
-                        CopyImage = graphCommand.Execute(Config.Model, ResultImage, parameter).Clone() as Bitmap;
+                        CopyImage = graphCommand.Execute(Config.Model, ResultImage, parameter,false).Clone() as Bitmap;
                         isCutingUp = true;
                         break;
                     case Tools.Move:
@@ -673,6 +680,10 @@ namespace Gmage
                         && e.Y > Cut_StartPoint.Y && e.Y < Cut_StartPoint.Y + mouse_wh.Y)
                         {
                             isCuting = isCutingUp = false;
+                            Config.Model = FunctionType.Cut;
+                            int[] Location = new int[] { Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y };
+                            parameter.iParameter = Location;
+                            CopyImage = graphCommand.Execute(Config.Model, ResultImage, parameter).Clone() as Bitmap;
                             ResultImage = CopyImage;
                             _PictureBox.Width = ResultImage.Width;
                             _PictureBox.Height = ResultImage.Height;
@@ -928,7 +939,7 @@ namespace Gmage
         {
             Config.ClassifierPath = ((ToolStripMenuItem)sender).Name;
             config.IsCheckedControl((ToolStripMenuItem)sender, tsmi_Index);
-            mTC_ImageTab.SelectedTab = mTC_ImageTab.TabPages[((ToolStripMenuItem)sender).Tag.ToString()];
+            SelectedTab = mTC_ImageTab.TabPages[((ToolStripMenuItem)sender).Tag.ToString()];
         }
 
         private void CheckonIndex()
@@ -983,13 +994,13 @@ namespace Gmage
 
         private void ResetBitmap()
         {
-            if (mTC_ImageTab.SelectedTab is null)
+            if (SelectedTab is null)
                 return;
-            var TabName = mTC_ImageTab.SelectedTab.Name;
+            var TabName = SelectedTab.Name;
             var selectedTabName = (string)_htTabImageName[TabName];
 
             config.IsCheckedControl(tsmi_Index, TabName);
-            col = (PictureBox)mTC_ImageTab.SelectedTab.Controls.Find(selectedTabName, true)[0];
+            col = (PictureBox)SelectedTab.Controls.Find(selectedTabName, true)[0];
             if (!(col.Image is null))
                 initBitmap = (Bitmap)col.Image;
         }
@@ -1013,13 +1024,13 @@ namespace Gmage
             {
                 if (HideTab())
                     return;
-                var SelectedTabName = mTC_ImageTab.SelectedTab.Name;
+                var SelectedTabName = SelectedTab.Name;
                 var TabName = SelectedTabName.Substring(3);
                 //使用TabControl控件的TabPages属性的Remove方法移除指定的选项卡
                 _htTabImageName.Remove(SelectedTabName);
                 tsmi_Index.DropDownItems.RemoveByKey("tsmi_" + TabName);
                 NameHash.Remove(TabName);
-                mTC_ImageTab.TabPages.Remove(mTC_ImageTab.SelectedTab);
+                mTC_ImageTab.TabPages.Remove(SelectedTab);
             }
         }
 
@@ -1328,8 +1339,6 @@ namespace Gmage
                 float w = this.col.Width * 0.9f;
                 float h = this.col.Height * 0.9f;
                 this.col.Size = Size.Ceiling(new SizeF(w, h));
-                var p = GetControlCenterLocation(mTC_ImageTab.SelectedTab, col);
-                col.Location = p;
             }
             else
             {
@@ -1337,9 +1346,8 @@ namespace Gmage
                 float h = this.col.Height * 1.1f;
                 this.col.Size = Size.Ceiling(new SizeF(w, h));
                 col.Invalidate();
-                var p = GetControlCenterLocation(mTC_ImageTab.SelectedTab, col);
-                col.Location = p;
             }
+            SetLocationCenter();
         }
         #endregion
 
@@ -1388,7 +1396,48 @@ namespace Gmage
             return base.ProcessDialogKey(keyData);
         }
         #endregion
+
+        /// <summary>
+        /// 撤销
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmi_Undo_Click(object sender, EventArgs e)
+        {
+            var bitmap = ResultImage;
+            if (graphCommand.Undo(ref bitmap))
+            {
+                ResultImage = bitmap;
+                col.Width = ResultImage.Width;
+                col.Height = ResultImage.Height;
+                SetLocationCenter();
+            }
+            GC.Collect();
+        }
+
+        /// <summary>
+        /// 重做
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmi_Redo_Click(object sender, EventArgs e)
+        {
+            var bitmap = ResultImage;
+            if (graphCommand.Redo(ref bitmap))
+            {
+                ResultImage = bitmap;
+                col.Width = ResultImage.Width;
+                col.Height = ResultImage.Height;
+                SetLocationCenter();
+            }
+            GC.Collect();
+        }
+
+        private void SetLocationCenter()
+        {
+            var p = GetControlCenterLocation(SelectedTab, col);
+            col.Location = p;
+        }
     }
 }
-
 #endregion

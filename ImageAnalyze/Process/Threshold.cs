@@ -47,7 +47,7 @@ namespace Gmage.Process
         {
             GC.Collect();
             Config.parameter.Hold = Hold;
-            ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter);
+            ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter,false);
             return ResultBitmap;
         }
 
@@ -127,6 +127,7 @@ namespace Gmage.Process
 
         private void mFB_Select_Click(object sender, EventArgs e)
         {
+            ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter);
             f.SetImageCallback(ResultBitmap);
         }
 

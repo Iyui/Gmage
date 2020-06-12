@@ -38,6 +38,8 @@
             this.另存为ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Copy = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_Undo = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_Redo = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Clear = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmi_Preferences = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,8 +117,6 @@
             this.mFB_Draw = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Select = new MaterialSkin.Controls.MaterialFlatButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.后退一步ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.前进一步ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -214,8 +214,8 @@
             // 
             this.编辑ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Copy,
-            this.后退一步ToolStripMenuItem,
-            this.前进一步ToolStripMenuItem,
+            this.tsmi_Undo,
+            this.tsmi_Redo,
             this.tsmi_Clear,
             this.toolStripSeparator2,
             this.tsmi_Preferences});
@@ -228,27 +228,44 @@
             // 
             this.tsmi_Copy.Name = "tsmi_Copy";
             this.tsmi_Copy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmi_Copy.Size = new System.Drawing.Size(148, 22);
+            this.tsmi_Copy.Size = new System.Drawing.Size(201, 22);
             this.tsmi_Copy.Text = "复制";
             this.tsmi_Copy.Click += new System.EventHandler(this.tsmi_Copy_Click);
+            // 
+            // tsmi_Undo
+            // 
+            this.tsmi_Undo.Name = "tsmi_Undo";
+            this.tsmi_Undo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.tsmi_Undo.Size = new System.Drawing.Size(201, 22);
+            this.tsmi_Undo.Text = "撤销";
+            this.tsmi_Undo.Click += new System.EventHandler(this.tsmi_Undo_Click);
+            // 
+            // tsmi_Redo
+            // 
+            this.tsmi_Redo.Name = "tsmi_Redo";
+            this.tsmi_Redo.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Space)));
+            this.tsmi_Redo.Size = new System.Drawing.Size(201, 22);
+            this.tsmi_Redo.Text = "重做";
+            this.tsmi_Redo.Click += new System.EventHandler(this.tsmi_Redo_Click);
             // 
             // tsmi_Clear
             // 
             this.tsmi_Clear.Enabled = false;
             this.tsmi_Clear.Name = "tsmi_Clear";
-            this.tsmi_Clear.Size = new System.Drawing.Size(148, 22);
+            this.tsmi_Clear.Size = new System.Drawing.Size(201, 22);
             this.tsmi_Clear.Text = "清除所有效果";
             this.tsmi_Clear.Click += new System.EventHandler(this.tsmi_Clear_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(198, 6);
             // 
             // tsmi_Preferences
             // 
             this.tsmi_Preferences.Name = "tsmi_Preferences";
-            this.tsmi_Preferences.Size = new System.Drawing.Size(148, 22);
+            this.tsmi_Preferences.Size = new System.Drawing.Size(201, 22);
             this.tsmi_Preferences.Text = "首选项";
             this.tsmi_Preferences.Click += new System.EventHandler(this.tsmi_Preferences_Click);
             // 
@@ -480,7 +497,7 @@
             this.tsmi_TopHat,
             this.tsmi_Skeleton});
             this.边缘检测ToolStripMenuItem.Name = "边缘检测ToolStripMenuItem";
-            this.边缘检测ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.边缘检测ToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.边缘检测ToolStripMenuItem.Text = "边缘检测";
             // 
             // tsmi_Smoothed
@@ -1003,19 +1020,6 @@
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragDrop);
             this.panel1.DragOver += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragOver);
             // 
-            // 后退一步ToolStripMenuItem
-            // 
-            this.后退一步ToolStripMenuItem.Name = "后退一步ToolStripMenuItem";
-            this.后退一步ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.后退一步ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.后退一步ToolStripMenuItem.Text = "撤销";
-            // 
-            // 前进一步ToolStripMenuItem
-            // 
-            this.前进一步ToolStripMenuItem.Name = "前进一步ToolStripMenuItem";
-            this.前进一步ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.前进一步ToolStripMenuItem.Text = "重做";
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -1149,8 +1153,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_TopHat;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Boundary;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Skeleton;
-        private System.Windows.Forms.ToolStripMenuItem 后退一步ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 前进一步ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_Undo;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_Redo;
     }
 }
 

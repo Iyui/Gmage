@@ -10,8 +10,6 @@ using System.Drawing.Drawing2D;
 using static Gmage.ImageProcess;
 namespace Gmage.GraphCommand
 {
-   
-
     /// <summary>
     /// 参数
     /// </summary>
@@ -29,6 +27,9 @@ namespace Gmage.GraphCommand
         }
     }
 
+    /// <summary>
+    /// 根据FunctionType执行命令
+    /// </summary>
     public class GraphCommand
     {
         Graphics graphics = new Graphics();
@@ -46,11 +47,21 @@ namespace Gmage.GraphCommand
             return graphics.Draw(Commands[functionType]);
         }
 
-        public Bitmap Execute(FunctionType functionType, Bitmap bitmap, Parameter Parameter)
+        public Bitmap Execute(FunctionType functionType, Bitmap bitmap, Parameter Parameter, bool AddUndo = true)
         {
             Commands[functionType].bitmap = bitmap.Clone() as Bitmap;
             Commands[functionType].Parameter = Parameter;
-            return graphics.Draw(Commands[functionType]);
+            return graphics.Draw(Commands[functionType], AddUndo);
+        }
+
+        public bool Undo(ref Bitmap bitmap)
+        {
+            return graphics.Undo(ref bitmap);
+        }
+
+        public bool Redo(ref Bitmap bitmap)
+        {
+            return graphics.Redo(ref bitmap);
         }
     }
 
@@ -59,24 +70,69 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Graphics
     {
-        Stack<IGraphCommand> commands = new Stack<IGraphCommand>();
+        Stack<IGraphCommand> Undocommands = new Stack<IGraphCommand>();
+        Stack<IGraphCommand> Redocommands = new Stack<IGraphCommand>();
+        Stack<Bitmap> UndoBitmaps = new Stack<Bitmap>();
+        Stack<Bitmap> RedoBitmaps = new Stack<Bitmap>();
 
-        public Bitmap Draw(IGraphCommand command)
+        public Bitmap Draw(IGraphCommand command, bool AddUndo = true)
         {
-            commands.Push(command);
+            if (command is PenDraw)
+            {
+                if (Config.parameter.iParameter[0] == 1)
+                {
+                    Undocommands.Push(command);
+                    UndoBitmaps.Push(command.bitmap);
+                    RedoBitmaps.Clear();
+                    Redocommands.Clear();
+                }
+            }
+            else if (AddUndo)
+            {
+                Undocommands.Push(command);
+                UndoBitmaps.Push(command.bitmap);
+                RedoBitmaps.Clear();
+                Redocommands.Clear();
+            }
             return command.Draw();
         }
 
-        public void Undo()
+        public bool Undo(ref Bitmap bitmap)
         {
-            IGraphCommand command = commands.Pop();
-            command.Undo();
+            //IGraphCommand command = commands.Pop();
+            //command.Undo();
+            if (UndoBitmaps.Any())
+            {
+                var commands = Undocommands.Pop();
+                Redocommands.Push(commands);
+                RedoBitmaps.Push(bitmap);
+                bitmap = UndoBitmaps.Pop();
+
+                return true;
+            }
+            bitmap = null;
+            return false;
+        }
+
+        public bool Redo(ref Bitmap bitmap)
+        {
+            if (RedoBitmaps.Any())
+            {
+                UndoBitmaps.Push(bitmap);
+                bitmap = RedoBitmaps.Pop();
+                var commands = Redocommands.Pop();
+                Undocommands.Push(commands);
+                return true;
+            }
+            bitmap = null;
+            return false;
         }
     }
 
     #region 命令接口
     public interface IGraphCommand
     {
+        string _Name { get; }
         Bitmap bitmap
         {
             set; get;
@@ -99,6 +155,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Clockwise90 : IGraphCommand
     {
+        public string _Name { get; } = "Clockwise90";
         //
         public Bitmap bitmap
         {
@@ -130,6 +187,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Clockwise180 : IGraphCommand
     {
+        public string _Name { get; } = "Clockwise180";
         public Parameter Parameter
         {
             set; get;
@@ -159,6 +217,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Clockwise270 : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -188,6 +247,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class RotateNoneFlipX : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -217,6 +277,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class RotateNoneFlipY : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -248,6 +309,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Complementary : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -277,6 +339,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class ComplementaryP : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -307,6 +370,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class ImageToGrey : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -336,6 +400,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class ImageToGreyP : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -365,6 +430,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Binarization : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -395,6 +461,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class BinarizationP : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -424,6 +491,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Lighten : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -453,6 +521,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Contrast : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -484,6 +553,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Sharpen : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -513,6 +583,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class SaltNoise : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -542,6 +613,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class GaussNoise : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -571,6 +643,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class GaussBlur : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -600,6 +673,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class GaussBlurP : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -629,6 +703,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class MedianFilter : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -658,6 +733,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Erosion : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -687,6 +763,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Swell : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -718,6 +795,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Robert : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -746,6 +824,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Smoothed : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -774,6 +853,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Boundary : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -803,6 +883,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Skeleton : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -832,6 +913,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class TopHap : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -864,6 +946,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class FFT : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -894,6 +977,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Polar : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -925,6 +1009,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Recognite : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -957,6 +1042,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class Cut : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
@@ -975,9 +1061,11 @@ namespace Gmage.GraphCommand
             var _bitmap = bitmap.Clone() as Bitmap;
             return CutImage(_bitmap, Location[0], Location[1], Location[2], Location[3]);
         }
-
+        
         private Bitmap CutImage(Bitmap bitmap, int x, int y, int width, int height)
         {
+            if (width == 0 || height == 0)
+                return bitmap;
             Image rectg = bitmap;
             var bmpRect = new Bitmap(width, height);
             var g = System.Drawing.Graphics.FromImage(bmpRect);
@@ -997,6 +1085,7 @@ namespace Gmage.GraphCommand
     /// </summary>
     public class PenDraw : IGraphCommand
     {
+        public string _Name { get; } = "";
         public Parameter Parameter
         {
             set; get;
