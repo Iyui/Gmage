@@ -19,7 +19,7 @@
  *          高斯模糊会导致程序闪退、卡死、报错或不能正确处理图片，
  *          具体原因未知，现改用了其他算法
  * 20200612:新增了一些滤镜，新增"撤销全部"和"重做全部"
- * 20200616:新增RGB通道调整
+ * 20200616:新增RGB通道调整、肤色识别
  * 未来的更新
  * 
  * 1、完善撤销、重做
@@ -193,7 +193,7 @@ namespace Gmage
                 Clockwise180,Clockwise90,Clockwise270,RotateNoneFlipX,RotateNoneFlipY,
                 Tsmi_GaussBlur,tsmi_MedianFilter,tsmi_GaussNoise,tsmi_Smoothed,
                 tsmi_Corrode,tsmi_Expand,tsmi_Boundary,tsmi_TopHat,tsmi_Skeleton,
-                tsmi_Soften,tsmi_Atomization,tsmi_Embossment,tsmi_Cartoonify,
+                tsmi_Soften,tsmi_Atomization,tsmi_Embossment,tsmi_Cartoonify,tsmi_Skin,
             };
             foreach (var tsmi in toolStripMenuItems)
             {

@@ -588,7 +588,7 @@ namespace Gmage.GraphCommand
     }
 
     /// <summary>
-    /// 反色 像素法
+    /// 卡通画
     /// </summary>
     public class Cartoonify : IGraphCommand
     {
@@ -1221,7 +1221,35 @@ namespace Gmage.GraphCommand
 
         }
     }
+    /// <summary>
+    /// 肤色检测
+    /// </summary>
+    public class Skin : IGraphCommand
+    {
+        public string _Name { get; } = "";
+        public Parameter Parameter
+        {
+            set; get;
+        }
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public Skin()
+        {
 
+        }
+        public Bitmap Draw()
+        {
+            var _bitmap = bitmap.Clone() as Bitmap;
+            return Recognite_Skin(_bitmap);
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
     #endregion
 
     #region 工具栏

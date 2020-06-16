@@ -88,8 +88,8 @@ namespace Gmage
                     break;
                 case FunctionType.Skeleton:
                     b = EdgeDetector_Skeleton(b);
-                    break; 
-                        case FunctionType.Tophap:
+                    break;
+                case FunctionType.Tophap:
                     b = EdgeDetector_TopHap(b);
                     break;
                 case FunctionType.Boundary:
@@ -352,8 +352,8 @@ namespace Gmage
             Bitmap dstBitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
             BitmapData srcData = bitmap.LockBits(new Rectangle
              (0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-           BitmapData dstData = dstBitmap.LockBits(new Rectangle
-             (0, 0, w, h), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+            BitmapData dstData = dstBitmap.LockBits(new Rectangle
+              (0, 0, w, h), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
             unsafe
             {
                 byte* pIn = (byte*)srcData.Scan0.ToPointer();
@@ -904,7 +904,7 @@ namespace Gmage
         {
             return EdgeDetector.ToSwell(initBitmap);
         }
-        
+
         public static Bitmap Mosaic(Bitmap initBitmap, int Threshold)
         {
             return Filter.Filter.Mosaic(initBitmap, Threshold);
@@ -1011,9 +1011,9 @@ namespace Gmage
         }
 
 
-        #region 面部识别
+        #region 识别
         /// <summary>
-        /// 面部识别
+        /// 识别
         /// </summary>
         /// <param name="bitmap"></param>
         /// <param name="Classifier">训练好的分类器</param>
@@ -1021,36 +1021,36 @@ namespace Gmage
         public static Bitmap Recognite_Face(Bitmap bitmap, string Classifier = "haarcascade_frontalface_alt.xml")
         {
             //如果支持用显卡,则用显卡运算
-                CvInvoke.UseOpenCL = CvInvoke.HaveOpenCLCompatibleGpuDevice;
+            CvInvoke.UseOpenCL = CvInvoke.HaveOpenCLCompatibleGpuDevice;
 
-                //构建级联分类器,利用已经训练好的数据,识别人脸
-                //var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
-                var face = new CascadeClassifier("Classifier/" + Classifier);
+            //构建级联分类器,利用已经训练好的数据,识别人脸
+            //var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
+            var face = new CascadeClassifier("Classifier/" + Classifier);
 
-                // var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
+            // var face = new CascadeClassifier("haarcascade_frontalface_alt.xml");
 
-                //加载要识别的图片
-                //var img = new Image<Bgr, byte>("0.png");
-                //var img2 = new Image<Gray, byte>(img.ToBitmap());
-                Image<Bgr, byte> img = new Image<Bgr, byte>(bitmap);
-                var Grayimg = new Image<Gray, byte>(bitmap);
-                //把图片从彩色转灰度
-                CvInvoke.CvtColor(img, Grayimg, ColorConversion.Bgr2Gray);
+            //加载要识别的图片
+            //var img = new Image<Bgr, byte>("0.png");
+            //var img2 = new Image<Gray, byte>(img.ToBitmap());
+            Image<Bgr, byte> img = new Image<Bgr, byte>(bitmap);
+            var Grayimg = new Image<Gray, byte>(bitmap);
+            //把图片从彩色转灰度
+            CvInvoke.CvtColor(img, Grayimg, ColorConversion.Bgr2Gray);
 
-                //亮度增强
-                CvInvoke.EqualizeHist(Grayimg, Grayimg);
-                //在这一步就已经识别出来了,返回的是人脸所在的位置和大小
-                var facesDetected = face.DetectMultiScale(Grayimg, 1.1, 10, new Size(50, 50));
+            //亮度增强
+            CvInvoke.EqualizeHist(Grayimg, Grayimg);
+            //在这一步就已经识别出来了,返回的是人脸所在的位置和大小
+            var facesDetected = face.DetectMultiScale(Grayimg, 1.1, 10, new Size(50, 50));
 
-                //循环把人脸部分切出来并保存
-                // CutandSave(facesDetected);
-                var resultImg = ShowCut(facesDetected, img);
-                Grayimg.Dispose();
-                img.Dispose();
-                face.Dispose();
-                GC.Collect();
-                return resultImg;
-            
+            //循环把人脸部分切出来并保存
+            // CutandSave(facesDetected);
+            var resultImg = ShowCut(facesDetected, img);
+            Grayimg.Dispose();
+            img.Dispose();
+            face.Dispose();
+            GC.Collect();
+            return resultImg;
+
 
             ////释放资源退出
             //img.Dispose();
@@ -1085,7 +1085,113 @@ namespace Gmage
             return image;
         }
         #endregion
+        public static Bitmap Recognite_Skin2(Bitmap a)
+        {
+            Rectangle rect = new Rectangle(0, 0, a.Width, a.Height);
+            BitmapData bmpData = a.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            int stride = bmpData.Stride;
+            unsafe
+            {
+                byte* pIn = (byte*)bmpData.Scan0.ToPointer();
+                byte* P;
+                int R, G, B;
+                double r, g, Fupr, Flor, Wrg;
+                for (int y = 0; y < a.Height; y++)
+                {
+                    for (int x = 0; x < a.Width; x++)
+                    {
+                        P = pIn;
+                        B = P[0];
+                        G = P[1];
+                        R = P[2];
+                        if (R + G + B == 0)
+                        {
+                            r = 0;
+                            g = 0;
+                        }
+                        else
+                        {
+                            r = (R / (R + G + B));
+                            g = (G / (R + G + B));
+                        }
+                        Fupr = (1.0743 * r + 0.1452 - 1.3767 * r * r);
+                        Flor = (0.5601 * r + 0.1766 - 0.776 * r * r);
+                        Wrg = (r - 0.33) * (r - 0.33) + (g - 0.33) * (g - 0.33);
+                        if ((R - G >= 45) && ((R > G) && (G > B)) && (Fupr > g) && (Wrg >= 0.0004))
+                        {
+                            P[0] = (byte)B;
+                            P[1] = (byte)G;
+                            P[2] = (byte)R;
+                        }
+                        else
+                        {
+                            P[0] = 0;
+                            P[1] = 0;
+                            P[2] = 0;
+                        }
+                        pIn += 3;
 
+                    }
+                    pIn += stride - a.Width * 3;
+                }
+            }
+            a.UnlockBits(bmpData);
+            return a;
+        }
+
+        public static Bitmap Recognite_Skin(Bitmap a)
+        {
+            Rectangle rect = new Rectangle(0, 0, a.Width, a.Height);
+            BitmapData bmpData = a.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            int stride = bmpData.Stride;
+            unsafe
+            {
+                byte* pIn = (byte*)bmpData.Scan0.ToPointer();
+                byte* temp;
+                int R, G, B, S;
+                double r, g, b;
+                for (int y = 0; y < a.Height; y++)
+                {
+                    for (int x = 0; x < a.Width; x++)
+                    {
+                        temp = pIn;
+                        B = temp[0];
+                        G = temp[1];
+                        R = temp[2];
+                        S = R + G + B;
+                        r = R / (R + G + B + 1.0);
+                        g = G / (R + G + B + 1.0);
+                        b = B / (R + G + B + 1.0);
+                        if (S != 0)
+                        {
+                            if ((r > (95.0 / S)) && (r < 1 - 90.0 / S) && (g > (50.0 / S)) && ((r - g) > (30.0 / S)) && (r - g < 0.2))
+                            {
+                                temp[0] = (byte)B;
+                                temp[1] = (byte)G;
+                                temp[2] = (byte)R;
+                            }
+                            else
+                            {
+                                temp[0] = 0;
+                                temp[1] = 0;
+                                temp[2] = 0;
+                            }
+                        }
+                        else
+                        {
+                            temp[0] = 0;
+                            temp[1] = 0;
+                            temp[2] = 0;
+                        }
+                        pIn += 3;
+
+                    }
+                    pIn += stride - a.Width * 3;
+                }
+            }
+            a.UnlockBits(bmpData);
+            return a;
+        }
         #endregion
     }
 

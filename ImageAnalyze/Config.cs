@@ -102,6 +102,8 @@ namespace Gmage
             graphCommand.AddCommand(FunctionType.Cartoonify, cartoonify);
             GraphCommand.RGBChannel rgbchannel = new GraphCommand.RGBChannel();
             graphCommand.AddCommand(FunctionType.RGBChannel, rgbchannel);
+            GraphCommand.Skin skin = new GraphCommand.Skin();
+            graphCommand.AddCommand(FunctionType.Skin, skin);
 
         }
         #endregion
@@ -521,6 +523,10 @@ namespace Gmage
         /// RGB通道
         /// </summary>
         RGBChannel,
+        /// <summary>
+        /// 肤色检测
+        /// </summary>
+        Skin,
     }
     public struct point
     {

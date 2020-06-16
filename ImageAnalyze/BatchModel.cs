@@ -51,6 +51,10 @@ namespace Gmage
             SetDic("逆时针旋转90度", FunctionType.Clockwise270);
             SetDic("垂直镜像", FunctionType.RotateNoneFlipX);
             SetDic("水平镜像", FunctionType.RotateNoneFlipY);
+
+            SetDic("浮雕", FunctionType.Embossment);
+            SetDic("雾化", FunctionType.Atomization);
+            SetDic("卡通画", FunctionType.Cartoonify);
         }
 
         private void materialFlatButton1_Click(object sender, EventArgs e)
