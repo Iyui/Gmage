@@ -93,6 +93,7 @@
     <Compile Include="BatchModel.Designer.cs">
       <DependentUpon>BatchModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Process\Channels.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Controls\BitMapLayer.cs">
       <SubType>UserControl</SubType>
@@ -154,6 +155,12 @@
     <Compile Include="Noise\Probability.Designer.cs">
       <DependentUpon>Probability.cs</DependentUpon>
     </Compile>
+    <Compile Include="Process\RGB_Channnels.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Process\RGB_Channnels.Designer.cs">
+      <DependentUpon>RGB_Channnels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Process\thin.cs" />
     <Compile Include="Process\Threshold.cs">
       <SubType>Form</SubType>
@@ -192,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Noise\Probability.resx">
       <DependentUpon>Probability.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Process\RGB_Channnels.resx">
+      <DependentUpon>RGB_Channnels.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Process\Threshold.resx">
       <DependentUpon>Threshold.cs</DependentUpon>

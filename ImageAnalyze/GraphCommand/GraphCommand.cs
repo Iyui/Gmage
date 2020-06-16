@@ -17,6 +17,7 @@ namespace Gmage.GraphCommand
     {
         public point[] Points { set; get; }
         public int[] iParameter { set; get; }
+        public float[] fParameter { set; get; }
         public int Hold { set; get; }
         public PictureBox PictureBox { set; get; }
         public Color Color { set; get; }
@@ -81,6 +82,9 @@ namespace Gmage.GraphCommand
         Stack<IGraphCommand> Redocommands = new Stack<IGraphCommand>();
         Stack<Bitmap> UndoBitmaps = new Stack<Bitmap>();
         Stack<Bitmap> RedoBitmaps = new Stack<Bitmap>();
+
+        Dictionary<string, Stack<IGraphCommand>> DicUndocommands = new Dictionary<string, Stack<IGraphCommand>>();
+        Dictionary<string, Stack<IGraphCommand>> DicRedocommands = new Dictionary<string, Stack<IGraphCommand>>();
 
         public Bitmap Draw(IGraphCommand command, bool AddUndo = true)
         {
@@ -311,6 +315,36 @@ namespace Gmage.GraphCommand
     #endregion
 
     #region 简单的像素处理
+    /// <summary>
+    /// 反色 像素法
+    /// </summary>
+    public class RGBChannel : IGraphCommand
+    {
+        public string _Name { get; } = "";
+        public Parameter Parameter
+        {
+            set; get;
+        }
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public RGBChannel()
+        {
+
+        }
+        public Bitmap Draw()
+        {
+            var _bitmap = bitmap.Clone() as Bitmap;
+            return Channel(_bitmap, Parameter.fParameter[0], Parameter.fParameter[1], Parameter.fParameter[2]);
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
+
     /// <summary>
     /// 反色 像素法
     /// </summary>
@@ -545,6 +579,36 @@ namespace Gmage.GraphCommand
         {
             var _bitmap = bitmap.Clone() as Bitmap;
             return Contrast(_bitmap, Parameter.Hold);
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 反色 像素法
+    /// </summary>
+    public class Cartoonify : IGraphCommand
+    {
+        public string _Name { get; } = "";
+        public Parameter Parameter
+        {
+            set; get;
+        }
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public Cartoonify()
+        {
+
+        }
+        public Bitmap Draw()
+        {
+            var _bitmap = bitmap.Clone() as Bitmap;
+            return Cartoonify(_bitmap);
         }
 
         public void Undo()

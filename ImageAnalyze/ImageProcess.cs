@@ -161,6 +161,11 @@ namespace Gmage
         #endregion
 
         #region 简单的像素处理
+        public static Bitmap Channel(Bitmap initbitmap, float rp, float gp, float bp)
+        {
+            GC.Collect();
+            return Channels.Channel(initbitmap, rp, gp, bp);
+        }
 
         /// <summary>
         /// 反色 像素法
@@ -515,6 +520,31 @@ namespace Gmage
             lbmp.UnlockBits();
             newlbmp.UnlockBits();
             return newbmp;
+        }
+
+        public static Bitmap Cartoonify(Bitmap bitmap)
+        {
+            Color pixel;
+            Bitmap bitmapResult = (Bitmap)bitmap.Clone();
+            int r, g, b;
+
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    pixel = bitmap.GetPixel(x, y);
+
+                    double ratio = 64.0;
+
+                    r = (int)((Math.Floor(pixel.R / ratio)) * ratio);
+                    g = (int)((Math.Floor(pixel.G / ratio)) * ratio);
+                    b = (int)((Math.Floor(pixel.B / ratio)) * ratio);
+
+                    pixel = Color.FromArgb(r, g, b);
+                    bitmapResult.SetPixel(x, y, pixel);
+                }
+            }
+            return bitmapResult;
         }
         #endregion
 

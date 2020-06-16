@@ -19,7 +19,7 @@
  *          高斯模糊会导致程序闪退、卡死、报错或不能正确处理图片，
  *          具体原因未知，现改用了其他算法
  * 20200612:新增了一些滤镜，新增"撤销全部"和"重做全部"
- * 
+ * 20200616:新增RGB通道调整
  * 未来的更新
  * 
  * 1、完善撤销、重做
@@ -193,7 +193,7 @@ namespace Gmage
                 Clockwise180,Clockwise90,Clockwise270,RotateNoneFlipX,RotateNoneFlipY,
                 Tsmi_GaussBlur,tsmi_MedianFilter,tsmi_GaussNoise,tsmi_Smoothed,
                 tsmi_Corrode,tsmi_Expand,tsmi_Boundary,tsmi_TopHat,tsmi_Skeleton,
-                tsmi_Soften,tsmi_Atomization,tsmi_Embossment,
+                tsmi_Soften,tsmi_Atomization,tsmi_Embossment,tsmi_Cartoonify,
             };
             foreach (var tsmi in toolStripMenuItems)
             {
@@ -369,6 +369,7 @@ namespace Gmage
             tB_B.BackColor = Color.FromArgb(255, 51, 51, 51);
 
             SetColorRGB();
+            
             // pTools.BackColor = Color.FromArgb(255, 55, 71, 79);
             messageClass.OnMessageSend += new MessageEventHandler(SubthreadMessageReceive);
             TsmiClick();
@@ -989,6 +990,18 @@ namespace Gmage
 
         private void tsmi_About_Click(object sender, EventArgs e)
         {
+            string interduce =
+           @"* Title:Gorgeous Gmage
+               * Author:Iyui
+                    * Homepage:Iyui.Github.com
+                        * 网上的批处理软件太不好用
+                            * 自己写了一个
+                        * 功能抽时间开发
+                    * BUG看心情修复
+             *错开是为了不花眼
+         * © 2020";
+            MessageBox.Show(interduce, "奇怪的功能增加了");
+
             //Clipboard.SetText("Iyui.Github.com");
         }
 
@@ -1222,7 +1235,7 @@ namespace Gmage
             };
 
         }
-
+       
         private void InputLimit(object sender, KeyPressEventArgs e)
         {
             if (((int)e.KeyChar < 48 && (int)e.KeyChar != 8) || ((int)e.KeyChar > 57))
@@ -1239,6 +1252,9 @@ namespace Gmage
 
         #endregion
 
+       
+
+   
         #region 鼠标拾色
         Point p = MousePosition;
 
@@ -1465,6 +1481,33 @@ namespace Gmage
         {
             var p = GetControlCenterLocation(SelectedTab, col);
             col.Location = p;
+        }
+
+        private void tsmi_Channel_Click(object sender, EventArgs e)
+        {
+            Process.RGB_Channnels channnels = new Process.RGB_Channnels(this, MousePosition)
+            {
+                InitBitmap = ResultImage.Clone() as Bitmap,
+            };
+            channnels.ShowDialog();
+        }
+
+        private void tsmi_CharImage_Click(object sender, EventArgs e)
+        {
+            var dia = MessageBox.Show("该滤镜暂未集成至该软件，会在未来的版本中加入，该滤镜软件源码地址\r\n'https://github.com/Iyui/CharImage',\r\n点击确定访问该网址，点击否复制到剪切板", "https://github.com/Iyui", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            if (DialogResult.No== dia)
+            {
+                Clipboard.Clear();
+                Clipboard.SetText("https://github.com/Iyui/CharImage");
+            }else if(DialogResult.Yes== dia)
+            {
+                System.Diagnostics.Process.Start("https://github.com/Iyui/CharImage");
+            }
+        }
+
+        private void tsmi_supTools_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("功能开发中，会在未来的版本中加入...", "https://github.com/Iyui");
         }
     }
 }

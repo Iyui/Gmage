@@ -73,9 +73,11 @@
             this.Controls.Add(this.materialFlatButton1);
             this.Controls.Add(this.lB_Task);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "BatchModel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "任务选择";
+            this.Text = "任务选择（持续开发中）";
             this.Load += new System.EventHandler(this.BatchModel_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

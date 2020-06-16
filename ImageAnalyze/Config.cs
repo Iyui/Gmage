@@ -98,6 +98,11 @@ namespace Gmage
             graphCommand.AddCommand(FunctionType.Atomization, atomization);
             GraphCommand.Embossment embossment = new GraphCommand.Embossment();
             graphCommand.AddCommand(FunctionType.Embossment, embossment);
+            GraphCommand.Cartoonify cartoonify = new GraphCommand.Cartoonify();
+            graphCommand.AddCommand(FunctionType.Cartoonify, cartoonify);
+            GraphCommand.RGBChannel rgbchannel = new GraphCommand.RGBChannel();
+            graphCommand.AddCommand(FunctionType.RGBChannel, rgbchannel);
+
         }
         #endregion
 
@@ -508,6 +513,14 @@ namespace Gmage
         /// 浮雕
         /// </summary>
         Embossment,
+        /// <summary>
+        /// 卡通画
+        /// </summary>
+        Cartoonify,
+        /// <summary>
+        /// RGB通道
+        /// </summary>
+        RGBChannel,
     }
     public struct point
     {
