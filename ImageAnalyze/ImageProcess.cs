@@ -1159,9 +1159,18 @@ namespace Gmage
                         G = temp[1];
                         R = temp[2];
                         S = R + G + B;
-                        r = R / (R + G + B + 1.0);
-                        g = G / (R + G + B + 1.0);
-                        b = B / (R + G + B + 1.0);
+                        if (S == 0)
+                        {
+                            r = R / 1d;
+                            g = G / 1d;
+                            b = B / 1d;
+                        }
+                        else
+                        {
+                            r = R / (S + 0.0);//变为double型
+                            g = G / (S + 0.0);
+                            b = B / (S + 0.0);
+                        }
                         if (S != 0)
                         {
                             if ((r > (95.0 / S)) && (r < 1 - 90.0 / S) && (g > (50.0 / S)) && ((r - g) > (30.0 / S)) && (r - g < 0.2))
