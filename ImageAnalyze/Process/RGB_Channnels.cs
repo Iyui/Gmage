@@ -29,7 +29,69 @@ namespace Gmage.Process
             this.PointToScreen(p);
             this.Location = p;
             _g = Config.graphCommand;
+            SetScrollStyle();
+            SetTextStyle();
             SetChannelRGB();
+            
+        }
+
+        private void SetScrollStyle()
+        {
+            TrackBar[] trackBars = new TrackBar[] { tb_CR, tb_CG, tb_CB };
+            foreach (var tb in trackBars)
+            {
+                switch (Config.Model)
+                {
+                    case FunctionType.RGBChannel:
+                        tb.Minimum = 0;
+                        tb.Maximum = 1000;
+                        tb.Value = 100;
+                        break;
+                    case FunctionType.HueSaturationAdjust:
+                    case FunctionType.LightnessAdjustProcess:
+                    case FunctionType.ColorBalanceProcess:
+                        tb.Minimum = -100;
+                        tb.Maximum = 100;
+                        break;
+                    case FunctionType.USMProcess:
+                        tb_CR.Maximum = 500;
+                        tb_CG.Maximum = 50;
+                        tb_CB.Maximum = 255;
+                        tb.Minimum = 0;
+                        break;
+                }
+            }
+        }
+
+        private void SetTextStyle()
+        {
+            switch (Config.Model)
+            {
+                case FunctionType.RGBChannel:
+                    Color_CR = 100;
+                    Color_CG = 100;
+                    Color_CB = 100;
+                    label6.Text = "R%";
+                    label5.Text = "G%";
+                    label4.Text = "B%";
+                    break;
+                case FunctionType.HueSaturationAdjust:
+                case FunctionType.LightnessAdjustProcess:
+                    label6.Text = "色相";
+                    label5.Text = "饱和度";
+                    label4.Text = "明度";
+                    break;
+                case FunctionType.ColorBalanceProcess:
+                    label6.Text = "青色";
+                    label5.Text = "洋红";
+                    label4.Text = "黄色";
+                    break;
+                case FunctionType.USMProcess:
+                    label6.Text = "数量";
+                    label5.Text = "半径";
+                    label4.Text = "阈值";
+                    break;
+            }
         }
 
         public Bitmap InitBitmap
@@ -48,23 +110,23 @@ namespace Gmage.Process
             get
             {
                 int.TryParse(mT_CR.Text, out int r);
-                if (r > 1000)
-                    r = 1000;
-                if (r < 0)
-                    r = 0;
+                if (r > tb_CR.Maximum)
+                    r = tb_CR.Maximum;
+                if (r < tb_CR.Minimum)
+                    r = tb_CR.Minimum;
                 mT_CR.Text = r.ToString();
                 return r;
             }
             set
             {
-                if (value > 1000)
+                if (value > tb_CR.Maximum)
                 {
-                    mT_CR.Text = 1000.ToString();
+                    mT_CR.Text = tb_CR.Maximum.ToString();
                     return;
                 }
-                if (value < 0)
+                if (value < tb_CR.Minimum)
                 {
-                    mT_CR.Text = 0.ToString();
+                    mT_CR.Text = tb_CR.Minimum.ToString();
                     return;
                 }
                 mT_CR.Text = value.ToString();
@@ -75,23 +137,23 @@ namespace Gmage.Process
             get
             {
                 int.TryParse(mT_CG.Text, out int r);
-                if (r > 1000)
-                    r = 1000;
-                if (r < 0)
-                    r = 0;
+                if (r > tb_CG.Maximum)
+                    r = tb_CG.Maximum;
+                if (r < tb_CG.Minimum)
+                    r = tb_CG.Minimum;
                 mT_CG.Text = r.ToString();
                 return r;
             }
             set
             {
-                if (value > 1000)
+                if (value > tb_CG.Maximum)
                 {
-                    mT_CG.Text = 1000.ToString();
+                    mT_CG.Text = tb_CG.Maximum.ToString();
                     return;
                 }
-                if (value < 0)
+                if (value < tb_CG.Minimum)
                 {
-                    mT_CG.Text = 0.ToString();
+                    mT_CG.Text = tb_CG.Minimum.ToString();
                     return;
                 }
                 mT_CG.Text = value.ToString();
@@ -103,23 +165,23 @@ namespace Gmage.Process
             get
             {
                 int.TryParse(mT_CB.Text, out int r);
-                if (r > 1000)
-                    r = 1000;
-                if (r < 0)
-                    r = 0;
+                if (r > tb_CB.Maximum)
+                    r = tb_CB.Maximum;
+                if (r < tb_CB.Minimum)
+                    r = tb_CB.Minimum;
                 mT_CB.Text = r.ToString();
                 return r;
             }
             set
             {
-                if (value > 1000)
+                if (value > tb_CB.Maximum)
                 {
-                    mT_CB.Text = 1000.ToString();
+                    mT_CB.Text = tb_CB.Maximum.ToString();
                     return;
                 }
-                if (value < 0)
+                if (value < tb_CB.Minimum)
                 {
-                    mT_CB.Text = 0.ToString();
+                    mT_CB.Text = tb_CB.Minimum.ToString();
                     return;
                 }
                 mT_CB.Text = value.ToString();
@@ -127,10 +189,37 @@ namespace Gmage.Process
         }
         private void ChangeChannel()
         {
-            Config.Model = FunctionType.RGBChannel;
-            float[] fRGB = new float[] { Color_CR / 100f, Color_CG / 100f, Color_CB / 100f };
-            Config.parameter.fParameter = fRGB;
-            ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter, false);
+            switch (Config.Model)
+            {
+                case FunctionType.RGBChannel:
+                    float[] fRGB = new float[] { Color_CR / 100f, Color_CG / 100f, Color_CB / 100f };
+                    Config.parameter.fParameter = fRGB;
+                    ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter, false);
+                    break;
+                case FunctionType.HueSaturationAdjust:
+                case FunctionType.LightnessAdjustProcess:
+                    int[] iRGB = new int[] { Color_CR, Color_CG, Color_CB };
+                    Config.parameter.iParameter = iRGB;
+                    Config.Model = FunctionType.HueSaturationAdjust;
+                    ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter, false);
+                    Config.Model = FunctionType.LightnessAdjustProcess;
+                    ResultBitmap = _g.Execute(Config.Model, ResultBitmap, Config.parameter, false);
+                    break;
+                case FunctionType.ColorBalanceProcess:
+                    iRGB = new int[] { Color_CR, Color_CG, Color_CB,0 };
+                    bool[] bLight = new bool[] {false};
+                    Config.parameter.iParameter =iRGB;
+                    Config.parameter.bParameter = bLight;
+                    ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter, false);
+                    break;
+                case FunctionType.USMProcess:
+                    iRGB = new int[] { Color_CR,  Color_CB};
+                    fRGB = new float[] { Color_CG/10f };
+                    Config.parameter.iParameter = iRGB;
+                    Config.parameter.fParameter = fRGB;
+                    ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter, false);
+                    break;
+            }  
             f.SetImageCallback(ResultBitmap);
         }
         private void SetChannelRGB()
@@ -174,7 +263,6 @@ namespace Gmage.Process
             {
                 Color_CB = tb_CB.Value;
             };
-
         }
         #endregion
 

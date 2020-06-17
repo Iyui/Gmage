@@ -192,6 +192,12 @@
     <Compile Include="Process\Threshold.Designer.cs">
       <DependentUpon>Threshold.cs</DependentUpon>
     </Compile>
+    <Compile Include="Process\TwoThreshold.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Process\TwoThreshold.Designer.cs">
+      <DependentUpon>TwoThreshold.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GraphCommand\ZPhotoEngineDll.cs" />
@@ -230,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Process\Threshold.resx">
       <DependentUpon>Threshold.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Process\TwoThreshold.resx">
+      <DependentUpon>TwoThreshold.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -105,7 +105,7 @@ namespace Gmage.Process
                 case FunctionType.Contrast:
                 case FunctionType.NaturalSaturationProcess:
                 case FunctionType.ColorTemperatureProcess:
-                case FunctionType.ExposureAdjust:
+                  case FunctionType.   ExposureAdjust:
                     tB_Threshold.Minimum = -100;
                     tB_Threshold.Maximum = 100;
                     break;

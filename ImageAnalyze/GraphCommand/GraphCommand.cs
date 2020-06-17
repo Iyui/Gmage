@@ -55,6 +55,7 @@ namespace Gmage.GraphCommand
         public Bitmap Execute(FunctionType functionType, Bitmap bitmap, bool AddUndo = true)
         {
             Commands[functionType].bitmap = bitmap.Clone() as Bitmap;
+            GC.Collect();
             return graphics.Draw(Commands[functionType],AddUndo);
         }
 
@@ -62,6 +63,7 @@ namespace Gmage.GraphCommand
         {
             Commands[functionType].bitmap = bitmap.Clone() as Bitmap;
             Commands[functionType].Parameter = Parameter;
+            GC.Collect();
             return graphics.Draw(Commands[functionType], AddUndo);
         }
 

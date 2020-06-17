@@ -112,7 +112,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.HighlightShadowPreciseAdjustProcess(_bitmap, Parameter.fParameter[0], Parameter.fParameter[1]);
+            return Config.zPhoto.HighlightShadowPreciseAdjustProcess(_bitmap, Parameter.iParameter[0], Parameter.iParameter[1]);
         }
 
         public void Undo()
@@ -814,7 +814,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.LightnessAdjustProcess(_bitmap, Parameter.Hold);
+            return Config.zPhoto.LightnessAdjustProcess(_bitmap, Parameter.iParameter[2]);
         }
 
         public void Undo()

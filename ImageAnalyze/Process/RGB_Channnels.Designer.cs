@@ -92,7 +92,7 @@
             this.mT_CB.Size = new System.Drawing.Size(36, 23);
             this.mT_CB.TabIndex = 36;
             this.mT_CB.TabStop = false;
-            this.mT_CB.Text = "100";
+            this.mT_CB.Text = "0";
             this.mT_CB.UseSystemPasswordChar = false;
             // 
             // mT_CG
@@ -110,7 +110,7 @@
             this.mT_CG.Size = new System.Drawing.Size(36, 23);
             this.mT_CG.TabIndex = 37;
             this.mT_CG.TabStop = false;
-            this.mT_CG.Text = "100";
+            this.mT_CG.Text = "0";
             this.mT_CG.UseSystemPasswordChar = false;
             // 
             // mT_CR
@@ -129,7 +129,7 @@
             this.mT_CR.Size = new System.Drawing.Size(36, 23);
             this.mT_CR.TabIndex = 35;
             this.mT_CR.TabStop = false;
-            this.mT_CR.Text = "100";
+            this.mT_CR.Text = "0";
             this.mT_CR.UseSystemPasswordChar = false;
             // 
             // tb_CG
@@ -141,7 +141,6 @@
             this.tb_CG.Size = new System.Drawing.Size(112, 25);
             this.tb_CG.TabIndex = 33;
             this.tb_CG.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.tb_CG.Value = 100;
             // 
             // tb_CR
             // 
@@ -152,7 +151,6 @@
             this.tb_CR.Size = new System.Drawing.Size(112, 25);
             this.tb_CR.TabIndex = 32;
             this.tb_CR.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.tb_CR.Value = 100;
             // 
             // tb_CB
             // 
@@ -163,7 +161,6 @@
             this.tb_CB.Size = new System.Drawing.Size(112, 25);
             this.tb_CB.TabIndex = 34;
             this.tb_CB.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.tb_CB.Value = 100;
             // 
             // btn_Cancel
             // 

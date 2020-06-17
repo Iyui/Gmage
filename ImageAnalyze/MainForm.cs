@@ -20,6 +20,7 @@
  *          具体原因未知，现改用了其他算法
  * 20200612:新增了一些滤镜，新增"撤销全部"和"重做全部"
  * 20200616:新增RGB通道调整、肤色识别
+ * 20200617:新增滤镜
  * 未来的更新
  * 
  * 1、完善撤销、重做
@@ -209,13 +210,13 @@ namespace Gmage
         }
 
         /// <summary>
-        /// 带阈值功能的事件注册
+        /// 带1个阈值功能的事件注册
         /// </summary>
         private void TsmiThresholdClick()
         {
             ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
             {
-               tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen,tsmi_Mosaic,
+               tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen,tsmi_Mosaic,
                tsmi_Wave,tsmi_HighPassProcess,tsmi_MedianFilterProcess,tsmi_MeanFilterProcess,tsmi_GaussFilterProcess,
                tsmi_RadialBlurProcess,tsmi_MaxFilterProcess,tsmi_MinFilterProcess,
                tsmi_DiffusionProcess,tsmi_Posterize,tsmi_ExposureAdjust,tsmi_ColorTemperatureProcess,
@@ -233,6 +234,55 @@ namespace Gmage
         }
 
         /// <summary>
+        /// 带2阈值功能的事件注册
+        /// </summary>
+        private void TsmiTwoThresholdClick()
+        {
+            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
+            {
+               tsmi_SurfaceBlur,tsmi_MotionBlur,tsmi_ZoomBlurProcess,tsmi_SmartBlurProcess,
+               tsmi_HighlightShadowPreciseAdjustProcess,tsmi_Lighten,tsmi_Relief,
+            };
+            foreach (var tsmi in toolStripMenuItems)
+            {
+                tsmi.Click += (click_sender, click_e) =>
+                {
+                    Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
+                    //ResultImage = SwitchFunc(initBitmap);
+                    Process.TwoThreshold twoThreshold = new Process.TwoThreshold(this, MousePosition)
+                    {
+                        InitBitmap = ResultImage.Clone() as Bitmap,
+                    };
+                    twoThreshold.ShowDialog();
+                };
+            }
+        }
+
+        /// <summary>
+        /// 带3阈值功能的事件注册
+        /// </summary>
+        private void TsmiThreeThresholdClick()
+        {
+            ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
+            {
+               tsmi_Channel,tsmi_HueSaturationAdjust,tsmi_ColorBalanceProcess,tsmi_USMProcess
+            };
+            foreach (var tsmi in toolStripMenuItems)
+            {
+                tsmi.Click += (click_sender, click_e) =>
+                {
+                    Model = (FunctionType)Enum.Parse(typeof(FunctionType), tsmi.Tag.ToString());
+                    //ResultImage = SwitchFunc(initBitmap);
+                    Process.RGB_Channnels channnels = new Process.RGB_Channnels(this, MousePosition)
+                    {
+                        InitBitmap = ResultImage.Clone() as Bitmap,
+                    };
+                    channnels.ShowDialog();
+                };
+            }
+        }
+
+        /// <summary>
         /// 工具栏事件
         /// </summary>
         private void ToolsClickEvent()
@@ -243,6 +293,7 @@ namespace Gmage
                 flatButton.Click += (sender, e) =>
                 {
                     Tool = (Tools)Enum.Parse(typeof(Tools), flatButton.Tag.ToString());
+                    
                 };
             }
         }
@@ -380,6 +431,8 @@ namespace Gmage
             messageClass.OnMessageSend += new MessageEventHandler(SubthreadMessageReceive);
             TsmiClick();
             TsmiThresholdClick();
+            TsmiTwoThresholdClick();
+            TsmiThreeThresholdClick();
             ToolsClickEvent();
             SetToolTipPromot();
 
@@ -1491,11 +1544,7 @@ namespace Gmage
 
         private void tsmi_Channel_Click(object sender, EventArgs e)
         {
-            Process.RGB_Channnels channnels = new Process.RGB_Channnels(this, MousePosition)
-            {
-                InitBitmap = ResultImage.Clone() as Bitmap,
-            };
-            channnels.ShowDialog();
+            
         }
 
         private void tsmi_CharImage_Click(object sender, EventArgs e)
