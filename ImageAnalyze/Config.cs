@@ -17,6 +17,7 @@ namespace Gmage
         #region 功能组装
         public static GraphCommand.GraphCommand graphCommand = new GraphCommand.GraphCommand();
         public static GraphCommand.Parameter parameter = new GraphCommand.Parameter();
+        public static ZPhotoEngineDll zPhoto =new ZPhotoEngineDll();
         /// <summary>
         /// 功能组装代码由脚本生成至剪切板
         /// </summary>
@@ -527,6 +528,61 @@ namespace Gmage
         /// 肤色检测
         /// </summary>
         Skin,
+        //Zphoto
+        NoiseEffect,
+        DisplacementFilter,
+        LUTFilter,
+        HighlightShadowPreciseAdjustProcess,
+        ImageWarpWaveProcess,
+        GlowingEdgesProcess,
+        MedianFilterProcess,
+        MaxFilterProcess,
+        MinFilterProcess,
+        GammaCorrectProcess,
+        ChannelMixProcess,
+        MeanProcess,
+        AutoColorGradationAdjust,
+        AutoContrastAdjust,
+        HistagramEqualize,
+        MotionBlur,
+        TransformRotation,
+        TransformScale,
+        TransformRotationScale,
+        TransformAffine,
+        Threshold,
+        TransformMirror,
+        Fragment,
+        HueSaturationAdjust,
+        ColorTemperatureProcess,
+        Posterize,
+        Desaturate,
+        OverExposure,
+        ExposureAdjust,
+        LightnessAdjustProcess,
+        ShadowAdjust,
+        HighlightAdjust,
+        Invert,
+        SurfaceBlur,
+        NLinearBrightContrastAdjust,
+        LinearBrightContrastAdjust,
+        FindEdgesProcess,
+        GaussFilterProcess,
+        MeanFilterProcess,
+        HighPassProcess,
+        USMProcess,
+        SaturationProcess,
+        NaturalSaturationProcess,
+        ColorBalanceProcess,
+        Relief,
+        DiffusionProcess,
+        MosaicProcess,
+        RadialBlurProcess,
+        ZoomBlurProcess,
+        ColorLevelProcess,
+        BlackwhiteProcess,
+        LUTFilterProcess,
+        SmartBlurProcess,
+        AnisotropicFilter,
     }
     public struct point
     {

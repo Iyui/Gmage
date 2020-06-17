@@ -18,10 +18,13 @@ namespace Gmage.GraphCommand
         public point[] Points { set; get; }
         public int[] iParameter { set; get; }
         public float[] fParameter { set; get; }
+        public bool[] bParameter { set; get; }
         public int Hold { set; get; }
         public PictureBox PictureBox { set; get; }
         public Color Color { set; get; }
         public Bitmap OutBitmap { set; get; }
+
+        public Bitmap mask { set; get; }
         public Parameter()
         {
 

@@ -1167,9 +1167,9 @@ namespace Gmage
                         }
                         else
                         {
-                            r = R / (S + 0.0);//变为double型
-                            g = G / (S + 0.0);
-                            b = B / (S + 0.0);
+                            r = R / (double)S;
+                            g = G / (double)S;
+                            b = B / (double)S;
                         }
                         if (S != 0)
                         {
@@ -1193,7 +1193,6 @@ namespace Gmage
                             temp[2] = 0;
                         }
                         pIn += 3;
-
                     }
                     pIn += stride - a.Width * 3;
                 }
