@@ -194,6 +194,8 @@ namespace Gmage
                 Tsmi_GaussBlur,tsmi_MedianFilter,tsmi_GaussNoise,tsmi_Smoothed,
                 tsmi_Corrode,tsmi_Expand,tsmi_Boundary,tsmi_TopHat,tsmi_Skeleton,
                 tsmi_Soften,tsmi_Atomization,tsmi_Embossment,tsmi_Cartoonify,tsmi_Skin,
+                tsmi_OverExposure,tsmi_Fragment,tsmi_AutoColorGradationAdjust,
+                tsmi_AutoContrastAdjust,tsmi_HistagramEqualize,
             };
             foreach (var tsmi in toolStripMenuItems)
             {
@@ -214,6 +216,10 @@ namespace Gmage
             ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
             {
                tsmi_Lighten,tsmi_Contrast,tsmi_Binarization,tsmi_Polar,tsmi_Robert,tsmi_Sharpen,tsmi_Mosaic,
+               tsmi_Wave,tsmi_HighPassProcess,tsmi_MedianFilterProcess,tsmi_MeanFilterProcess,tsmi_GaussFilterProcess,
+               tsmi_RadialBlurProcess,tsmi_MaxFilterProcess,tsmi_MinFilterProcess,
+               tsmi_DiffusionProcess,tsmi_Posterize,tsmi_ExposureAdjust,tsmi_ColorTemperatureProcess,
+               tsmi_GammaCorrectProcess,tsmi_NaturalSaturationProcess,
             };
             foreach (var tsmi in toolStripMenuItems)
             {

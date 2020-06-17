@@ -85,7 +85,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.LUTFilter(_bitmap, Parameter.mask, Parameter.iParameter[0]);
+            return Config.zPhoto.LUTFilter(_bitmap, Parameter.mask, Parameter.Hold);
         }
 
         public void Undo()
@@ -139,7 +139,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.ImageWarpWaveProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.ImageWarpWaveProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -193,7 +193,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.MedianFilterProcess(_bitmap,Parameter.iParameter[0]);
+            return Config.zPhoto.MedianFilterProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -220,7 +220,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.MaxFilterProcess(_bitmap,Parameter.iParameter[0]);
+            return Config.zPhoto.MaxFilterProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -247,7 +247,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.MinFilterProcess(_bitmap,Parameter.iParameter[0]);
+            return Config.zPhoto.MinFilterProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -274,7 +274,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.GammaCorrectProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.GammaCorrectProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -571,7 +571,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.Threshold(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.Threshold(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -598,7 +598,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.TransformMirror(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.TransformMirror(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -679,7 +679,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.ColorTemperatureProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.ColorTemperatureProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -706,7 +706,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.Posterize(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.Posterize(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -787,7 +787,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.ExposureAdjust(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.ExposureAdjust(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -814,7 +814,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.LightnessAdjustProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.LightnessAdjustProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -1030,7 +1030,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.GaussFilterProcess(_bitmap, Parameter.fParameter[0]);
+            return Config.zPhoto.GaussFilterProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -1057,7 +1057,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.MeanFilterProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.MeanFilterProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -1084,7 +1084,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.HighPassProcess(_bitmap, Parameter.fParameter[0]);
+            return Config.zPhoto.HighPassProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -1138,7 +1138,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.SaturationProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.SaturationProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -1165,7 +1165,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.NaturalSaturationProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.NaturalSaturationProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -1246,7 +1246,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.DiffusionProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.DiffusionProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -1273,7 +1273,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.MosaicProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.MosaicProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -1300,7 +1300,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.RadialBlurProcess(_bitmap, Parameter.iParameter[0]);
+            return Config.zPhoto.RadialBlurProcess(_bitmap, Parameter.Hold);
         }
 
         public void Undo()
@@ -1354,7 +1354,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.ColorLevelProcess(_bitmap, Parameter.iParameter[0], Parameter.iParameter[1], Parameter.fParameter[0], Parameter.iParameter[2],Parameter.iParameter[3], Parameter.iParameter[4]);
+            return Config.zPhoto.ColorLevelProcess(_bitmap, Parameter.iParameter[0], Parameter.iParameter[1], Parameter.fParameter[0], Parameter.iParameter[2], Parameter.iParameter[3], Parameter.iParameter[4]);
         }
 
         public void Undo()
@@ -1381,7 +1381,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.BlackwhiteProcess(_bitmap,Parameter.iParameter[0], Parameter.iParameter[1],  Parameter.iParameter[2], Parameter.iParameter[3], Parameter.iParameter[4], Parameter.iParameter[5]);
+            return Config.zPhoto.BlackwhiteProcess(_bitmap, Parameter.iParameter[0], Parameter.iParameter[1], Parameter.iParameter[2], Parameter.iParameter[3], Parameter.iParameter[4], Parameter.iParameter[5]);
         }
 
         public void Undo()
@@ -1408,7 +1408,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.LUTFilterProcess(_bitmap, Parameter.mask, Parameter.iParameter[0]);
+            return Config.zPhoto.LUTFilterProcess(_bitmap, Parameter.mask, Parameter.Hold);
         }
 
         public void Undo()

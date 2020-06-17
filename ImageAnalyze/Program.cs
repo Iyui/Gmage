@@ -21,9 +21,9 @@ namespace Gmage
         {
             MyArgs = args;
             GmageConfigXML.XmlHandle.LoadGmageConfig();
-            //Config.Void();
+            //Register.Void();
             Config.Read_Init_Preferences();
-            Config.Pack();
+            Register.Pack();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Config.bReStart = false;
