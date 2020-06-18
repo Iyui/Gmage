@@ -1462,7 +1462,7 @@ namespace Gmage.GraphCommand
         public Bitmap Draw()
         {
             var _bitmap = bitmap.Clone() as Bitmap;
-            return Config.zPhoto.AnisotropicFilter(_bitmap, Parameter.iParameter[0], Parameter.fParameter[0]);
+            return Config.zPhoto.AnisotropicFilter(_bitmap, Parameter.iParameter[0], Parameter.iParameter[1]);
         }
 
         public void Undo()

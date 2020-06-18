@@ -239,7 +239,7 @@ namespace Gmage
             ToolStripMenuItem[] toolStripMenuItems = new ToolStripMenuItem[]
             {
                tsmi_SurfaceBlur,tsmi_MotionBlur,tsmi_ZoomBlurProcess,tsmi_SmartBlurProcess,
-               tsmi_HighlightShadowPreciseAdjustProcess,tsmi_Lighten,tsmi_Relief,
+               tsmi_HighlightShadowPreciseAdjustProcess,tsmi_Lighten,tsmi_Relief,tsmi_AnisotropicFilter,
             };
             foreach (var tsmi in toolStripMenuItems)
             {
@@ -1608,7 +1608,9 @@ namespace Gmage
 
         private void tsmi_Paste_Click(object sender, EventArgs e)
         {
-            SetImage_Control(Clipboard.GetImage());
+            var img = Clipboard.GetImage();
+            if (!(img is null))
+                SetImage_Control(img);
         }
     }
 }

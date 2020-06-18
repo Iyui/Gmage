@@ -159,6 +159,7 @@ namespace Gmage.Process
                     Config.parameter.iParameter = iRGB;
                     ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter, false);
                     break;
+                case FunctionType.AnisotropicFilter:
                 case FunctionType.Relief:
                     iRGB = new int[] { (int)floatT1, (int)floatT2 };
                     Config.parameter.iParameter = iRGB;
@@ -210,11 +211,12 @@ namespace Gmage.Process
                     break;
                 case FunctionType.SmartBlurProcess:
                 case FunctionType.SurfaceBlur:
-                    tB_bar1.Maximum = 10;
+                    tB_bar1.Maximum = 100;
                     tB_bar2.Maximum = 255;
                     tB_bar1.Minimum = 1;
                     tB_bar2.Minimum = 1;
                     break;
+                case FunctionType.AnisotropicFilter:
                 case FunctionType.ZoomBlurProcess:
                     tB_bar1.Maximum = 100;
                     tB_bar2.Maximum = 100;
