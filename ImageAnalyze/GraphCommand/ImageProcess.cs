@@ -1201,6 +1201,51 @@ namespace Gmage
             return a;
         }
         #endregion
+
+
+        #region 其他
+        /// <summary>
+        /// 磨皮
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="blurRadius"></param>
+        /// <returns></returns>
+        public static unsafe Bitmap SoftSkinFilter(Bitmap src, int blurRadius)
+        {
+            //表面模糊图层
+            Bitmap a = Config.zPhoto.SurfaceBlur(src, 28, blurRadius);
+            //高反差图层
+            Bitmap highPass = Config.zPhoto.HighPassProcess(src, 1.0f);
+            BitmapData srcData = a.LockBits(new Rectangle(0, 0, a.Width, a.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            BitmapData dstData = highPass.LockBits(new Rectangle(0, 0, highPass.Width, highPass.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            byte* p = (byte*)srcData.Scan0;
+            byte* dstP = (byte*)dstData.Scan0;
+            int offset = srcData.Stride - a.Width * 4;
+            int temp = 0;
+            for (int j = 0; j < a.Height; j++)
+            {
+                for (int i = 0; i < a.Width; i++)
+                {
+                    ////////////////Process image...
+                    //线性光图层混合
+                    temp = Config.zPhoto.ModeLinearLight(p[0], dstP[0]);
+                    //透明度50%
+                    dstP[0] = (byte)((p[0] + temp) >> 1);
+                    temp = Config.zPhoto.ModeLinearLight(p[1], dstP[1]);
+                    dstP[1] = (byte)((p[1] + temp) >> 1);
+                    temp = Config.zPhoto.ModeLinearLight(p[2], dstP[2]);
+                    dstP[2] = (byte)((p[2] + temp) >> 1);
+                    dstP += 4;
+                    p += 4;
+                }
+                dstP += offset;
+                p += offset;
+            }
+            a.UnlockBits(srcData);
+            highPass.UnlockBits(dstData);
+            return highPass;
+        }
+        #endregion
     }
 
     class Picture

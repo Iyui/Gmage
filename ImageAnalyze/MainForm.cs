@@ -2,9 +2,7 @@
 /* Title:Gmage
  * Author:Iyui
  * Homepage:Iyui.Github.com
- * Background:网上的批处理软件太不好用，自己写了一个，
- *            结果功能越来越多，干脆仿一个PhotoShop好了
- * Rate of progress:PhotoShop 0.3%
+ * Rate of progress:PhotoShop 0.5%
  * 
  * 20200521:第一版
  * 20200602:完善批处理
@@ -220,7 +218,7 @@ namespace Gmage
                tsmi_Wave,tsmi_HighPassProcess,tsmi_MedianFilterProcess,tsmi_MeanFilterProcess,tsmi_GaussFilterProcess,
                tsmi_RadialBlurProcess,tsmi_MaxFilterProcess,tsmi_MinFilterProcess,
                tsmi_DiffusionProcess,tsmi_Posterize,tsmi_ExposureAdjust,tsmi_ColorTemperatureProcess,
-               tsmi_GammaCorrectProcess,tsmi_NaturalSaturationProcess,
+               tsmi_GammaCorrectProcess,tsmi_NaturalSaturationProcess,tsmi_SoftSkinFilter,
             };
             foreach (var tsmi in toolStripMenuItems)
             {
@@ -508,7 +506,10 @@ namespace Gmage
         {
             OpenFileDialog oi = new OpenFileDialog
             {
-                Filter = "图片(*.jpg,*.jpeg,*.bmp,*.png) | *.jpg;*.jpeg;*.bmp;*.png| 所有文件(*.*) | *.*",
+                Filter = "所有图像文件 | *.bmp; *.pcx; *.png; *.jpg; *.gif;" +
+                   "*.tif; *.ico; *.dxf; *.cgm; *.cdr; *.wmf; *.eps; *.emf|" +
+                   "位图( *.bmp; *.jpg; *.png;...) | *.bmp; *.pcx; *.png; *.jpg; *.gif; *.tif; *.ico|" +
+                   "矢量图( *.wmf; *.eps; *.emf;...) | *.dxf; *.cgm; *.cdr; *.wmf; *.eps; *.emf",
                 RestoreDirectory = true,
                 FilterIndex = 1,
                 Multiselect = true,
@@ -535,7 +536,11 @@ namespace Gmage
 
         private void SetImageShow(string filename)
         {
-            var Format = new string[] { ".jpg", ".bmp", ".jpeg", ".png" };
+            var Format = new string[] {".bmp",".pcx",".png",".jpg",".gif",
+".tif",".ico",".dxf",".cgm",".cdr",".wmf",".eps",".emf",
+".bmp",".jpg",".png",".bmp",".pcx",".png",".jpg",".gif",".tif",".ico",
+".wmf",".eps",".emf",".dxf",".cgm",".cdr",".wmf",".eps",".emf"
+        };
             if (Format.Contains(Path.GetExtension(filename).ToLower()))
             {
                 try
@@ -563,6 +568,34 @@ namespace Gmage
                     panel1.Visible = false;
                 }
                 SetTab(Path.GetFileNameWithoutExtension(filename));
+                if (!HideTab())
+                {
+                    materialContextMenuStrip1.Enabled = true;
+                    tsm_CloseTabPage.Enabled = true;
+                }
+                else
+                {
+                    ResetBitmap();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("图片打开失败", "错误的预期", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
+        }
+
+        private void SetImage_Control(Image Imagefile)
+        {
+            try
+            {
+                initBitmap = Imagefile.Clone() as Bitmap;
+                if (mtS_Selected.BaseTabControl != mTC_ImageTab)
+                {
+                    mtS_Selected.BaseTabControl = mTC_ImageTab;
+                    mTC_ImageTab.Visible = true;
+                    panel1.Visible = false;
+                }
+                SetTab(Path.GetFileNameWithoutExtension("未命名"));
                 if (!HideTab())
                 {
                     materialContextMenuStrip1.Enabled = true;
@@ -1152,7 +1185,10 @@ namespace Gmage
         #region 调色板
         private void pB_Color_Click(object sender, EventArgs e)
         {
-            ColorDialog dlgColor = new ColorDialog();
+            ColorDialog dlgColor = new ColorDialog
+            {
+                 
+            };
             if (dlgColor.ShowDialog() == DialogResult.OK)
             {
                 var c = dlgColor.Color;
@@ -1160,6 +1196,11 @@ namespace Gmage
                 Color_R = c.R;
                 Color_G = c.G;
                 Color_B = c.B;
+            }
+            var colors = dlgColor.CustomColors;
+            foreach(var c in colors)
+            {
+                GmageConfigXML.XmlHandle.SaveControlValue("MainForm", "CustomizeColor", "R", Color_R.ToString());
             }
         }
 
@@ -1549,7 +1590,7 @@ namespace Gmage
 
         private void tsmi_CharImage_Click(object sender, EventArgs e)
         {
-            var dia = MessageBox.Show("该滤镜暂未集成至该软件，会在未来的版本中加入，该滤镜软件源码地址\r\n'https://github.com/Iyui/CharImage',\r\n点击确定访问该网址，点击否复制到剪切板", "https://github.com/Iyui", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            var dia = MessageBox.Show("该滤镜暂未移植至该软件，会在未来的版本中加入，该滤镜软件源码地址\r\n'https://github.com/Iyui/CharImage',\r\n点击确定访问该网址，点击否复制到剪切板", "https://github.com/Iyui", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
             if (DialogResult.No== dia)
             {
                 Clipboard.Clear();
@@ -1563,6 +1604,11 @@ namespace Gmage
         private void tsmi_supTools_Click(object sender, EventArgs e)
         {
             MessageBox.Show("功能开发中，会在未来的版本中加入...", "https://github.com/Iyui");
+        }
+
+        private void tsmi_Paste_Click(object sender, EventArgs e)
+        {
+            SetImage_Control(Clipboard.GetImage());
         }
     }
 }

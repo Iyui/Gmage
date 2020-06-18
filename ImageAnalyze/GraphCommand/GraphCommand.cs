@@ -980,6 +980,8 @@ namespace Gmage.GraphCommand
 
         }
     }
+
+
     #endregion
 
     #region 边缘检测

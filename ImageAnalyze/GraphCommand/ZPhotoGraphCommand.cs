@@ -1470,4 +1470,32 @@ namespace Gmage.GraphCommand
 
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SoftSkinFilter : IGraphCommand
+    {
+        public string _Name { get; } = "SoftSkinFilter";
+        //
+        public Bitmap bitmap
+        {
+            set; get;
+        }
+        public Parameter Parameter
+        {
+            set; get;
+        }
+
+        public Bitmap Draw()
+        {
+            var _bitmap = bitmap.Clone() as Bitmap;
+            return ImageProcess.SoftSkinFilter(_bitmap, Parameter.Hold);
+        }
+
+        public void Undo()
+        {
+
+        }
+    }
 }

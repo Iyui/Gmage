@@ -1,6 +1,6 @@
 <h1 align = "center">Gmage 图像处理</h1>
 
-<h2 align = "center">Photoshop 0.3%</h1>
+<h2 align = "center">Photoshop 0.5%</h1>
 
 <h3 align = "center">用于图像处理的学习</h1>
 

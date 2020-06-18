@@ -119,11 +119,14 @@ namespace Gmage
         
         [DllImport("ZPhotoEngine.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, ExactSpelling = true)]
         private static extern int ZPHOTO_NoiseEffect(byte *srcData, int width, int height, int stride, int ratio, float sigma, float phase);
+
+        [DllImport("ZPhotoEngine.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        private static extern int ZPHOTO_ModeLinearLight(int Base,int Mix);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #endregion
 
         #region 颜色空间转换模块
-       
+
 
         [DllImport("ZPhotoEngine.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, ExactSpelling = true)]
         private static extern void ZPHOTO_RGBToYCbCr(int R, int G, int B, ref int Y, ref int Cb, ref int Cr);
@@ -138,6 +141,12 @@ namespace Gmage
         #endregion
 
         #region  API FOR C SHARP
+        public int ModeLinearLight(int Base, int Mix)
+        {
+            return ZPHOTO_ModeLinearLight(Base,Mix);
+        }
+
+
         public Bitmap NoiseEffect(Bitmap src, int ratio, float sigma, float phase)
         {
             Bitmap a = new Bitmap(src);

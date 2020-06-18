@@ -496,6 +496,7 @@ namespace Gmage
         LUTFilterProcess,
         SmartBlurProcess,
         AnisotropicFilter,
+        SoftSkinFilter,
     }
     public struct point
     {
