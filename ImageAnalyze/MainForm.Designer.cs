@@ -53,7 +53,6 @@
             this.tsmi_Binarization = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Complementary = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator35 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmi_OverExposure = new System.Windows.Forms.ToolStripMenuItem();
             this.图像旋转ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Clockwise180 = new System.Windows.Forms.ToolStripMenuItem();
             this.Clockwise90 = new System.Windows.Forms.ToolStripMenuItem();
@@ -212,6 +211,8 @@
             this.toolStripSeparator27 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmi_SoftSkinFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator28 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmi_OverExposure = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator41 = new System.Windows.Forms.ToolStripSeparator();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -263,7 +264,7 @@
             this.tsmi_Batch});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(476, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(596, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -400,8 +401,7 @@
             this.tsmi_Gray,
             this.tsmi_Binarization,
             this.tsmi_Complementary,
-            this.toolStripSeparator35,
-            this.tsmi_OverExposure});
+            this.toolStripSeparator35});
             this.tsmi_Change.Name = "tsmi_Change";
             this.tsmi_Change.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Change.Text = "调整";
@@ -443,13 +443,6 @@
             // 
             this.toolStripSeparator35.Name = "toolStripSeparator35";
             this.toolStripSeparator35.Size = new System.Drawing.Size(177, 6);
-            // 
-            // tsmi_OverExposure
-            // 
-            this.tsmi_OverExposure.Name = "tsmi_OverExposure";
-            this.tsmi_OverExposure.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_OverExposure.Tag = "OverExposure";
-            this.tsmi_OverExposure.Text = "曝光过度";
             // 
             // 图像旋转ToolStripMenuItem
             // 
@@ -855,9 +848,11 @@
             // 
             this.风格化ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Embossment,
-            this.tsmi_Relief,
             this.tsmi_DiffusionProcess,
             this.tsmi_Atomization,
+            this.tsmi_Relief,
+            this.tsmi_OverExposure,
+            this.toolStripSeparator41,
             this.tsmi_Cartoonify,
             this.tsmi_CharImage});
             this.风格化ToolStripMenuItem.Name = "风格化ToolStripMenuItem";
@@ -867,7 +862,7 @@
             // tsmi_Embossment
             // 
             this.tsmi_Embossment.Name = "tsmi_Embossment";
-            this.tsmi_Embossment.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_Embossment.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Embossment.Tag = "Embossment";
             this.tsmi_Embossment.Text = "浮雕";
             this.tsmi_Embossment.Visible = false;
@@ -875,35 +870,35 @@
             // tsmi_Relief
             // 
             this.tsmi_Relief.Name = "tsmi_Relief";
-            this.tsmi_Relief.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_Relief.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Relief.Tag = "Relief";
             this.tsmi_Relief.Text = "浮雕效果";
             // 
             // tsmi_DiffusionProcess
             // 
             this.tsmi_DiffusionProcess.Name = "tsmi_DiffusionProcess";
-            this.tsmi_DiffusionProcess.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_DiffusionProcess.Size = new System.Drawing.Size(180, 22);
             this.tsmi_DiffusionProcess.Tag = "DiffusionProcess";
             this.tsmi_DiffusionProcess.Text = "扩散";
             // 
             // tsmi_Atomization
             // 
             this.tsmi_Atomization.Name = "tsmi_Atomization";
-            this.tsmi_Atomization.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_Atomization.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Atomization.Tag = "Atomization";
             this.tsmi_Atomization.Text = "雾化";
             // 
             // tsmi_Cartoonify
             // 
             this.tsmi_Cartoonify.Name = "tsmi_Cartoonify";
-            this.tsmi_Cartoonify.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_Cartoonify.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Cartoonify.Tag = "Cartoonify";
             this.tsmi_Cartoonify.Text = "卡通画";
             // 
             // tsmi_CharImage
             // 
             this.tsmi_CharImage.Name = "tsmi_CharImage";
-            this.tsmi_CharImage.Size = new System.Drawing.Size(124, 22);
+            this.tsmi_CharImage.Size = new System.Drawing.Size(180, 22);
             this.tsmi_CharImage.Text = "字符画";
             this.tsmi_CharImage.Click += new System.EventHandler(this.tsmi_CharImage_Click);
             // 
@@ -920,21 +915,21 @@
             // tsmi_USMProcess
             // 
             this.tsmi_USMProcess.Name = "tsmi_USMProcess";
-            this.tsmi_USMProcess.Size = new System.Drawing.Size(128, 22);
+            this.tsmi_USMProcess.Size = new System.Drawing.Size(180, 22);
             this.tsmi_USMProcess.Tag = "USMProcess";
             this.tsmi_USMProcess.Text = "USM锐化";
             // 
             // tsmi_Soften
             // 
             this.tsmi_Soften.Name = "tsmi_Soften";
-            this.tsmi_Soften.Size = new System.Drawing.Size(128, 22);
+            this.tsmi_Soften.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Soften.Tag = "Soften";
             this.tsmi_Soften.Text = "柔化";
             // 
             // tsmi_Sharpen
             // 
             this.tsmi_Sharpen.Name = "tsmi_Sharpen";
-            this.tsmi_Sharpen.Size = new System.Drawing.Size(128, 22);
+            this.tsmi_Sharpen.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Sharpen.Tag = "Sharpen";
             this.tsmi_Sharpen.Text = "锐化";
             // 
@@ -950,14 +945,14 @@
             // tsmi_Mosaic
             // 
             this.tsmi_Mosaic.Name = "tsmi_Mosaic";
-            this.tsmi_Mosaic.Size = new System.Drawing.Size(112, 22);
+            this.tsmi_Mosaic.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Mosaic.Tag = "Mosaic";
             this.tsmi_Mosaic.Text = "马赛克";
             // 
             // tsmi_Fragment
             // 
             this.tsmi_Fragment.Name = "tsmi_Fragment";
-            this.tsmi_Fragment.Size = new System.Drawing.Size(112, 22);
+            this.tsmi_Fragment.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Fragment.Tag = "Fragment";
             this.tsmi_Fragment.Text = "碎片";
             // 
@@ -1782,6 +1777,18 @@
             this.toolStripSeparator28.Name = "toolStripSeparator28";
             this.toolStripSeparator28.Size = new System.Drawing.Size(177, 6);
             // 
+            // tsmi_OverExposure
+            // 
+            this.tsmi_OverExposure.Name = "tsmi_OverExposure";
+            this.tsmi_OverExposure.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_OverExposure.Tag = "OverExposure";
+            this.tsmi_OverExposure.Text = "曝光过度";
+            // 
+            // toolStripSeparator41
+            // 
+            this.toolStripSeparator41.Name = "toolStripSeparator41";
+            this.toolStripSeparator41.Size = new System.Drawing.Size(177, 6);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -1964,7 +1971,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator135;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator158;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_OverExposure;
         private System.Windows.Forms.ToolStripMenuItem tsmi_MedianFilterProcess;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Wave;
         private System.Windows.Forms.ToolStripMenuItem 锐化ToolStripMenuItem;
@@ -2012,6 +2018,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator27;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator28;
         private System.Windows.Forms.ToolStripMenuItem tsmi_SoftSkinFilter;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_OverExposure;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator41;
     }
 }
 
