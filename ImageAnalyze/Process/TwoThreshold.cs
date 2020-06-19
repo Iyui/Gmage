@@ -169,10 +169,10 @@ namespace Gmage.Process
                 case FunctionType.Contrast:
                     Config.Model = FunctionType.Lighten;
                     Config.parameter.Hold = (int)floatT1;
-                    ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter);
+                    ResultBitmap = _g.Execute(Config.Model, InitBitmap, Config.parameter, false);
                     Config.Model = FunctionType.Contrast;
                     Config.parameter.Hold = (int)floatT2;
-                    ResultBitmap = _g.Execute(Config.Model, ResultBitmap, Config.parameter);
+                    ResultBitmap = _g.Execute(Config.Model, ResultBitmap, Config.parameter, false);
                     break;
             }
             f.SetImageCallback(ResultBitmap);
