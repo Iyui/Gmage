@@ -465,6 +465,43 @@ namespace Gmage
             };
             this.MouseWheel += Zoom_MouseWheel;
             LoadHistory();
+            ToolStripSeparator separator = new ToolStripSeparator();
+            tsmi_History.DropDownItems.Add(separator);
+            var items = new ToolStripMenuItem()
+            {
+                Name = $"tsmi_historyClear",
+                Text = $"清除无效项",
+            };
+            items.Click += (sender, e) =>
+            {
+
+                List<ToolStripItem> toolStrips = new List<ToolStripItem>();
+                for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)
+                {
+                    if (tsmi_History.DropDownItems[j].Tag is null)
+                        continue;
+                    try
+                    {
+                        Image.FromFile((string)tsmi_History.DropDownItems[j].Tag);
+                    }
+                    catch
+                    {
+                        toolStrips.Add(tsmi_History.DropDownItems[j]);
+                    }
+                }
+                foreach(var item in toolStrips)
+                {
+                    tsmi_History.DropDownItems.Remove(item);
+                }
+                toolStrips.Clear();
+                for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)
+                {
+                    if (tsmi_History.DropDownItems[j].Tag is null)
+                        continue;
+                    tsmi_History.DropDownItems[j].Text = $"{j + 1} {tsmi_History.DropDownItems[j].Tag.ToString()}";
+                }
+            };
+            tsmi_History.DropDownItems.Add(items);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -854,8 +891,15 @@ namespace Gmage
             int index = 1;
             history.Clear();
             HashSet<string> hs_history = new HashSet<string>();
-            for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)
+            for (int j = 0; j < _history_Count; j++)
             {
+                if (j > tsmi_History.DropDownItems.Count - 1 -2)
+                {
+                    SetHistory("history", $"history{index++}", "-1");
+                    continue;
+                }
+                if (tsmi_History.DropDownItems[j].Tag is null)
+                    continue;
                 SetHistory("history", $"history{index++}", tsmi_History.DropDownItems[j].Tag.ToString());
             }
         }
@@ -865,7 +909,7 @@ namespace Gmage
             for (int i = _history_Count - 1; i > 0; i--)
             {
                 var h = LoadHistory("history", $"history{i}", null);
-                if (!string.IsNullOrEmpty(h))
+                if (!string.IsNullOrEmpty(h) && h!= "-1")
                 {
                     history.Enqueue(h);
                     AddHistoryItems(i, h);
@@ -906,19 +950,29 @@ namespace Gmage
             };
             tsmi_History.DropDownItems.Insert(0, items);
             HashSet<string> hs_history = new HashSet<string>();
+
+            List<ToolStripItem> toolStrips = new List<ToolStripItem>();
             for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)//清除相同的记录,时间复杂度N2
             {
+                if (tsmi_History.DropDownItems[j].Tag is null)
+                    continue;
                 if (!hs_history.Add(tsmi_History.DropDownItems[j].Tag.ToString()))
                 {
-                    tsmi_History.DropDownItems.RemoveAt(j);
-                    j = -1;
-                    hs_history.Clear();
+                    toolStrips.Add(tsmi_History.DropDownItems[j]);
                 }
             }
+            foreach (var item in toolStrips)
+            {
+                tsmi_History.DropDownItems.Remove(item);
+            }
+            toolStrips.Clear();
             for (int j = 0; j < tsmi_History.DropDownItems.Count; j++)
             {
+                if (tsmi_History.DropDownItems[j].Tag is null)
+                    continue;
                 tsmi_History.DropDownItems[j].Text = $"{j + 1} {tsmi_History.DropDownItems[j].Tag.ToString()}";
             }
+            
         }
 
         private void tsmi_Copy_Click(object sender, EventArgs e)
@@ -1616,6 +1670,11 @@ namespace Gmage
             var img = Clipboard.GetImage();
             if (!(img is null))
                 SetImage_Control(img);
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
