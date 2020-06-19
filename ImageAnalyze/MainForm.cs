@@ -1112,6 +1112,8 @@ namespace Gmage
 
             config.IsCheckedControl(tsmi_Index, TabName);
             col = (PictureBox)SelectedTab.Controls.Find(selectedTabName, true)[0];
+            GraphCommand.Graphics.CurrentWindow = col.Name;
+
             if (!(col.Image is null))
                 initBitmap = (Bitmap)col.Image;
         }
@@ -1135,6 +1137,7 @@ namespace Gmage
             {
                 if (HideTab())
                     return;
+                graphCommand.RemoveStack();
                 var SelectedTabName = SelectedTab.Name;
                 var TabName = SelectedTabName.Substring(3);
                 //使用TabControl控件的TabPages属性的Remove方法移除指定的选项卡
@@ -1142,6 +1145,8 @@ namespace Gmage
                 tsmi_Index.DropDownItems.RemoveByKey("tsmi_" + TabName);
                 NameHash.Remove(TabName);
                 mTC_ImageTab.TabPages.Remove(SelectedTab);
+                //释放撤销和重做的栈
+                
             }
         }
 

@@ -52,7 +52,7 @@ namespace Gmage.GraphCommand
         /// <param name="bitmap">原图</param>
         /// <param name="AddUndo">是否能够执行撤回</param>
         /// <returns></returns>
-        public Bitmap Execute(FunctionType functionType, Bitmap bitmap, bool AddUndo = true)
+        public Bitmap Execute(FunctionType functionType, Bitmap bitmap,bool AddUndo = true)
         {
             Commands[functionType].bitmap = bitmap.Clone() as Bitmap;
             GC.Collect();
@@ -76,51 +76,82 @@ namespace Gmage.GraphCommand
         {
             return graphics.Redo(ref bitmap);
         }
-    }
 
+        public void RemoveStack()
+        {
+            graphics.Remove();
+            GC.Collect();
+        }
+    }
     /// <summary>
     /// 命令接收
     /// </summary>
     public class Graphics
     {
+        public static string CurrentWindow = "";
+
         Stack<IGraphCommand> Undocommands = new Stack<IGraphCommand>();
         Stack<IGraphCommand> Redocommands = new Stack<IGraphCommand>();
         Stack<Bitmap> UndoBitmaps = new Stack<Bitmap>();
         Stack<Bitmap> RedoBitmaps = new Stack<Bitmap>();
 
-        Dictionary<string, Stack<IGraphCommand>> DicUndocommands = new Dictionary<string, Stack<IGraphCommand>>();
-        Dictionary<string, Stack<IGraphCommand>> DicRedocommands = new Dictionary<string, Stack<IGraphCommand>>();
+        Dictionary<string, Stack<Bitmap>> DicUndocommands = new Dictionary<string, Stack<Bitmap>>();
+        Dictionary<string, Stack<Bitmap>> DicRedocommands = new Dictionary<string, Stack<Bitmap>>();
+        //Dictionary<string, Stack<IGraphCommand>> Diccommands = new Dictionary<string, Stack<IGraphCommand>>();
 
         public Bitmap Draw(IGraphCommand command, bool AddUndo = true)
         {
+            if(DicUndocommands.ContainsKey(CurrentWindow))
+            {
+                UndoBitmaps = DicUndocommands[CurrentWindow];
+                RedoBitmaps = DicRedocommands[CurrentWindow];
+
+            }
+            else
+            {
+                UndoBitmaps = new Stack<Bitmap>();
+                RedoBitmaps = new Stack<Bitmap>();
+                DicUndocommands.Add(CurrentWindow, UndoBitmaps);
+                DicRedocommands.Add(CurrentWindow, RedoBitmaps);
+            }
             if (command is PenDraw)
             {
                 if (Config.parameter.iParameter[0] == 1)
                 {
-                    Undocommands.Push(command);
+                    //Undocommands.Push(command);
                     UndoBitmaps.Push(command.bitmap);
                     RedoBitmaps.Clear();
-                    Redocommands.Clear();
+                    //Redocommands.Clear();
                 }
             }
             else if (AddUndo)
             {
-                Undocommands.Push(command);
+                //Undocommands.Push(command);
                 UndoBitmaps.Push(command.bitmap);
                 RedoBitmaps.Clear();
-                Redocommands.Clear();
+               // Redocommands.Clear();
             }
             return command.Draw();
         }
 
         public bool Undo(ref Bitmap bitmap)
         {
+            if (DicUndocommands.ContainsKey(CurrentWindow))
+            {
+                UndoBitmaps = DicUndocommands[CurrentWindow];
+                RedoBitmaps = DicRedocommands[CurrentWindow];
+            }
+            else
+            {
+                bitmap = null;
+                return false;
+            }
             //IGraphCommand command = commands.Pop();
             //command.Undo();
             if (UndoBitmaps.Any())
             {
-                var commands = Undocommands.Pop();
-                Redocommands.Push(commands);
+                //var commands = Undocommands.Pop();
+                //Redocommands.Push(commands);
                 RedoBitmaps.Push(bitmap);
                 bitmap = UndoBitmaps.Pop();
 
@@ -132,16 +163,35 @@ namespace Gmage.GraphCommand
 
         public bool Redo(ref Bitmap bitmap)
         {
+            if (DicUndocommands.ContainsKey(CurrentWindow))
+            {
+                UndoBitmaps = DicUndocommands[CurrentWindow];
+                RedoBitmaps = DicRedocommands[CurrentWindow];
+            }
             if (RedoBitmaps.Any())
             {
                 UndoBitmaps.Push(bitmap);
                 bitmap = RedoBitmaps.Pop();
-                var commands = Redocommands.Pop();
-                Undocommands.Push(commands);
+                //var commands = Redocommands.Pop();
+                //Undocommands.Push(commands);
                 return true;
             }
             bitmap = null;
             return false;
+        }
+
+        public void Remove()
+        {
+            if (DicUndocommands.ContainsKey(CurrentWindow))
+            {
+                DicUndocommands[CurrentWindow].Clear();
+                DicUndocommands.Remove(CurrentWindow);
+            }
+            if (DicRedocommands.ContainsKey(CurrentWindow))
+            {
+                DicRedocommands[CurrentWindow].Clear();
+                DicRedocommands.Remove(CurrentWindow);
+            }
         }
     }
 
