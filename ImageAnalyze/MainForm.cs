@@ -19,13 +19,13 @@
  * 20200612:新增了一些滤镜，新增"撤销全部"和"重做全部"
  * 20200616:新增RGB通道调整、肤色识别
  * 20200617:新增滤镜
+ * 20200619:修复了一些较严重的BUG
  * 未来的更新
  * 
- * 1、完善撤销、重做
- * 2、抠图
- * 3、图层
- * 4、重写部分算法以加快处理速度
- * 5、修改插件插拔部分
+ * 1、抠图
+ * 2、图层
+ * 3、重写部分算法以加快处理速度
+ * 4、修改插件插拔部分
  * 
  * 未来的未来的更新
  * 
@@ -422,7 +422,7 @@ namespace Gmage
             tB_R.BackColor = Color.FromArgb(255, 51, 51, 51);
             tB_G.BackColor = Color.FromArgb(255, 51, 51, 51);
             tB_B.BackColor = Color.FromArgb(255, 51, 51, 51);
-
+            ilv_Layer.BackColor = Color.FromArgb(255, 51, 51, 51);
             SetColorRGB();
             
             // pTools.BackColor = Color.FromArgb(255, 55, 71, 79);
@@ -676,13 +676,14 @@ namespace Gmage
             _PictureBox.Width = _PictureBox.Image.Width;
             _PictureBox.Height = _PictureBox.Image.Height;
             var p = GetControlCenterLocation(tp, _PictureBox);
+            AddLayer("背景", initBitmap);
             _PictureBox.Location = p;
             _PictureBox.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             Point mouse_down = new Point();
             Point mouse_up = new Point();
             Point mouse_wh = new Point();
-
             Point Cut_StartPoint = new Point();
+
             int[] RectP = DrawRectangle(0, 0, 0, 0);
             _PictureBox.MouseDown += (sender, e) =>
             {
@@ -1672,9 +1673,165 @@ namespace Gmage
                 SetImage_Control(img);
         }
 
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        private void testToolStripMenuItem_Click(object send, EventArgs ea)
         {
+            PictureBox _PictureBox = new PictureBox()
+            {
+                Name = "pb_test",
+            };
+            _PictureBox.BackColor = Color.Transparent;
 
+            _PictureBox.Dock = DockStyle.None;
+            _PictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
+            Point mouse_down = new Point();
+            Point mouse_up = new Point();
+            Point mouse_wh = new Point();
+
+            Point Cut_StartPoint = new Point();
+            int[] RectP = DrawRectangle(0, 0, 0, 0);
+
+            _PictureBox.MouseDown += (sender, e) =>
+            {
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        isCuting = true;
+                        _PictureBox.Refresh();
+                        mouse_down.X = e.X;
+                        mouse_down.Y = e.Y;
+                        break;
+                    case Tools.Move:
+                        canDrag = true;
+                        mouse_down.X = -e.X;
+                        mouse_down.Y = -e.Y;
+                        break;
+                    case Tools.RGB_Pick:
+                        var c = ((Bitmap)_PictureBox.Image).GetPixel(e.X, e.Y);
+                        Pick_RGB(c);
+                        break;
+                    case Tools.Draw:
+                        _isPressed = true;
+                        no_of_points = 0;
+                        pt[no_of_points].setxy(e.X, e.Y);
+                        no_of_points = no_of_points + 1;
+                        break;
+                }
+            };
+            _PictureBox.MouseMove += (sender, e) =>
+            {
+                _PictureBox.Cursor = MouseCursor();
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        if (isCuting && e.Button == MouseButtons.Left)
+                        {
+                            Graphics g = _PictureBox.CreateGraphics();
+                            _PictureBox.Refresh();
+                            var pen = new Pen(Color.Black, 1);
+                            float[] dashValues = { 2, 3 };
+                            // pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                            pen.DashPattern = dashValues;
+                            mouse_up.X = e.X;
+                            mouse_up.Y = e.Y;
+                            RectP = DrawRectangle(mouse_down.X, mouse_down.Y, mouse_up.X, mouse_up.Y);
+                            Cut_StartPoint.X = RectP[0];
+                            Cut_StartPoint.Y = RectP[1];
+                            mouse_wh.X = RectP[2];
+                            mouse_wh.Y = RectP[3];
+                            g.DrawRectangle(pen, Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
+                            g.Dispose();
+                            GC.Collect();
+                            break;
+                        }
+
+                        break;
+                    case Tools.Move:
+                        if (e.Button == MouseButtons.Left && canDrag)
+                        {
+                            _PictureBox.Location = new Point(_PictureBox.Left + e.X + mouse_down.X, _PictureBox.Top + e.Y + mouse_down.Y);
+                        }
+                        break;
+                    case Tools.RGB_Pick:
+                        if (e.Button == MouseButtons.Left)
+                        {
+                            if (e.X > 0 && e.Y > 0 && e.X < _PictureBox.Image.Width && e.Y < _PictureBox.Image.Height)
+                            {
+                                var c = ((Bitmap)_PictureBox.Image).GetPixel(e.X, e.Y);
+                                Pick_RGB(c);
+                            }
+                        }
+                        break;
+                    case Tools.Draw:
+                        if (_isPressed)
+                        {
+                            Config.Model = FunctionType.PenDraw;
+                            int[] iparameter = new int[] { no_of_points, e.X, e.Y };
+                            parameter.iParameter = iparameter;
+                            parameter.Points = pt;
+                            parameter.Color = FrontColor;
+                            ResultImage = graphCommand.Execute(Config.Model, ResultImage, parameter).Clone() as Bitmap;
+                            no_of_points++;
+                        }
+                        break;
+                }
+            };
+            _PictureBox.MouseUp += (sender, e) =>
+            {
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        Config.Model = FunctionType.Cut;
+                        int[] Location = new int[] { Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y };
+                        parameter.iParameter = Location;
+                        CopyImage = graphCommand.Execute(Config.Model, ResultImage, parameter, false).Clone() as Bitmap;
+                        isCutingUp = true;
+                        break;
+                    case Tools.Move:
+                        if (e.Button == MouseButtons.Left)
+                        {
+                            canDrag = false;
+                        }
+                        break;
+                    case Tools.Draw:
+                        this._isPressed = false;
+                        no_of_points = 0;
+                        break;
+
+                }
+            };
+            OpenFileDialog oi = new OpenFileDialog
+            {
+                Filter = "所有图像文件 | *.bmp; *.pcx; *.png; *.jpg; *.gif;" +
+                   "*.tif; *.ico; *.dxf; *.cgm; *.cdr; *.wmf; *.eps; *.emf|" +
+                   "位图( *.bmp; *.jpg; *.png;...) | *.bmp; *.pcx; *.png; *.jpg; *.gif; *.tif; *.ico|" +
+                   "矢量图( *.wmf; *.eps; *.emf;...) | *.dxf; *.cgm; *.cdr; *.wmf; *.eps; *.emf",
+                RestoreDirectory = true,
+                FilterIndex = 1,
+                //Multiselect = true,
+            };
+            if (oi.ShowDialog() == DialogResult.OK)
+            {
+                var initImage = (Bitmap)Image.FromFile(oi.FileName);
+                //RollBackMessage(oi.FileName);
+                _PictureBox.Image = initImage.Clone() as Image;
+                AddLayer("图层" + $"{ ilv_Layer.Items.Count }", initImage);
+                col.Controls.Add(_PictureBox);
+            }
+        }
+
+        private void AddLayer(string file,Image image)
+        {
+            ilv_Layer.Items.Add(file, image);
         }
     }
 }

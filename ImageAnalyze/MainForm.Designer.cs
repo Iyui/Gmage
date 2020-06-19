@@ -183,6 +183,7 @@
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator158 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmi_Batch = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mtS_Selected = new MaterialSkin.Controls.MaterialTabSelector();
             this.mTC_ImageTab = new MaterialSkin.Controls.MaterialTabControl();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -209,11 +210,11 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.mTC_Layer = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.ilv_Layer = new Manina.Windows.Forms.ImageListView();
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.mFB_Draw = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Select = new MaterialSkin.Controls.MaterialFlatButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -226,6 +227,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tB_B)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.mTC_Layer.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // materialContextMenuStrip1
@@ -266,7 +268,7 @@
             this.testToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(637, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(517, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1387,6 +1389,14 @@
             this.tsmi_Batch.Text = "批处理";
             this.tsmi_Batch.Click += new System.EventHandler(this.button2_Click);
             // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(41, 21);
+            this.testToolStripMenuItem.Text = "test";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
             // mtS_Selected
             // 
             this.mtS_Selected.BaseTabControl = null;
@@ -1725,12 +1735,28 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Gray;
+            this.tabPage2.Controls.Add(this.ilv_Layer);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(237, 389);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "图层";
+            // 
+            // ilv_Layer
+            // 
+            this.ilv_Layer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.ilv_Layer.Colors = new Manina.Windows.Forms.ImageListViewColor(resources.GetString("ilv_Layer.Colors"));
+            this.ilv_Layer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ilv_Layer.IconAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ilv_Layer.Location = new System.Drawing.Point(3, 3);
+            this.ilv_Layer.Name = "ilv_Layer";
+            this.ilv_Layer.PersistentCacheDirectory = "";
+            this.ilv_Layer.PersistentCacheSize = ((long)(100));
+            this.ilv_Layer.Size = new System.Drawing.Size(231, 383);
+            this.ilv_Layer.TabIndex = 0;
+            this.ilv_Layer.UseWIC = false;
+            this.ilv_Layer.View = Manina.Windows.Forms.View.VerticalStrip;
             // 
             // materialTabSelector1
             // 
@@ -1791,14 +1817,6 @@
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragDrop);
             this.panel1.DragOver += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragOver);
             // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(41, 21);
-            this.testToolStripMenuItem.Text = "test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -1839,6 +1857,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tB_B)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.mTC_Layer.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2031,6 +2050,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_OverExposure;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator41;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private Manina.Windows.Forms.ImageListView ilv_Layer;
     }
 }
 
