@@ -1,8 +1,8 @@
 ﻿#region Gorgeous Gmage
 /* Title:Gmage
+ * Version:alpha 2.0
  * Author:Iyui
  * Homepage:Iyui.Github.com
- * Rate of progress:PhotoShop 0.5%
  * 
  * 20200521:第一版
  * 20200602:完善批处理
@@ -359,6 +359,8 @@ namespace Gmage
         ToolTip toolTip = new ToolTip();
         int _history_Count = 10;
         int _history_Name_index = 1;
+        private float _zoom = 1;//缩放比例
+
         public Tools Tool { set; get; } = Tools.Empty;
         public Bitmap ResultImage
         {
@@ -687,6 +689,7 @@ namespace Gmage
             int[] RectP = DrawRectangle(0, 0, 0, 0);
             _PictureBox.MouseDown += (sender, e) =>
             {
+                _zoom = _PictureBox.Width / (float)_PictureBox.Image.Width;
                 switch (Tool)
                 {
                     default:
@@ -704,7 +707,7 @@ namespace Gmage
                         mouse_down.Y = -e.Y;
                         break;
                     case Tools.RGB_Pick:
-                        var c = ((Bitmap)_PictureBox.Image).GetPixel(e.X, e.Y);
+                        var c = ((Bitmap)_PictureBox.Image).GetPixel((int)(e.X/_zoom), (int)(e.Y/_zoom));
                         Pick_RGB(c);
                         break;
                     case Tools.Draw:
@@ -755,9 +758,9 @@ namespace Gmage
                     case Tools.RGB_Pick:
                         if (e.Button == MouseButtons.Left)
                         {
-                            if (e.X > 0 && e.Y > 0 && e.X < _PictureBox.Image.Width && e.Y < _PictureBox.Image.Height)
+                            if (e.X > 0 && e.Y > 0 && (int)(e.X / _zoom) < _PictureBox.Image.Width && (int)(e.Y / _zoom) < _PictureBox.Image.Height)
                             {
-                                var c = ((Bitmap)_PictureBox.Image).GetPixel(e.X, e.Y);
+                                var c = ((Bitmap)_PictureBox.Image).GetPixel((int)(e.X / _zoom), (int)(e.Y / _zoom));
                                 Pick_RGB(c);
                             }
                         }
@@ -766,11 +769,12 @@ namespace Gmage
                         if (_isPressed)
                         {
                             Config.Model = FunctionType.PenDraw;
-                            int[] iparameter = new int[] { no_of_points, e.X, e.Y };
+                            
+                            int[] iparameter = new int[] { no_of_points, (int)(e.X / _zoom), (int)(e.Y / _zoom) };
                             parameter.iParameter = iparameter;
                             parameter.Points = pt;
                             parameter.Color = FrontColor;
-                            ResultImage = graphCommand.Execute(Config.Model, ResultImage, parameter).Clone() as Bitmap;
+                            ResultImage = graphCommand.Execute(Config.Model, (Bitmap)_PictureBox.Image, parameter).Clone() as Bitmap;
                             no_of_points++;
                         }
                         break;
@@ -785,7 +789,7 @@ namespace Gmage
                         break;
                     case Tools.Cut:
                         Config.Model = FunctionType.Cut;
-                        int[] Location = new int[] { Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y };
+                        int[] Location = new int[] { (int)(Cut_StartPoint.X / _zoom), (int)(Cut_StartPoint.Y / _zoom), (int)(mouse_wh.X / _zoom), (int)(mouse_wh.Y / _zoom) };
                         parameter.iParameter = Location;
                         CopyImage = graphCommand.Execute(Config.Model, ResultImage, parameter,false).Clone() as Bitmap;
                         isCutingUp = true;
@@ -1141,13 +1145,8 @@ namespace Gmage
            @"* Title:Gorgeous Gmage
                * Author:Iyui
                     * Homepage:Iyui.Github.com
-                        * 网上的批处理软件太不好用
-                            * 自己写了一个
-                        * 功能抽时间开发
-                    * BUG看心情修复
-             *错开是为了不花眼
          * © 2020";
-            MessageBox.Show(interduce, "奇怪的功能增加了");
+            MessageBox.Show(interduce, "奇怪的BUG增加了");
 
             //Clipboard.SetText("Iyui.Github.com");
         }
@@ -1491,6 +1490,8 @@ namespace Gmage
             Point p = PointToScreen(e.Location);
             if (!(c is null) || WindowFromPoint(p.X, p.Y) == this.Handle.ToInt32())
             {
+                int ow = col.Width;
+                int oh = col.Height;
                 //向前
                 if (e.Delta < 0)
                 {
@@ -1501,10 +1502,16 @@ namespace Gmage
                 else if (e.Delta > 0)
                 {
                     Zoom(false, e.X, e.Y);
+                    
                 }
+                //图像原始尺寸是否大于所在画布，大于锚点缩放，小于则居中
+                if (col.Image.Width > col.Width)
+                    SetLocationCenter();
+                else
+                    SetAnchor(col, e, ow, oh);
             }
         }
-
+        
         /// <summary>
         /// 放大缩小
         /// </summary>
@@ -1525,7 +1532,7 @@ namespace Gmage
                 this.col.Size = Size.Ceiling(new SizeF(w, h));
                 col.Invalidate();
             }
-            SetLocationCenter();
+            //SetLocationCenter();
         }
         #endregion
 
@@ -1643,6 +1650,17 @@ namespace Gmage
             col.Location = p;
         }
 
+        private void SetAnchor(PictureBox pb, MouseEventArgs e,int ow,int oh)
+        {
+            int x = e.Location.X;
+            int y = e.Location.Y;
+
+            int VX, VY; //因缩放产生的位移矢量
+            VX = (int)((double)x * (ow - pb.Width) / ow);
+            VY = (int)((double)y * (oh - pb.Height) / oh);
+            pb.Location = new Point(pb.Location.X + VX, pb.Location.Y + VY);
+        }
+
         private void tsmi_Channel_Click(object sender, EventArgs e)
         {
             
@@ -1693,6 +1711,7 @@ namespace Gmage
 
             _PictureBox.MouseDown += (sender, e) =>
             {
+                _zoom = _PictureBox.Width / (float)_PictureBox.Image.Width;
                 switch (Tool)
                 {
                     default:
@@ -1710,7 +1729,7 @@ namespace Gmage
                         mouse_down.Y = -e.Y;
                         break;
                     case Tools.RGB_Pick:
-                        var c = ((Bitmap)_PictureBox.Image).GetPixel(e.X, e.Y);
+                        var c = ((Bitmap)_PictureBox.Image).GetPixel((int)(e.X / _zoom), (int)(e.Y / _zoom));
                         Pick_RGB(c);
                         break;
                     case Tools.Draw:
@@ -1723,6 +1742,7 @@ namespace Gmage
             };
             _PictureBox.MouseMove += (sender, e) =>
             {
+                
                 _PictureBox.Cursor = MouseCursor();
                 switch (Tool)
                 {
@@ -1753,17 +1773,20 @@ namespace Gmage
 
                         break;
                     case Tools.Move:
+                        
                         if (e.Button == MouseButtons.Left && canDrag)
                         {
+                            if (ilv_Layer.SelectedItems.Count>0&&ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
+                                return;
                             _PictureBox.Location = new Point(_PictureBox.Left + e.X + mouse_down.X, _PictureBox.Top + e.Y + mouse_down.Y);
                         }
                         break;
                     case Tools.RGB_Pick:
                         if (e.Button == MouseButtons.Left)
                         {
-                            if (e.X > 0 && e.Y > 0 && e.X < _PictureBox.Image.Width && e.Y < _PictureBox.Image.Height)
+                            if (e.X > 0 && e.Y > 0 && (int)(e.X / _zoom) < _PictureBox.Image.Width && (int)(e.Y / _zoom) < _PictureBox.Image.Height)
                             {
-                                var c = ((Bitmap)_PictureBox.Image).GetPixel(e.X, e.Y);
+                                var c = ((Bitmap)_PictureBox.Image).GetPixel((int)(e.X / _zoom), (int)(e.Y / _zoom));
                                 Pick_RGB(c);
                             }
                         }
@@ -1772,11 +1795,11 @@ namespace Gmage
                         if (_isPressed)
                         {
                             Config.Model = FunctionType.PenDraw;
-                            int[] iparameter = new int[] { no_of_points, e.X, e.Y };
+                            int[] iparameter = new int[] { no_of_points, (int)(e.X / _zoom), (int)(e.Y / _zoom) };
                             parameter.iParameter = iparameter;
                             parameter.Points = pt;
                             parameter.Color = FrontColor;
-                            ResultImage = graphCommand.Execute(Config.Model, ResultImage, parameter).Clone() as Bitmap;
+                            _PictureBox.Image = graphCommand.Execute(Config.Model, (Bitmap)_PictureBox.Image, parameter).Clone() as Bitmap;
                             no_of_points++;
                         }
                         break;
@@ -1791,9 +1814,9 @@ namespace Gmage
                         break;
                     case Tools.Cut:
                         Config.Model = FunctionType.Cut;
-                        int[] Location = new int[] { Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y };
+                        int[] Location = new int[] { (int)(Cut_StartPoint.X / _zoom), (int)(Cut_StartPoint.Y / _zoom), (int)(mouse_wh.X / _zoom), (int)(mouse_wh.Y / _zoom) };
                         parameter.iParameter = Location;
-                        CopyImage = graphCommand.Execute(Config.Model, ResultImage, parameter, false).Clone() as Bitmap;
+                        CopyImage = graphCommand.Execute(Config.Model, (Bitmap)_PictureBox.Image, parameter, false).Clone() as Bitmap;
                         isCutingUp = true;
                         break;
                     case Tools.Move:
@@ -1807,6 +1830,33 @@ namespace Gmage
                         no_of_points = 0;
                         break;
 
+                }
+            };
+            _PictureBox.MouseDoubleClick += (sender, e) =>
+            {
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        if (!(isCuting && isCutingUp))
+                            return;
+                        if (e.X > Cut_StartPoint.X && e.X < Cut_StartPoint.X + mouse_wh.X
+                        && e.Y > Cut_StartPoint.Y && e.Y < Cut_StartPoint.Y + mouse_wh.Y)
+                        {
+                            isCuting = isCutingUp = false;
+                            Config.Model = FunctionType.Cut;
+                            int[] Location = new int[] { (int)(Cut_StartPoint.X/_zoom), (int)(Cut_StartPoint.Y / _zoom), (int)(mouse_wh.X / _zoom), (int)(mouse_wh.Y / _zoom) };
+                            parameter.iParameter = Location;
+                            CopyImage = graphCommand.Execute(Config.Model, (Bitmap)_PictureBox.Image, parameter).Clone() as Bitmap;
+                            _PictureBox.Image = CopyImage;
+                            _PictureBox.Width = ResultImage.Width;
+                            _PictureBox.Height = ResultImage.Height;
+                            //_PictureBox.Location = GetControlCenterLocation(tp, _PictureBox);
+                            //Cut(Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
+                        }
+                        break;
                 }
             };
             OpenFileDialog oi = new OpenFileDialog
@@ -1824,7 +1874,9 @@ namespace Gmage
                 var initImage = (Bitmap)Image.FromFile(oi.FileName);
                 //RollBackMessage(oi.FileName);
                 _PictureBox.Image = initImage.Clone() as Image;
-                AddLayer("图层" + $"{ ilv_Layer.Items.Count }", initImage);
+                var name = "图层" + $"{ ilv_Layer.Items.Count }";
+                AddLayer(name, initImage);
+                _PictureBox.Tag = name;
                 col.Controls.Add(_PictureBox);
             }
         }

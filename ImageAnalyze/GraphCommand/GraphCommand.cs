@@ -1420,7 +1420,7 @@ namespace Gmage.GraphCommand
                 pt[0] = pt[1]; pt[1] = pt[2]; pt[2] = pt[3];
                 pt[3].setxy(eX, eY);
                 double temp = Math.Sqrt(Math.Pow(pt[2].x - pt[1].x, 2F) + Math.Pow(pt[2].y - pt[1].y, 2F));
-                int interpol = System.Convert.ToInt32(temp);
+                int interpol = Convert.ToInt32(temp);
                 bsp(pt[0], pt[1], pt[2], pt[3], interpol);
                 int i;
                 var bmpOut = _bitmap;

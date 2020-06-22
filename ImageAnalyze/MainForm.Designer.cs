@@ -215,6 +215,7 @@
             this.mFB_Draw = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Select = new MaterialSkin.Controls.MaterialFlatButton();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.检查更新ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -268,7 +269,7 @@
             this.testToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(517, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(637, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1092,6 +1093,7 @@
             // 
             this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_supTools,
+            this.检查更新ToolStripMenuItem,
             this.tsmi_About});
             this.帮助ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
@@ -1745,7 +1747,8 @@
             // 
             // ilv_Layer
             // 
-            this.ilv_Layer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.ilv_Layer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ilv_Layer.CheckBoxAlignment = System.Drawing.ContentAlignment.TopLeft;
             this.ilv_Layer.Colors = new Manina.Windows.Forms.ImageListViewColor(resources.GetString("ilv_Layer.Colors"));
             this.ilv_Layer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ilv_Layer.IconAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1753,6 +1756,7 @@
             this.ilv_Layer.Name = "ilv_Layer";
             this.ilv_Layer.PersistentCacheDirectory = "";
             this.ilv_Layer.PersistentCacheSize = ((long)(100));
+            this.ilv_Layer.ShowCheckBoxes = true;
             this.ilv_Layer.Size = new System.Drawing.Size(231, 383);
             this.ilv_Layer.TabIndex = 0;
             this.ilv_Layer.UseWIC = false;
@@ -1816,6 +1820,12 @@
             this.panel1.Click += new System.EventHandler(this.btn_SelectImage_Click);
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragDrop);
             this.panel1.DragOver += new System.Windows.Forms.DragEventHandler(this.mTC_ImageTab_DragOver);
+            // 
+            // 检查更新ToolStripMenuItem
+            // 
+            this.检查更新ToolStripMenuItem.Name = "检查更新ToolStripMenuItem";
+            this.检查更新ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.检查更新ToolStripMenuItem.Text = "检查更新";
             // 
             // MainForm
             // 
@@ -2051,6 +2061,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator41;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private Manina.Windows.Forms.ImageListView ilv_Layer;
+        private System.Windows.Forms.ToolStripMenuItem 检查更新ToolStripMenuItem;
     }
 }
 
