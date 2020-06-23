@@ -21,15 +21,15 @@
  * 20200617:新增滤镜
  * 20200619:修复了一些较严重的BUG
  * 20200622:修复了图片缩放后会导致工具栏工具坐标偏移的问题
+ * 20200623:完善图层功能，新增套索功能
  * 
  * 现有代码结构无法有效地支持图层功能，并且v2.0版本存在较多BUG难以修复，预计将于6月底开始无限期停止更新v2.0，将对代码进行第二次重构
  * 
  * 未来的更新
  * 
  * 1、抠图
- * 2、图层
- * 3、重写部分算法以加快处理速度
- * 4、修改插件插拔部分
+ * 2、旋转
+ * 3、重构
  * 
  * 未来的未来的更新
  * 
@@ -163,6 +163,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Collections;
 using System.Text;
@@ -290,7 +291,7 @@ namespace Gmage
         /// </summary>
         private void ToolsClickEvent()
         {
-            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Empty, mFB_ColorPicker, mFB_Move, mFB_Cut, mFB_Draw, mFB_Select, mFB_Transform };
+            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Empty, mFB_ColorPicker, mFB_Move, mFB_Cut, mFB_Draw, mFB_Select, mFB_Transform, mFB_Lasso };
             foreach (var flatButton in flatButtons)
             {
                 flatButton.Click += (sender, e) =>
@@ -555,7 +556,7 @@ namespace Gmage
             Color_G = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "G", "51", "MainForm"));
             Color_B = int.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Color", "B", "51", "MainForm"));
             Change_pB_Color();
-
+            BlurKn = _createKernel(effsize * 2 + 1);
             SelectedCol = new PictureBox();
         }
 
@@ -730,6 +731,8 @@ namespace Gmage
 
             AddLayer("背景", initBitmap);
 
+            var _LassoPic = LassoPicture();
+
             _PictureBox.Location = p;
             _PictureBox.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             Point mouse_down = new Point();
@@ -774,6 +777,24 @@ namespace Gmage
                         break;
                     case Tools.Transform:
                         MyMouseDown(sender, e);
+                        break;
+                    case Tools.Lasso:
+                        if (_LassoPic.Visible)
+                        {
+                            //add_img_to_picbox(col, _LassoPic);
+                            _LassoPic.Hide();
+                        }
+                        else
+                        if (bIsDraw == false)
+                        {
+                            _LassoPic.Hide();
+                            startPoint_Draw = e.Location;
+                            pts.Clear();
+                            pts.Add(startPoint_Draw);
+                            bIsDraw = true;
+                            if (ResultImage != null)
+                                maincopybmp = (Bitmap)ResultImage.Clone();//备份图片
+                        }
                         break;
                 }
             };
@@ -843,6 +864,22 @@ namespace Gmage
                     case Tools.Transform:
                         MyMouseMove(sender, e);
                         break;
+                    case Tools.Lasso:
+                        PictureBox pb = sender as PictureBox;
+                        //ssl_point.Text = e.Location.ToString();
+
+                        if (bIsDraw)
+                        {
+                            Point _p = limitPoint(e.Location, col.ClientSize);
+                            if (_p == startPoint_Draw) return;
+                            Graphics gs = col.CreateGraphics();
+                            Pen pen = new Pen(Color.Red, 2);
+                            gs.DrawLine(pen, startPoint_Draw, _p);
+                            gs.Dispose();
+                            startPoint_Draw = _p;
+                            pts.Add(startPoint_Draw);
+                        }
+                        break;
                 }
             };
             _PictureBox.MouseUp += (sender, e) =>
@@ -871,7 +908,38 @@ namespace Gmage
                         this._isPressed = false;
                         no_of_points = 0;
                         break;
+                    case Tools.Lasso:
+                        if (bIsDraw == true)
+                        {
+                            bIsDraw = false;
+                            if (ResultImage != null)
+                            {
+                                if (pts.Count > 4)
+                                {
+                                    smobitmap = createMaskbmp(pts, out minrect, col.Width, col.Height);//获取掩码
+                                    Rectangle effrect;
+                                    effrect = extendRect(minrect, effsize);//扩展区域
+                                    limitRect(ref effrect, col.ClientSize); //限制区域
+                                    _LassoPic.Image = cutPolygonbmp(col.Image, effrect, smobitmap);   //分离
+                                    _LassoPic.Location = effrect.Location;
+                                    _LassoPic.Size = effrect.Size;
+                                    _LassoPic.Show();
 
+                                    GetLayerImage(_LassoPic.Image, effrect.Location, effrect.Size);
+
+                                    //SetImage_Control(_LassoPic.Image);
+                                    //pictureBox_smo.Image = smobitmap;
+                                    //pictureBox_smo.Refresh();
+                                    midpicData.setData(effsize, effrect.Location);//记录
+                                }
+                                else
+                                {
+                                    pts.Clear();
+                                }
+                            }
+                            col.Refresh();
+                        }
+                        break;
                 }
             };
             _PictureBox.MouseDoubleClick += (sender, e) =>
@@ -1977,6 +2045,11 @@ namespace Gmage
                 if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
                     return;
                 MyMouseLeave(sender, e); };
+            _PictureBox.Paint += (sender, e) =>
+            {
+                if (Tool == Tools.Transform && SelectedBrush)
+                    ShowPanelSelect(e.Graphics, _PictureBox);
+            };
             OpenFileDialog oi = new OpenFileDialog
             {
                 Filter = "所有图像文件 | *.bmp; *.pcx; *.png; *.jpg; *.gif;" +
@@ -1987,11 +2060,7 @@ namespace Gmage
                 FilterIndex = 1,
                 //Multiselect = true,
             };
-            _PictureBox.Paint += (sender, e) =>
-            {
-                if(Tool== Tools.Transform && SelectedBrush)
-                    ShowPanelSelect(e.Graphics, _PictureBox);
-            };
+           
             if (oi.ShowDialog() == DialogResult.OK)
             {
                 var initImage = (Bitmap)Image.FromFile(oi.FileName);
@@ -2002,6 +2071,211 @@ namespace Gmage
                 _PictureBox.Tag = name;
                 col.Controls.Add(_PictureBox);
             }
+        }
+
+        private void GetLayerImage(Image image,Point location,Size size )
+        {
+            var name = "图层" + $"{ ilv_Layer.Items.Count }";
+            PictureBox _PictureBox = new PictureBox()
+            {
+                Name = name,
+            };
+            _PictureBox.BackColor = Color.Transparent;
+            _PictureBox.Dock = DockStyle.None;
+            _PictureBox.SizeMode = PictureBoxSizeMode.Zoom;//长宽比例不变
+            //_PictureBox.SizeMode = PictureBoxSizeMode.StretchImage;//自由变换
+            Point mouse_down = new Point();
+            Point mouse_up = new Point();
+            Point mouse_wh = new Point();
+
+            Point Cut_StartPoint = new Point();
+            int[] RectP = DrawRectangle(0, 0, 0, 0);
+
+            _PictureBox.MouseDown += (sender, e) =>
+            {
+                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
+                    return;
+                _zoom = _PictureBox.Width / (float)_PictureBox.Image.Width;
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        isCuting = true;
+                        _PictureBox.Refresh();
+                        mouse_down.X = e.X;
+                        mouse_down.Y = e.Y;
+                        break;
+                    case Tools.Move:
+                        canDrag = true;
+                        mouse_down.X = -e.X;
+                        mouse_down.Y = -e.Y;
+                        break;
+                    case Tools.RGB_Pick:
+                        var c = ((Bitmap)_PictureBox.Image).GetPixel((int)(e.X / _zoom), (int)(e.Y / _zoom));
+                        Pick_RGB(c);
+                        break;
+                    case Tools.Draw:
+                        _isPressed = true;
+                        no_of_points = 0;
+                        pt[no_of_points].setxy(e.X, e.Y);
+                        no_of_points = no_of_points + 1;
+                        break;
+                    case Tools.Transform:
+
+                        MyMouseDown(sender, e);
+                        break;
+                }
+            };
+            _PictureBox.MouseMove += (sender, e) =>
+            {
+                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
+                    return;
+                if (Tool != Tools.Transform)
+                    _PictureBox.Cursor = MouseCursor();
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        if (isCuting && e.Button == MouseButtons.Left)
+                        {
+                            Graphics g = _PictureBox.CreateGraphics();
+                            _PictureBox.Refresh();
+                            var pen = new Pen(Color.Black, 1);
+                            float[] dashValues = { 2, 3 };
+                            // pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                            pen.DashPattern = dashValues;
+                            mouse_up.X = e.X;
+                            mouse_up.Y = e.Y;
+                            RectP = DrawRectangle(mouse_down.X, mouse_down.Y, mouse_up.X, mouse_up.Y);
+                            Cut_StartPoint.X = RectP[0];
+                            Cut_StartPoint.Y = RectP[1];
+                            mouse_wh.X = RectP[2];
+                            mouse_wh.Y = RectP[3];
+                            g.DrawRectangle(pen, Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
+                            g.Dispose();
+                            GC.Collect();
+                            break;
+                        }
+
+                        break;
+                    case Tools.Move:
+
+                        if (e.Button == MouseButtons.Left && canDrag)
+                        {
+
+                            _PictureBox.Location = new Point(_PictureBox.Left + e.X + mouse_down.X, _PictureBox.Top + e.Y + mouse_down.Y);
+                        }
+                        break;
+                    case Tools.RGB_Pick:
+                        if (e.Button == MouseButtons.Left)
+                        {
+                            if (e.X > 0 && e.Y > 0 && (int)(e.X / _zoom) < _PictureBox.Image.Width && (int)(e.Y / _zoom) < _PictureBox.Image.Height)
+                            {
+                                var c = ((Bitmap)_PictureBox.Image).GetPixel((int)(e.X / _zoom), (int)(e.Y / _zoom));
+                                Pick_RGB(c);
+                            }
+                        }
+                        break;
+                    case Tools.Draw:
+                        if (_isPressed)
+                        {
+                            Config.Model = FunctionType.PenDraw;
+                            int[] iparameter = new int[] { no_of_points, (int)(e.X / _zoom), (int)(e.Y / _zoom) };
+                            parameter.iParameter = iparameter;
+                            parameter.Points = pt;
+                            parameter.Color = FrontColor;
+                            _PictureBox.Image = graphCommand.Execute(Config.Model, (Bitmap)_PictureBox.Image, parameter).Clone() as Bitmap;
+                            no_of_points++;
+                        }
+                        break;
+                    case Tools.Transform:
+
+                        MyMouseMove(sender, e);
+                        break;
+                }
+            };
+            _PictureBox.MouseUp += (sender, e) =>
+            {
+                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
+                    return;
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        Config.Model = FunctionType.Cut;
+                        int[] Location = new int[] { (int)(Cut_StartPoint.X / _zoom), (int)(Cut_StartPoint.Y / _zoom), (int)(mouse_wh.X / _zoom), (int)(mouse_wh.Y / _zoom) };
+                        parameter.iParameter = Location;
+                        CopyImage = graphCommand.Execute(Config.Model, (Bitmap)_PictureBox.Image, parameter, false).Clone() as Bitmap;
+                        isCutingUp = true;
+                        break;
+                    case Tools.Move:
+                        if (e.Button == MouseButtons.Left)
+                        {
+                            canDrag = false;
+                        }
+                        break;
+                    case Tools.Draw:
+                        this._isPressed = false;
+                        no_of_points = 0;
+                        break;
+
+                }
+            };
+            _PictureBox.MouseDoubleClick += (sender, e) =>
+            {
+                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
+                    return;
+                switch (Tool)
+                {
+                    default:
+                    case Tools.Empty:
+                        break;
+                    case Tools.Cut:
+                        if (!(isCuting && isCutingUp))
+                            return;
+                        if (e.X > Cut_StartPoint.X && e.X < Cut_StartPoint.X + mouse_wh.X
+                        && e.Y > Cut_StartPoint.Y && e.Y < Cut_StartPoint.Y + mouse_wh.Y)
+                        {
+                            isCuting = isCutingUp = false;
+                            Config.Model = FunctionType.Cut;
+                            int[] Location = new int[] { (int)(Cut_StartPoint.X / _zoom), (int)(Cut_StartPoint.Y / _zoom), (int)(mouse_wh.X / _zoom), (int)(mouse_wh.Y / _zoom) };
+                            parameter.iParameter = Location;
+                            CopyImage = graphCommand.Execute(Config.Model, (Bitmap)_PictureBox.Image, parameter).Clone() as Bitmap;
+                            _PictureBox.Image = CopyImage;
+                            _PictureBox.Width = ResultImage.Width;
+                            _PictureBox.Height = ResultImage.Height;
+                            //_PictureBox.Location = GetControlCenterLocation(tp, _PictureBox);
+                            //Cut(Cut_StartPoint.X, Cut_StartPoint.Y, mouse_wh.X, mouse_wh.Y);
+                        }
+                        break;
+                    case Tools.Transform:
+                        mFB_Empty.PerformClick();
+                        break;
+                }
+            };
+            _PictureBox.MouseLeave += (sender, e) => {
+                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
+                    return;
+                MyMouseLeave(sender, e);
+            };
+            _PictureBox.Paint += (sender, e) =>
+            {
+                if (Tool == Tools.Transform && SelectedBrush)
+                    ShowPanelSelect(e.Graphics, _PictureBox);
+            };
+            _PictureBox.Image = image.Clone() as Image;
+            //name = "图层" + $"{ ilv_Layer.Items.Count }";
+            AddLayer(name, image);
+            _PictureBox.Tag = name;
+            _PictureBox.Location = location;
+            _PictureBox.Size = size;
+            col.Controls.Add(_PictureBox);
         }
 
         private void AddLayer(string file,Image image)
@@ -2356,6 +2630,299 @@ namespace Gmage
             g.FillEllipse(this.SelectCornerBrush, (x + width) - this.SelectCornerRadius, (y + height) - this.SelectCornerRadius, num5, num5);
             g.FillEllipse(this.SelectCornerBrush, x - this.SelectCornerRadius, (y + height) - this.SelectCornerRadius, num5, num5);
         }
+
+        #region 套索
+        struct _midpicData { public int effsize; public Point loc; public void setData(int ef, Point pt) { effsize = ef; loc = pt; } }
+        _midpicData midpicData;
+
+        Point startPoint_MidMove;//鼠标位置
+        bool bIsMove = false; //拖动中间图
+
+        Bitmap smobitmap; //模糊图
+        Bitmap srtBmp; // 原始图
+        Bitmap maincopybmp;//主图备份
+        Rectangle minrect;//最小包围矩形
+
+        int effsize = 0;//卷积核半径
+        int KernelSum = 0; //卷积核之和
+        bool bIsDraw = false; //主图画线
+        Point startPoint_Draw = new Point();//划线点变量
+        List<Point> pts = new List<Point>();//画点保存
+        private int[,] BlurKn;//声明模糊卷积核   
+
+        //生成二值掩码图
+        private Bitmap createMaskbmp(List<Point> ptl, out Rectangle rect, int w, int h)
+        {
+#if DEBUG_TSP1
+           DateTime st = DateTime.Now;
+#endif
+            rect = seek_minRect(ptl);
+            Bitmap tmbitmap = new Bitmap(w, h);
+            BitmapData maskbitmapdata = tmbitmap.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            unsafe
+            {
+                UInt32* dstbyte = (UInt32*)(maskbitmapdata.Scan0.ToPointer());
+                for (int y = 0; y < rect.Height; y++)
+                {
+                    for (int x = 0; x < rect.Width; x++)
+                    {
+                        Point pt = new Point(x + (int)rect.X, y + (int)rect.Y);
+                        if (IsInPolygon(pt, ptl))
+                        {
+                            dstbyte[(x + rect.X) + (y + rect.Y) * w] = 0xffffffff;
+                            //tmbitmap.SetPixel(x +  rect.X, y +  rect.Y, Color.White);
+                        }
+                    }
+                }
+            }
+
+            tmbitmap.UnlockBits(maskbitmapdata);
+#if DEBUG_TSP1
+           lab_time.Text = "createMask:"+(DateTime.Now - st).TotalMilliseconds.ToString();
+           lab_time.Refresh();
+#endif
+            return tmbitmap;
+        }
+
+        //寻找最小包含矩形
+        private Rectangle seek_minRect(List<Point> ptl)
+        {
+            int minx = ptl[0].X, miny = ptl[0].Y;
+            int maxx = ptl[0].X, maxy = ptl[0].Y;
+            for (int i = 1; i < ptl.Count; i++)
+            {
+                if (ptl[i].X < minx)
+                    minx = ptl[i].X;
+                if (ptl[i].Y < miny)
+                    miny = ptl[i].Y;
+                if (ptl[i].X > maxx)
+                    maxx = ptl[i].X;
+                if (ptl[i].Y > maxy)
+                    maxy = ptl[i].Y;
+            }
+            //RectangleF rect = new RectangleF(minx, miny, maxx, maxy);
+            return new Rectangle(minx, miny, maxx - minx + 1, maxy - miny + 1);
+        }
+
+        /// <summary>
+        /// 判断点是否在多边形内.
+        /// 注意到如果从P作水平向左的射线的话，如果P在多边形内部，那么这条射线与多边形的交点必为奇数，
+        /// 如果P在多边形外部，则交点个数必为偶数(0也在内)。
+        /// </summary>
+        /// <param name="checkPoint">要判断的点</param>
+        /// <param name="polygonPoints">多边形的顶点</param>
+        /// <returns>是否在于多边形内部</returns>
+        public static bool IsInPolygon(Point checkPoint, List<Point> polygonPoints)
+        {
+            bool inside = false;
+            int pointCount = polygonPoints.Count;
+            Point p1, p2;
+            for (int i = 0, j = pointCount - 1; i < pointCount; j = i, i++)//第一个点和最后一个点作为第一条线，之后是第一个点和第二个点作为第二条线，之后是第二个点与第三个点，第三个点与第四个点...
+            {
+                p1 = polygonPoints[i];
+                p2 = polygonPoints[j];
+                if (checkPoint.Y < p2.Y)
+                {//p2在射线之上
+                    if (p1.Y <= checkPoint.Y)
+                    {//p1正好在射线中或者射线下方
+                        if ((float)(checkPoint.Y - p1.Y) * (float)(p2.X - p1.X) > (float)(checkPoint.X - p1.X) * (float)(p2.Y - p1.Y))//斜率判断,在P1和P2之间且在P1P2右侧
+                        {
+                            //射线与多边形交点为奇数时则在多边形之内，若为偶数个交点时则在多边形之外。
+                            //由于inside初始值为false，即交点数为零。所以当有第一个交点时，则必为奇数，则在内部，此时为inside=(!inside)
+                            //所以当有第二个交点时，则必为偶数，则在外部，此时为inside=(!inside)
+                            inside = (!inside);
+                        }
+                    }
+                }
+                else if (checkPoint.Y < p1.Y)
+                {
+                    //p2正好在射线中或者在射线下方，p1在射线上
+                    if ((checkPoint.Y - p1.Y) * (p2.X - p1.X) < (checkPoint.X - p1.X) * (p2.Y - p1.Y))//斜率判断,在P1和P2之间且在P1P2右侧
+                    {
+                        inside = (!inside);
+                    }
+                }
+            }
+            return inside;
+        }
+
+        //扩展矩形
+        private Rectangle extendRect(Rectangle rect, int effsize)
+        {
+            rect.Location = new Point(rect.X - effsize, rect.Y - effsize);
+            rect.Size = new Size(rect.Width + 2 * effsize, rect.Height + 2 * effsize);
+            return rect;
+        }
+        //获取多边形剪裁
+        private Bitmap cutPolygonbmp(Image srcimg, Rectangle rect, Bitmap maskbitmap)
+        {
+            Bitmap srcbitmap = srcimg as Bitmap;
+            int srcw = srcbitmap.Width;
+            Bitmap dstbitmap = new Bitmap((int)rect.Width, (int)rect.Height);
+            BitmapData srcbitmapdata = (srcbitmap).LockBits(new Rectangle(new Point(0, 0), srcbitmap.Size), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            BitmapData dstbitmapdata = dstbitmap.LockBits(new Rectangle(new Point(0, 0), dstbitmap.Size), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            unsafe
+            {
+                UInt32* srcbyte = (UInt32*)(srcbitmapdata.Scan0.ToPointer());
+                UInt32* dstbyte = (UInt32*)(dstbitmapdata.Scan0.ToPointer());
+                Bitmap tmaskbitmap = blurred(maskbitmap); //对二值掩码图模糊化
+                for (int y = 0; y < rect.Height; y++)
+                {
+                    for (int x = 0; x < rect.Width; x++)
+                    {
+                        UInt32 mal = tmaskbitmap.GetPixel(x + rect.X, y + rect.Y).A; //获取掩码值
+                        UInt32 c = srcbyte[(x + rect.X) + (y + rect.Y) * srcw];//获取原图颜色值
+                        UInt32 bc = (c & 0x00ffffff);//基色
+                        UInt32 al = (UInt32)c >> 24;//透明度
+
+                        UInt32 dal = al * mal / 255;
+                        UInt32 sal = al * (255 - mal) / 255;
+
+                        dstbyte[x + y * rect.Width] = bc + ((dal) << 24);//填充
+                        srcbyte[(x + rect.X) + (y + rect.Y) * srcw] = bc + ((sal) << 24);  //挖原图  
+                    }
+                }
+            }
+            srcbitmap.UnlockBits(srcbitmapdata);
+            dstbitmap.UnlockBits(dstbitmapdata);
+            return dstbitmap;
+        }
+
+        //消耗大量时间，因为进行了没有优化的卷积运算
+        //对二值图模糊处理，产生一张ALPHA渐变图
+        private Bitmap blurred(Bitmap srcbmp)
+        {
+#if DEBUG_TSP2
+            DateTime st = DateTime.Now;
+#endif
+            if (srcbmp == null) return null;
+            int Width = srcbmp.Width, Height = srcbmp.Height;
+            int[,] InputPicbuf = new int[Width, Height];
+            Color color = new Color();
+            //只获取R通道
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    color = srcbmp.GetPixel(i, j);
+                    InputPicbuf[i, j] = color.R;
+                }
+            }
+
+            Bitmap blurbmp = new Bitmap(Width, Height);//创建新位图，保存模糊位图数据
+            BitmapData blurbitmapdata = blurbmp.LockBits(new Rectangle(new Point(0, 0), blurbmp.Size), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            unsafe
+            {
+                int* dstbyte = (int*)(blurbitmapdata.Scan0.ToPointer());
+                Color c;
+                for (int j = 0; j < Height; j++)
+                    for (int i = 0; i < Width; i++)
+                    {
+                        c = integrateColorPoint(i, j, BlurKn, InputPicbuf, Width, Height);
+                        dstbyte[i + j * Width] = c.ToArgb();
+                    }
+            }
+            blurbmp.UnlockBits(blurbitmapdata);
+#if DEBUG_TSP2
+            lab_time.Text = "模糊处理时间:"+(DateTime.Now - st).TotalMilliseconds.ToString();
+            lab_time.Refresh();
+#endif
+            return blurbmp;
+        }
+
+        private void limitRect(ref Rectangle rt, Size s)
+        {
+            if (rt.X < 0) rt.X = 0; if (rt.Y < 0) rt.Y = 0;
+            if (rt.Right > s.Width) rt.Width = s.Width - rt.X;
+            if (rt.Bottom > s.Height) rt.Height = s.Height - rt.Y;
+        }
+
+        private Point limitPoint(Point pt, Size s)
+        {
+            if (pt.X < 0) pt.X = 0; if (pt.Y < 0) pt.Y = 0;
+            if (pt.X >= s.Width) pt.X = s.Width - 1; if (pt.Y >= s.Height) pt.Y = s.Height - 1;
+            return pt;
+        }
+
+        //获取某点颜色积分
+        private Color integrateColorPoint(int i, int j, int[,] kn, int[,] picbuf, int w, int h)
+        {
+            int cr = 0;
+            //每一个像素计算使用高斯模糊卷积核进行计算
+            int KnSize = kn.GetLength(0);
+            for (int r = 0; r < KnSize; r++)//循环卷积核的每一行
+            {
+                int row = i - KnSize / 2 + r;
+                for (int f = 0; f < KnSize; f++)//循环卷积核的每一列
+                {
+                    int index = j - KnSize / 2 + f;
+                    //当超出位图的大小范围时，选择最边缘的像素值作为该点的像素值
+                    row = row < 0 ? 0 : row;
+                    index = index < 0 ? 0 : index;
+                    row = row >= w ? w - 1 : row;
+                    index = index >= h ? h - 1 : index;
+                    //像素值累加
+                    cr += kn[r, f] * picbuf[row, index];
+                }
+            }
+            cr /= KernelSum;
+            cr = cr > 255 ? 255 : cr;
+
+            return Color.FromArgb(cr, 0, 0, 0);
+        }
+
+        //图片合并
+        private bool add_img_to_picbox(PictureBox mainpbx, PictureBox subpbx)
+        {
+            if (subpbx.Image == null || mainpbx.Image == null) return false;
+            if (subpbx.Visible == true)
+            {
+                Graphics gs = Graphics.FromImage(mainpbx.Image);
+                Rectangle rect = new Rectangle(subpbx.Location.X, subpbx.Location.Y, subpbx.Width, subpbx.Height);
+                /*g.DrawImage(subpbx.Image,
+                        new Rectangle(subpbx.Location.X, subpbx.Location.Y, mainpbx.Width, mainpbx.Height),
+                        new Rectangle(0, 0, mainpbx.Width, mainpbx.Height), 
+                        GraphicsUnit.Pixel);*/
+                gs.DrawImage(subpbx.Image, rect);
+                gs.Dispose();
+                subpbx.Hide();
+
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 生成N*N的矩阵，作为模糊卷积核
+        /// </summary>
+        /// <param name="N">矩阵边长，必须为奇数，最小为1</param>
+        /// <returns>目的矩阵</returns>
+        private int[,] _createKernel(int N)
+        {
+            if (N <= 0) N = 1;
+            int i, j;
+            int[,] kn = new int[N, N];
+            KernelSum = 0;
+            for (i = 0; i < N; i++)
+            {
+                for (j = 0; j < N; j++)
+                {
+                    int g = (Math.Abs(i - N / 2) > Math.Abs(j - N / 2)) ? Math.Abs(i - N / 2) : Math.Abs(j - N / 2);
+                    kn[i, j] = N / 2 - g + 1;
+                    KernelSum += kn[i, j];
+                }
+            }
+            return kn;
+        }
+
+        #endregion
+        private PictureBox LassoPicture()
+        {
+            PictureBox pb = new PictureBox();
+           
+            return pb;
+        }
+
     }
 }
 #endregion

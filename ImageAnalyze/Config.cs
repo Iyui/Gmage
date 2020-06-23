@@ -520,6 +520,7 @@ namespace Gmage
         Select,
         Zoom,
         Transform,
+        Lasso,
     }
 
     #region 回调

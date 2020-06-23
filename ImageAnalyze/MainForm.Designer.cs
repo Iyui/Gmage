@@ -33,6 +33,13 @@
             this.materialContextMenuStrip1 = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.tsm_CloseTabPage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.选择图片ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.添加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_History = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.另存为ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Copy = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Paste = new System.Windows.Forms.ToolStripMenuItem();
@@ -180,13 +187,6 @@
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator158 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmi_Batch = new System.Windows.Forms.ToolStripMenuItem();
-            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.选择图片ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.添加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_History = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.另存为ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mtS_Selected = new MaterialSkin.Controls.MaterialTabSelector();
             this.mTC_ImageTab = new MaterialSkin.Controls.MaterialTabControl();
@@ -232,6 +232,7 @@
             this.mFB_Select = new MaterialSkin.Controls.MaterialFlatButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.mFB_Transform = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mFB_Lasso = new MaterialSkin.Controls.MaterialFlatButton();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -293,6 +294,60 @@
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // 文件ToolStripMenuItem
+            // 
+            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.新建ToolStripMenuItem,
+            this.选择图片ToolStripMenuItem,
+            this.添加ToolStripMenuItem,
+            this.tsmi_History,
+            this.toolStripSeparator1,
+            this.另存为ToolStripMenuItem});
+            this.文件ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.文件ToolStripMenuItem.Text = "文件";
+            // 
+            // 新建ToolStripMenuItem
+            // 
+            this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.新建ToolStripMenuItem.Text = "新建...";
+            // 
+            // 选择图片ToolStripMenuItem
+            // 
+            this.选择图片ToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
+            this.选择图片ToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.选择图片ToolStripMenuItem.Name = "选择图片ToolStripMenuItem";
+            this.选择图片ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.选择图片ToolStripMenuItem.Text = "打开...";
+            this.选择图片ToolStripMenuItem.Click += new System.EventHandler(this.btn_SelectImage_Click);
+            // 
+            // 添加ToolStripMenuItem
+            // 
+            this.添加ToolStripMenuItem.Name = "添加ToolStripMenuItem";
+            this.添加ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.添加ToolStripMenuItem.Text = "添加...";
+            this.添加ToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
+            // tsmi_History
+            // 
+            this.tsmi_History.Name = "tsmi_History";
+            this.tsmi_History.Size = new System.Drawing.Size(148, 22);
+            this.tsmi_History.Text = "最近打开文件";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
+            // 
+            // 另存为ToolStripMenuItem
+            // 
+            this.另存为ToolStripMenuItem.Name = "另存为ToolStripMenuItem";
+            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.另存为ToolStripMenuItem.Text = "另存为...";
+            this.另存为ToolStripMenuItem.Click += new System.EventHandler(this.btn_Save_Click);
+            // 
             // 编辑ToolStripMenuItem
             // 
             this.编辑ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -313,7 +368,7 @@
             // 
             this.tsmi_Copy.Name = "tsmi_Copy";
             this.tsmi_Copy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsmi_Copy.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Copy.Size = new System.Drawing.Size(178, 22);
             this.tsmi_Copy.Text = "复制";
             this.tsmi_Copy.Click += new System.EventHandler(this.tsmi_Copy_Click);
             // 
@@ -321,7 +376,7 @@
             // 
             this.tsmi_Paste.Name = "tsmi_Paste";
             this.tsmi_Paste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsmi_Paste.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Paste.Size = new System.Drawing.Size(178, 22);
             this.tsmi_Paste.Text = "粘贴";
             this.tsmi_Paste.Click += new System.EventHandler(this.tsmi_Paste_Click);
             // 
@@ -329,7 +384,7 @@
             // 
             this.tsmi_Undo.Name = "tsmi_Undo";
             this.tsmi_Undo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.tsmi_Undo.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Undo.Size = new System.Drawing.Size(178, 22);
             this.tsmi_Undo.Text = "撤销";
             this.tsmi_Undo.Click += new System.EventHandler(this.tsmi_Undo_Click);
             // 
@@ -338,33 +393,33 @@
             this.tsmi_Redo.Name = "tsmi_Redo";
             this.tsmi_Redo.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.Z)));
-            this.tsmi_Redo.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Redo.Size = new System.Drawing.Size(178, 22);
             this.tsmi_Redo.Text = "重做";
             this.tsmi_Redo.Click += new System.EventHandler(this.tsmi_Redo_Click);
             // 
             // tsmi_UndoAll
             // 
             this.tsmi_UndoAll.Name = "tsmi_UndoAll";
-            this.tsmi_UndoAll.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_UndoAll.Size = new System.Drawing.Size(178, 22);
             this.tsmi_UndoAll.Text = "撤销所有效果";
             this.tsmi_UndoAll.Click += new System.EventHandler(this.tsmi_UndoAll_Click);
             // 
             // tsmi_RedoAll
             // 
             this.tsmi_RedoAll.Name = "tsmi_RedoAll";
-            this.tsmi_RedoAll.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RedoAll.Size = new System.Drawing.Size(178, 22);
             this.tsmi_RedoAll.Text = "重做所有效果";
             this.tsmi_RedoAll.Click += new System.EventHandler(this.tsmi_RedoAll_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(175, 6);
             // 
             // tsmi_Preferences
             // 
             this.tsmi_Preferences.Name = "tsmi_Preferences";
-            this.tsmi_Preferences.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Preferences.Size = new System.Drawing.Size(178, 22);
             this.tsmi_Preferences.Text = "首选项";
             this.tsmi_Preferences.Click += new System.EventHandler(this.tsmi_Preferences_Click);
             // 
@@ -1379,60 +1434,6 @@
             this.tsmi_Batch.Text = "批处理";
             this.tsmi_Batch.Click += new System.EventHandler(this.button2_Click);
             // 
-            // 文件ToolStripMenuItem
-            // 
-            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.新建ToolStripMenuItem,
-            this.选择图片ToolStripMenuItem,
-            this.添加ToolStripMenuItem,
-            this.tsmi_History,
-            this.toolStripSeparator1,
-            this.另存为ToolStripMenuItem});
-            this.文件ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.文件ToolStripMenuItem.Text = "文件";
-            // 
-            // 新建ToolStripMenuItem
-            // 
-            this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
-            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.新建ToolStripMenuItem.Text = "新建...";
-            // 
-            // 选择图片ToolStripMenuItem
-            // 
-            this.选择图片ToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
-            this.选择图片ToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.选择图片ToolStripMenuItem.Name = "选择图片ToolStripMenuItem";
-            this.选择图片ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.选择图片ToolStripMenuItem.Text = "打开...";
-            this.选择图片ToolStripMenuItem.Click += new System.EventHandler(this.btn_SelectImage_Click);
-            // 
-            // 添加ToolStripMenuItem
-            // 
-            this.添加ToolStripMenuItem.Name = "添加ToolStripMenuItem";
-            this.添加ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.添加ToolStripMenuItem.Text = "添加...";
-            this.添加ToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
-            // 
-            // tsmi_History
-            // 
-            this.tsmi_History.Name = "tsmi_History";
-            this.tsmi_History.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_History.Text = "最近打开文件";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
-            // 
-            // 另存为ToolStripMenuItem
-            // 
-            this.另存为ToolStripMenuItem.Name = "另存为ToolStripMenuItem";
-            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.另存为ToolStripMenuItem.Text = "另存为...";
-            this.另存为ToolStripMenuItem.Click += new System.EventHandler(this.btn_Save_Click);
-            // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
@@ -2003,11 +2004,27 @@
             this.mFB_Transform.Text = "变";
             this.mFB_Transform.UseVisualStyleBackColor = true;
             // 
+            // mFB_Lasso
+            // 
+            this.mFB_Lasso.Depth = 0;
+            this.mFB_Lasso.Icon = null;
+            this.mFB_Lasso.Location = new System.Drawing.Point(4, 309);
+            this.mFB_Lasso.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.mFB_Lasso.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mFB_Lasso.Name = "mFB_Lasso";
+            this.mFB_Lasso.Primary = false;
+            this.mFB_Lasso.Size = new System.Drawing.Size(25, 25);
+            this.mFB_Lasso.TabIndex = 33;
+            this.mFB_Lasso.Tag = "Lasso";
+            this.mFB_Lasso.Text = "套";
+            this.mFB_Lasso.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1174, 728);
+            this.Controls.Add(this.mFB_Lasso);
             this.Controls.Add(this.mFB_Transform);
             this.Controls.Add(this.mFB_Select);
             this.Controls.Add(this.mFB_Draw);
@@ -2260,6 +2277,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lWidth;
         private System.Windows.Forms.Label lHeight;
+        private MaterialSkin.Controls.MaterialFlatButton mFB_Lasso;
     }
 }
 
