@@ -328,6 +328,7 @@ namespace Gmage
                     Controls.Find(item.FileName, true)[0].Refresh();
                     SelectedBrush = true;
                 }
+                ilv_Layer.Refresh();
             }
         }
         #endregion
@@ -456,6 +457,7 @@ namespace Gmage
             //Mtb_Color
             tabPage1.BackColor = Color.FromArgb(255, 51, 51, 51);
             tabPage2.BackColor = Color.FromArgb(255, 51, 51, 51);
+            tabPage4.BackColor = Color.FromArgb(255, 51, 51, 51);
             //groupBox1.BackColor = ((int)Primary.BlueGrey800).ToColor();
             tB_R.BackColor = Color.FromArgb(255, 51, 51, 51);
             tB_G.BackColor = Color.FromArgb(255, 51, 51, 51);
@@ -2238,19 +2240,25 @@ namespace Gmage
             foreach(var item in ilv_Layer.Items)
             {
                 if (item.FileName == "背景")
+                {
+                    SelectedCol = col;
                     continue;
+                }
                 if (item.Selected)
                 {
                     SelectedBrush = true;
+                    SelectedCol = (PictureBox)Controls.Find(item.FileName, true)[0];
                 }
                 else
                 {
                     SelectedBrush = false;
                 }
-                SelectedCol = (PictureBox)Controls.Find(item.FileName, true)[0];
+                if (item.FileName != "背景")
                 SelectedCol.Refresh();
                 SelectedBrush = true;
             }
+            lWidth.Text = "宽:" + SelectedCol.Width.ToString();
+            lHeight.Text = "高:" + SelectedCol.Height.ToString();
         }
 
         private void tsmi_BringToFront_Click(object sender, EventArgs e)
