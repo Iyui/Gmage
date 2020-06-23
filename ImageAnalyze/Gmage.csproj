@@ -80,8 +80,9 @@
     <Reference Include="Emgu.CV.World, Version=4.0.1.3373, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <HintPath>..\packages\EMGU.CV.4.0.1.3373\lib\net35\Emgu.CV.World.dll</HintPath>
     </Reference>
-    <Reference Include="ImageListView">
-      <HintPath>C:\Users\Administrator.DESKTOP-2D4UEC0\Desktop\imagelistview-master\ImageListView\bin\Debug without WPF\ImageListView.dll</HintPath>
+    <Reference Include="ImageListView, Version=13.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ImageListView.dll</HintPath>
     </Reference>
     <Reference Include="MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

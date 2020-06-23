@@ -657,7 +657,7 @@ namespace Gmage
                     ResetBitmap();
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 MessageBox.Show("图片打开失败", "错误的预期", MessageBoxButtons.OK, MessageBoxIcon.Error);
             };
@@ -712,6 +712,8 @@ namespace Gmage
             tp.Controls.Add(_PictureBox);
             tp.BackColor = Color.FromArgb(255, 51, 51, 51);
             _htTabImageName.Add(t.Name, _PictureBox.Name);
+            IlvCollection.Add(_PictureBox.Name,new List<ImageListViewItemImage>());
+
             SelectedTab = tp;
             _PictureBox.Dock = DockStyle.None;
             _PictureBox.SizeMode = PictureBoxSizeMode.Zoom;
@@ -719,7 +721,15 @@ namespace Gmage
             _PictureBox.Width = _PictureBox.Image.Width;
             _PictureBox.Height = _PictureBox.Image.Height;
             var p = GetControlCenterLocation(tp, _PictureBox);
+
+            List<Manina.Windows.Forms.ImageListViewItem> list = new List<Manina.Windows.Forms.ImageListViewItem>();
+            //foreach (var item in ilv_Layer.Items)
+            //    list.Add(item);
+            //IlvCollection[col.Name] = list;
+            //ilv_Layer.Items.Clear();
+
             AddLayer("背景", initBitmap);
+
             _PictureBox.Location = p;
             _PictureBox.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             Point mouse_down = new Point();
@@ -1229,7 +1239,19 @@ namespace Gmage
         //PictureBox col = new PictureBox();
         private void materialTabSelector1_TabIndexChanged(object sender, EventArgs e)
         {
+            List<ImageListViewItemImage> list = new List<ImageListViewItemImage>();
+            foreach (var item in ilv_Layer.Items)
+            {
+                ImageListViewItemImage itemImage = new ImageListViewItemImage();
+                itemImage.SetItemImage(item, item.ThumbnailImage);
+                list.Add(itemImage);
+            }
+            IlvCollection[col.Name] = list;
+            ilv_Layer.Items.Clear();
             ResetBitmap();
+            foreach (var item in IlvCollection[col.Name])
+                ilv_Layer.Items.Add(item.item,item.image);
+            ilv_Layer.Refresh();
         }
 
         private void ResetBitmap()
@@ -2235,6 +2257,20 @@ namespace Gmage
         public int OutCtrlPadding = 2;
         public int SelectLineWith = 1;
         bool SelectedBrush = false;
+        Dictionary<string, List<ImageListViewItemImage>> IlvCollection = new Dictionary<string, List<ImageListViewItemImage>>();
+
+        public struct ImageListViewItemImage
+        {
+            public Manina.Windows.Forms.ImageListViewItem item;
+            public Image image;
+
+            public void SetItemImage(Manina.Windows.Forms.ImageListViewItem item, Image image)
+            {
+                this.item = item;
+                this.image = image;
+            }
+        }
+
         private void ilv_Layer_ItemClick(object sender, Manina.Windows.Forms.ItemClickEventArgs e)
         {
             foreach(var item in ilv_Layer.Items)

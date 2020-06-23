@@ -33,13 +33,6 @@
             this.materialContextMenuStrip1 = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.tsm_CloseTabPage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.选择图片ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.添加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_History = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.另存为ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Copy = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Paste = new System.Windows.Forms.ToolStripMenuItem();
@@ -187,6 +180,13 @@
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator158 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmi_Batch = new System.Windows.Forms.ToolStripMenuItem();
+            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.选择图片ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.添加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_History = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.另存为ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mtS_Selected = new MaterialSkin.Controls.MaterialTabSelector();
             this.mTC_ImageTab = new MaterialSkin.Controls.MaterialTabControl();
@@ -211,6 +211,11 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cB_Stretch = new System.Windows.Forms.CheckBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lWidth = new System.Windows.Forms.Label();
+            this.lHeight = new System.Windows.Forms.Label();
             this.Mtb_Color = new MaterialSkin.Controls.MaterialTabSelector();
             this.mFB_ColorPicker = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Move = new MaterialSkin.Controls.MaterialFlatButton();
@@ -227,11 +232,6 @@
             this.mFB_Select = new MaterialSkin.Controls.MaterialFlatButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.mFB_Transform = new MaterialSkin.Controls.MaterialFlatButton();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.lHeight = new System.Windows.Forms.Label();
-            this.lWidth = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -244,11 +244,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.tB_B)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.mTC_Layer.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.columnContextMenu.SuspendLayout();
-            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // materialContextMenuStrip1
@@ -292,60 +292,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(517, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // 文件ToolStripMenuItem
-            // 
-            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.新建ToolStripMenuItem,
-            this.选择图片ToolStripMenuItem,
-            this.添加ToolStripMenuItem,
-            this.tsmi_History,
-            this.toolStripSeparator1,
-            this.另存为ToolStripMenuItem});
-            this.文件ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.文件ToolStripMenuItem.Text = "文件";
-            // 
-            // 新建ToolStripMenuItem
-            // 
-            this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
-            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.新建ToolStripMenuItem.Text = "新建...";
-            // 
-            // 选择图片ToolStripMenuItem
-            // 
-            this.选择图片ToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
-            this.选择图片ToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.选择图片ToolStripMenuItem.Name = "选择图片ToolStripMenuItem";
-            this.选择图片ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.选择图片ToolStripMenuItem.Text = "打开...";
-            this.选择图片ToolStripMenuItem.Click += new System.EventHandler(this.btn_SelectImage_Click);
-            // 
-            // 添加ToolStripMenuItem
-            // 
-            this.添加ToolStripMenuItem.Name = "添加ToolStripMenuItem";
-            this.添加ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.添加ToolStripMenuItem.Text = "添加...";
-            this.添加ToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
-            // 
-            // tsmi_History
-            // 
-            this.tsmi_History.Name = "tsmi_History";
-            this.tsmi_History.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_History.Text = "最近打开文件";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
-            // 
-            // 另存为ToolStripMenuItem
-            // 
-            this.另存为ToolStripMenuItem.Name = "另存为ToolStripMenuItem";
-            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.另存为ToolStripMenuItem.Text = "另存为...";
-            this.另存为ToolStripMenuItem.Click += new System.EventHandler(this.btn_Save_Click);
             // 
             // 编辑ToolStripMenuItem
             // 
@@ -451,7 +397,7 @@
             this.tsmi_Complementary,
             this.toolStripSeparator35});
             this.tsmi_Change.Name = "tsmi_Change";
-            this.tsmi_Change.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Change.Size = new System.Drawing.Size(168, 22);
             this.tsmi_Change.Text = "调整";
             // 
             // tsmi_Lighten
@@ -509,7 +455,7 @@
             this.tsmi_ExposureAdjust,
             this.tsmi_GammaCorrectProcess});
             this.色彩ToolStripMenuItem.Name = "色彩ToolStripMenuItem";
-            this.色彩ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.色彩ToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.色彩ToolStripMenuItem.Text = "色彩";
             // 
             // tsmi_AutoColorGradationAdjust
@@ -609,7 +555,7 @@
             this.RotateNoneFlipX,
             this.RotateNoneFlipY});
             this.图像旋转ToolStripMenuItem.Name = "图像旋转ToolStripMenuItem";
-            this.图像旋转ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.图像旋转ToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.图像旋转ToolStripMenuItem.Text = "图像旋转";
             // 
             // Clockwise180
@@ -655,7 +601,7 @@
             // tsmi_Channel
             // 
             this.tsmi_Channel.Name = "tsmi_Channel";
-            this.tsmi_Channel.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Channel.Size = new System.Drawing.Size(168, 22);
             this.tsmi_Channel.Tag = "RGBChannel";
             this.tsmi_Channel.Text = "RGB通道";
             this.tsmi_Channel.Click += new System.EventHandler(this.tsmi_Channel_Click);
@@ -663,43 +609,43 @@
             // toolStripSeparator26
             // 
             this.toolStripSeparator26.Name = "toolStripSeparator26";
-            this.toolStripSeparator26.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator26.Size = new System.Drawing.Size(165, 6);
             // 
             // tsmi_Tran
             // 
             this.tsmi_Tran.Name = "tsmi_Tran";
             this.tsmi_Tran.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.tsmi_Tran.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Tran.Size = new System.Drawing.Size(168, 22);
             this.tsmi_Tran.Text = "自由变换";
             // 
             // tsmi_ImageSize
             // 
             this.tsmi_ImageSize.Name = "tsmi_ImageSize";
-            this.tsmi_ImageSize.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_ImageSize.Size = new System.Drawing.Size(168, 22);
             this.tsmi_ImageSize.Text = "图像大小";
             // 
             // tsmi_CanvasSize
             // 
             this.tsmi_CanvasSize.Name = "tsmi_CanvasSize";
-            this.tsmi_CanvasSize.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_CanvasSize.Size = new System.Drawing.Size(168, 22);
             this.tsmi_CanvasSize.Text = "画布大小";
             // 
             // toolStripSeparator27
             // 
             this.toolStripSeparator27.Name = "toolStripSeparator27";
-            this.toolStripSeparator27.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator27.Size = new System.Drawing.Size(165, 6);
             // 
             // tsmi_Frequency
             // 
             this.tsmi_Frequency.Name = "tsmi_Frequency";
-            this.tsmi_Frequency.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Frequency.Size = new System.Drawing.Size(168, 22);
             this.tsmi_Frequency.Tag = "FFT";
             this.tsmi_Frequency.Text = "频谱图";
             // 
             // 直方图ToolStripMenuItem
             // 
             this.直方图ToolStripMenuItem.Name = "直方图ToolStripMenuItem";
-            this.直方图ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.直方图ToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.直方图ToolStripMenuItem.Text = "直方图";
             this.直方图ToolStripMenuItem.Click += new System.EventHandler(this.btn_Histogram_Click);
             // 
@@ -1433,6 +1379,60 @@
             this.tsmi_Batch.Text = "批处理";
             this.tsmi_Batch.Click += new System.EventHandler(this.button2_Click);
             // 
+            // 文件ToolStripMenuItem
+            // 
+            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.新建ToolStripMenuItem,
+            this.选择图片ToolStripMenuItem,
+            this.添加ToolStripMenuItem,
+            this.tsmi_History,
+            this.toolStripSeparator1,
+            this.另存为ToolStripMenuItem});
+            this.文件ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.文件ToolStripMenuItem.Text = "文件";
+            // 
+            // 新建ToolStripMenuItem
+            // 
+            this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.新建ToolStripMenuItem.Text = "新建...";
+            // 
+            // 选择图片ToolStripMenuItem
+            // 
+            this.选择图片ToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
+            this.选择图片ToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.选择图片ToolStripMenuItem.Name = "选择图片ToolStripMenuItem";
+            this.选择图片ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.选择图片ToolStripMenuItem.Text = "打开...";
+            this.选择图片ToolStripMenuItem.Click += new System.EventHandler(this.btn_SelectImage_Click);
+            // 
+            // 添加ToolStripMenuItem
+            // 
+            this.添加ToolStripMenuItem.Name = "添加ToolStripMenuItem";
+            this.添加ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.添加ToolStripMenuItem.Text = "添加...";
+            this.添加ToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
+            // tsmi_History
+            // 
+            this.tsmi_History.Name = "tsmi_History";
+            this.tsmi_History.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_History.Text = "最近打开文件";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // 另存为ToolStripMenuItem
+            // 
+            this.另存为ToolStripMenuItem.Name = "另存为ToolStripMenuItem";
+            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.另存为ToolStripMenuItem.Text = "另存为...";
+            this.另存为ToolStripMenuItem.Click += new System.EventHandler(this.btn_Save_Click);
+            // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
@@ -1749,6 +1749,60 @@
             this.cB_Stretch.UseVisualStyleBackColor = true;
             this.cB_Stretch.CheckedChanged += new System.EventHandler(this.cB_Stretch_CheckedChanged);
             // 
+            // tabPage4
+            // 
+            this.tabPage4.BackColor = System.Drawing.Color.Gray;
+            this.tabPage4.Controls.Add(this.label6);
+            this.tabPage4.Controls.Add(this.label7);
+            this.tabPage4.Controls.Add(this.lWidth);
+            this.tabPage4.Controls.Add(this.lHeight);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(237, 92);
+            this.tabPage4.TabIndex = 2;
+            this.tabPage4.Text = "信息";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(145, 39);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(17, 12);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Y:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(145, 17);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(17, 12);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "X:";
+            // 
+            // lWidth
+            // 
+            this.lWidth.AutoSize = true;
+            this.lWidth.ForeColor = System.Drawing.Color.White;
+            this.lWidth.Location = new System.Drawing.Point(20, 39);
+            this.lWidth.Name = "lWidth";
+            this.lWidth.Size = new System.Drawing.Size(23, 12);
+            this.lWidth.TabIndex = 1;
+            this.lWidth.Text = "宽:";
+            // 
+            // lHeight
+            // 
+            this.lHeight.AutoSize = true;
+            this.lHeight.ForeColor = System.Drawing.Color.White;
+            this.lHeight.Location = new System.Drawing.Point(20, 17);
+            this.lHeight.Name = "lHeight";
+            this.lHeight.Size = new System.Drawing.Size(23, 12);
+            this.lHeight.TabIndex = 0;
+            this.lHeight.Text = "高:";
+            // 
             // Mtb_Color
             // 
             this.Mtb_Color.BaseTabControl = this.mTC_Color;
@@ -1949,60 +2003,6 @@
             this.mFB_Transform.Text = "变";
             this.mFB_Transform.UseVisualStyleBackColor = true;
             // 
-            // tabPage4
-            // 
-            this.tabPage4.BackColor = System.Drawing.Color.Gray;
-            this.tabPage4.Controls.Add(this.label6);
-            this.tabPage4.Controls.Add(this.label7);
-            this.tabPage4.Controls.Add(this.lWidth);
-            this.tabPage4.Controls.Add(this.lHeight);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(237, 92);
-            this.tabPage4.TabIndex = 2;
-            this.tabPage4.Text = "信息";
-            // 
-            // lHeight
-            // 
-            this.lHeight.AutoSize = true;
-            this.lHeight.ForeColor = System.Drawing.Color.White;
-            this.lHeight.Location = new System.Drawing.Point(20, 17);
-            this.lHeight.Name = "lHeight";
-            this.lHeight.Size = new System.Drawing.Size(23, 12);
-            this.lHeight.TabIndex = 0;
-            this.lHeight.Text = "高:";
-            // 
-            // lWidth
-            // 
-            this.lWidth.AutoSize = true;
-            this.lWidth.ForeColor = System.Drawing.Color.White;
-            this.lWidth.Location = new System.Drawing.Point(20, 39);
-            this.lWidth.Name = "lWidth";
-            this.lWidth.Size = new System.Drawing.Size(23, 12);
-            this.lWidth.TabIndex = 1;
-            this.lWidth.Text = "宽:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(145, 39);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(17, 12);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "Y:";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(145, 17);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(17, 12);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "X:";
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -2045,12 +2045,12 @@
             this.tabPage3.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.mTC_Layer.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.columnContextMenu.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
