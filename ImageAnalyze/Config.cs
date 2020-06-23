@@ -519,6 +519,7 @@ namespace Gmage
         Draw,
         Select,
         Zoom,
+        Transform,
     }
 
     #region 回调

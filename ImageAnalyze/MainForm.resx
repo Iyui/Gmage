@@ -121,11 +121,14 @@
     <value>17, 17</value>
   </metadata>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>352, 17</value>
+    <value>231, 18</value>
   </metadata>
   <data name="ilv_Layer.Colors" xml:space="preserve">
     <value>ControlBackColor = ff333333; BackColor = ff333333; AlternateBackColor = ScrollBar; BorderColor = 406d6d6d; ForeColor = ControlLightLight; UnFocusedColor1 = 106d6d6d; UnFocusedColor2 = 406d6d6d; UnFocusedBorderColor = 806d6d6d; HoverColor1 = 80078d7; HoverColor2 = 400078d7; HoverBorderColor = 400078d7; SelectedColor1 = Highlight; SelectedColor2 = Highlight; SelectedBorderColor = 800078d7; DisabledColor1 = 6d6d6d; DisabledColor2 = 206d6d6d; DisabledBorderColor = 206d6d6d; DisabledForeColor = ff808080; ColumnHeaderBackColor1 = 20f0f0f0; ColumnHeaderBackColor2 = c4f0f0f0; ColumnHeaderHoverColor1 = 100078d7; ColumnHeaderHoverColor2 = 400078d7; ColumnHeaderForeColor = ff333333; ColumnSelectColor = 106d6d6d; ColumnSeparatorColor = 206d6d6d; PaneBackColor = 106d6d6d; PaneSeparatorColor = 806d6d6d; SelectionRectangleColor1 = 800078d7; SelectionRectangleColor2 = 800078d7</value>
   </data>
+  <metadata name="columnContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>372, 15</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
