@@ -21,6 +21,11 @@ namespace Gmage
         {
             MyArgs = args;
             GmageConfigXML.XmlHandle.LoadGmageConfig();
+            try
+            {
+                asyncUpload();
+            }
+            catch { MessageBox.Show("error"); };
             //Register.Void();
             Config.Read_Init_Preferences();
             Register.Pack();
@@ -129,8 +134,21 @@ namespace Gmage
             }
         }
 
+        private static void Upload()
+        {
+            if(!iyui.sql.Program.Upload(Config.HashID()))
+            {
+                throw new Exception("");
+            }
+            
+        }
 
+        private static async void asyncUpload()
+        {
+            await Task.Run(() =>
+            {
+                Upload();
+            });
+        }
     }
-
-
 }

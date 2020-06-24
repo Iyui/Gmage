@@ -30,6 +30,8 @@ namespace Gmage
         public static int homePage;
         public static bool WindowStateMax;
 
+        public static string HashId;
+        public static string DiskId;
 
         public static HashSet<string> PluginList = new HashSet<string>();
         public static HashSet<string> Classifier = new HashSet<string>();
@@ -117,6 +119,19 @@ namespace Gmage
             homePage = value;
             WindowStateMax = bool.Parse(GmageConfigXML.XmlHandle.LoadPreferences("Conventional", "WindowState", "false"));
             return value;
+        }
+
+        public static string HashID()
+        {
+            var val = GmageConfigXML.XmlHandle.LoadPreferences("Gmage", "HashID", "");
+            if (string.IsNullOrEmpty(val))
+            {
+                val = Guid.NewGuid().ToString().ToUpper();
+                GmageConfigXML.XmlHandle.SetPreferences("Gmage", "HashID", val);
+            }
+            HashId = val;
+            DiskId = iyui.sql.Program.GetLocalHardDiskID();
+            return val;
         }
         #endregion
 

@@ -233,6 +233,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.mFB_Transform = new MaterialSkin.Controls.MaterialFlatButton();
             this.mFB_Lasso = new MaterialSkin.Controls.MaterialFlatButton();
+            this.联系作者ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialContextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -290,7 +291,7 @@
             this.testToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(1, -1);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(517, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(637, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -328,7 +329,7 @@
             this.添加ToolStripMenuItem.Name = "添加ToolStripMenuItem";
             this.添加ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.添加ToolStripMenuItem.Text = "添加...";
-            this.添加ToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            this.添加ToolStripMenuItem.Click += new System.EventHandler(this.AddImage_Click);
             // 
             // tsmi_History
             // 
@@ -1131,7 +1132,8 @@
             this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_supTools,
             this.检查更新ToolStripMenuItem,
-            this.tsmi_About});
+            this.tsmi_About,
+            this.联系作者ToolStripMenuItem});
             this.帮助ToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
             this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
@@ -1140,20 +1142,20 @@
             // tsmi_supTools
             // 
             this.tsmi_supTools.Name = "tsmi_supTools";
-            this.tsmi_supTools.Size = new System.Drawing.Size(142, 22);
+            this.tsmi_supTools.Size = new System.Drawing.Size(180, 22);
             this.tsmi_supTools.Text = "辅助工具";
             this.tsmi_supTools.Click += new System.EventHandler(this.tsmi_supTools_Click);
             // 
             // 检查更新ToolStripMenuItem
             // 
             this.检查更新ToolStripMenuItem.Name = "检查更新ToolStripMenuItem";
-            this.检查更新ToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.检查更新ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.检查更新ToolStripMenuItem.Text = "检查更新";
             // 
             // tsmi_About
             // 
             this.tsmi_About.Name = "tsmi_About";
-            this.tsmi_About.Size = new System.Drawing.Size(142, 22);
+            this.tsmi_About.Size = new System.Drawing.Size(180, 22);
             this.tsmi_About.Text = "关于Gmage";
             this.tsmi_About.Click += new System.EventHandler(this.tsmi_About_Click);
             // 
@@ -1440,7 +1442,6 @@
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(41, 21);
             this.testToolStripMenuItem.Text = "test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // mtS_Selected
             // 
@@ -2019,6 +2020,13 @@
             this.mFB_Lasso.Text = "套";
             this.mFB_Lasso.UseVisualStyleBackColor = true;
             // 
+            // 联系作者ToolStripMenuItem
+            // 
+            this.联系作者ToolStripMenuItem.Name = "联系作者ToolStripMenuItem";
+            this.联系作者ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.联系作者ToolStripMenuItem.Text = "联系作者";
+            this.联系作者ToolStripMenuItem.Click += new System.EventHandler(this.联系作者ToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -2278,6 +2286,7 @@
         private System.Windows.Forms.Label lWidth;
         private System.Windows.Forms.Label lHeight;
         private MaterialSkin.Controls.MaterialFlatButton mFB_Lasso;
+        private System.Windows.Forms.ToolStripMenuItem 联系作者ToolStripMenuItem;
     }
 }
 

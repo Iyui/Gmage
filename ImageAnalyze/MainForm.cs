@@ -180,6 +180,9 @@ using System.Threading;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using static Gmage.Config;
+using System.Net.Mail;
+using System.Net;
+using System.Configuration;
 using DrawCoreLib;
 #endregion
 namespace Gmage
@@ -311,9 +314,10 @@ namespace Gmage
 
         private void TransFormBrushed(Tools last)
         {
-            mTC_Color.SelectedTab = tabPage3;
             if (last == Tools.Transform || Tool == Tools.Transform)
             {
+                mTC_Color.SelectedTab = tabPage3;
+
                 foreach (var item in ilv_Layer.Items)
                 {
                     if (item.FileName == "背景")
@@ -746,7 +750,9 @@ namespace Gmage
             _PictureBox.Tag = "背景";
             _PictureBox.MouseDown += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count > 0 && ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
+                if (ilv_Layer.Items.Count > 0 && ilv_Layer.SelectedItems.Count == 0)
+                    ilv_Layer.Items[0].Selected = true;
+                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
                     return;
                 _zoom = _PictureBox.Width / (float)_PictureBox.Image.Width;
                 switch (Tool)
@@ -800,8 +806,6 @@ namespace Gmage
             };
             _PictureBox.MouseMove += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 if (Tool != Tools.Transform)
                     _PictureBox.Cursor = MouseCursor();
                 switch (Tool)
@@ -884,8 +888,6 @@ namespace Gmage
             };
             _PictureBox.MouseUp += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 switch (Tool)
                 {
                     default:
@@ -944,8 +946,6 @@ namespace Gmage
             };
             _PictureBox.MouseDoubleClick += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 switch (Tool)
                 {
                     default:
@@ -972,8 +972,6 @@ namespace Gmage
                 }
             };
             _PictureBox.MouseLeave += (sender, e) => {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 MyMouseLeave(sender, e); };
         }
         /// <summary>
@@ -1289,9 +1287,11 @@ namespace Gmage
         {
             string interduce =
            @"* Title:Gorgeous Gmage
-               * Author:Iyui
-                    * Homepage:Iyui.Github.com
-         * © 2020";
+             * Author:Iyui
+             * Homepage:Iyui.Github.com
+
+             *软件仅用于对工具的实现和学习，工具之间存在较严重的不兼容现象
+             * © 2020";
             MessageBox.Show(interduce, "奇怪的BUG增加了");
 
             //Clipboard.SetText("Iyui.Github.com");
@@ -1855,7 +1855,7 @@ namespace Gmage
                 SetImage_Control(img);
         }
 
-        private void testToolStripMenuItem_Click(object send, EventArgs ea)
+        private void AddImage_Click(object send, EventArgs ea)
         {
             var name = "图层" + $"{ ilv_Layer.Items.Count }";
             PictureBox _PictureBox = new PictureBox()
@@ -1875,6 +1875,8 @@ namespace Gmage
 
             _PictureBox.MouseDown += (sender, e) =>
             {
+                if (ilv_Layer.SelectedItems.Count > 0 && ilv_Layer.SelectedItems.Count == 0)
+                    ilv_Layer.Items[0].Selected = true;
                 if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
                     return;
                 _zoom = _PictureBox.Width / (float)_PictureBox.Image.Width;
@@ -1905,15 +1907,12 @@ namespace Gmage
                         no_of_points = no_of_points + 1;
                         break;
                     case Tools.Transform:
-           
                         MyMouseDown(sender, e);
                         break;
                 }
             };
             _PictureBox.MouseMove += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 if (Tool != Tools.Transform)
                     _PictureBox.Cursor = MouseCursor();
                 switch (Tool)
@@ -1982,8 +1981,6 @@ namespace Gmage
             };
             _PictureBox.MouseUp += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 switch (Tool)
                 {
                     default:
@@ -2011,8 +2008,6 @@ namespace Gmage
             };
             _PictureBox.MouseDoubleClick += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 switch (Tool)
                 {
                     default:
@@ -2042,8 +2037,6 @@ namespace Gmage
                 }
             };
             _PictureBox.MouseLeave += (sender, e) => {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 MyMouseLeave(sender, e); };
             _PictureBox.Paint += (sender, e) =>
             {
@@ -2093,6 +2086,8 @@ namespace Gmage
 
             _PictureBox.MouseDown += (sender, e) =>
             {
+                if (ilv_Layer.Items.Count > 0 && ilv_Layer.SelectedItems.Count == 0)
+                    ilv_Layer.Items[0].Selected = true;
                 if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
                     return;
                 _zoom = _PictureBox.Width / (float)_PictureBox.Image.Width;
@@ -2130,8 +2125,6 @@ namespace Gmage
             };
             _PictureBox.MouseMove += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 if (Tool != Tools.Transform)
                     _PictureBox.Cursor = MouseCursor();
                 switch (Tool)
@@ -2200,8 +2193,6 @@ namespace Gmage
             };
             _PictureBox.MouseUp += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 switch (Tool)
                 {
                     default:
@@ -2229,8 +2220,6 @@ namespace Gmage
             };
             _PictureBox.MouseDoubleClick += (sender, e) =>
             {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 switch (Tool)
                 {
                     default:
@@ -2260,8 +2249,6 @@ namespace Gmage
                 }
             };
             _PictureBox.MouseLeave += (sender, e) => {
-                if (ilv_Layer.SelectedItems.Count == 0 || ilv_Layer.SelectedItems[0].FileName != _PictureBox.Tag.ToString())
-                    return;
                 MyMouseLeave(sender, e);
             };
             _PictureBox.Paint += (sender, e) =>
@@ -2916,10 +2903,16 @@ namespace Gmage
         }
 
         #endregion
+
+        private void 联系作者ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Controls.Email email = new Controls.Email();
+            email.Show();
+        }
+
         private PictureBox LassoPicture()
         {
             PictureBox pb = new PictureBox();
-           
             return pb;
         }
 

@@ -84,6 +84,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ImageListView.dll</HintPath>
     </Reference>
+    <Reference Include="iyui.sql">
+      <HintPath>..\..\iyui.sql\iyui.sql\bin\Debug\iyui.sql.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\Administrator.DESKTOP-2D4UEC0\Desktop\Gmage-master\packages\MaterialSkin.dll</HintPath>
@@ -93,6 +96,7 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Numerics" />
@@ -124,6 +128,18 @@
     </Compile>
     <Compile Include="BatchModel.Designer.cs">
       <DependentUpon>BatchModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Email.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Email.Designer.cs">
+      <DependentUpon>Email.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageCenter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\MessageCenter.Designer.cs">
+      <DependentUpon>MessageCenter.cs</DependentUpon>
     </Compile>
     <Compile Include="GraphCommand\Register.cs" />
     <Compile Include="GraphCommand\ZPhotoGraphCommand.cs" />
@@ -217,8 +233,14 @@
     <EmbeddedResource Include="BatchModel.resx">
       <DependentUpon>BatchModel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Email.resx">
+      <DependentUpon>Email.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageTab.resx">
       <DependentUpon>ImageTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MessageCenter.resx">
+      <DependentUpon>MessageCenter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Progress.resx">
       <DependentUpon>Progress.cs</DependentUpon>
@@ -272,7 +294,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Gmage1.png" />
