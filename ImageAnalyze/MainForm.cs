@@ -22,6 +22,7 @@
  * 20200619:修复了一些较严重的BUG
  * 20200622:修复了图片缩放后会导致工具栏工具坐标偏移的问题
  * 20200623:完善图层功能，新增套索功能
+ * 20210630:修复了没有背景时添加图片会导致软件崩溃的问题
  * 
  * 现有代码结构无法有效地支持图层功能，并且v2.0版本存在较多BUG难以修复，预计将于6月底开始无限期停止更新v2.0，将对代码进行第二次重构
  * 
@@ -183,7 +184,7 @@ using static Gmage.Config;
 using System.Net.Mail;
 using System.Net;
 using System.Configuration;
-using DrawCoreLib;
+//using DrawCoreLib;
 #endregion
 namespace Gmage
 {
@@ -469,7 +470,7 @@ namespace Gmage
             tB_B.BackColor = Color.FromArgb(255, 51, 51, 51);
             ilv_Layer.BackColor = Color.FromArgb(255, 51, 51, 51);
             SetColorRGB();
-            
+
             // pTools.BackColor = Color.FromArgb(255, 55, 71, 79);
             messageClass.OnMessageSend += new MessageEventHandler(SubthreadMessageReceive);
             TsmiClick();
@@ -534,7 +535,7 @@ namespace Gmage
                         toolStrips.Add(tsmi_History.DropDownItems[j]);
                     }
                 }
-                foreach(var item in toolStrips)
+                foreach (var item in toolStrips)
                 {
                     tsmi_History.DropDownItems.Remove(item);
                 }
@@ -661,8 +662,23 @@ namespace Gmage
                 {
                     ResetBitmap();
                 }
+                var imgs = Gifs(initImage);
+                if (imgs != null)
+                {
+                    foreach (var img in imgs)
+                    {
+                        //RollBackMessage(oi.FileName);
+                        var name = "图层" + $"{ ilv_Layer.Items.Count }";
+                        var _PictureBox = PictureBox_Act(name);
+                        _PictureBox.Image = img.Clone() as Image;
+                        PB_AutoSize(_PictureBox, img.Width, img.Height);
+                        AddLayer(name, img);
+                        _PictureBox.Tag = name;
+                        col.Controls.Add(_PictureBox);
+                    }
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("图片打开失败", "错误的预期", MessageBoxButtons.OK, MessageBoxIcon.Error);
             };
@@ -697,6 +713,42 @@ namespace Gmage
         }
 
         /// <summary>
+        /// 拆分GIF（使用.Net框架的Image对象）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private List<Image> Split_Gif(Image imgGif)
+        {
+            var re = ""; // 用于保存操作结果的变量
+            try
+            {
+                List<Image> imgs = new List<Image>();
+
+                FrameDimension imgFrmDim = new FrameDimension(imgGif.FrameDimensionsList[0]);
+                int nFdCount = imgGif.GetFrameCount(imgFrmDim); // 获取帧数
+                for (int i = 0; i < nFdCount; i++)
+                {
+                    // 把每一帧保存为jpg图片
+                    imgGif.SelectActiveFrame(imgFrmDim, i);
+                    //var imgSaveName = Path.Combine(imgSaveDir, string.Format("jgz{0}.jpg", i + 1));
+                    MemoryStream memoryStream = new MemoryStream();
+                    //img.Save(memoryStream, ImageFormat.Jpeg);
+                    imgGif.Save(memoryStream, ImageFormat.Jpeg);
+                    var img = (Bitmap)Image.FromStream(memoryStream);
+                    imgs.Add(img);
+                }
+                // re = string.Format("分解成功，请查看目录 {0}", imgSaveDir);
+                return imgs;
+            }
+            catch (Exception ex)
+            {
+                re = ex.Message;
+                return null;
+            }
+
+        }
+
+        /// <summary>
         /// 打开文件时tabcontrol显示图片名字
         /// </summary>
         private void SetTab(string imageName)
@@ -708,7 +760,7 @@ namespace Gmage
                 Name = "tp_" + imageName
             };
             mTC_ImageTab.TabPages.Add(t);
-            
+
             PictureBox _PictureBox = new PictureBox()
             {
                 Name = "pb_" + imageName,
@@ -717,7 +769,7 @@ namespace Gmage
             tp.Controls.Add(_PictureBox);
             tp.BackColor = Color.FromArgb(255, 51, 51, 51);
             _htTabImageName.Add(t.Name, _PictureBox.Name);
-            IlvCollection.Add(_PictureBox.Name,new List<ImageListViewItemImage>());
+            IlvCollection.Add(_PictureBox.Name, new List<ImageListViewItemImage>());
 
             SelectedTab = tp;
             _PictureBox.Dock = DockStyle.None;
@@ -772,7 +824,7 @@ namespace Gmage
                         mouse_down.Y = -e.Y;
                         break;
                     case Tools.RGB_Pick:
-                        var c = ((Bitmap)_PictureBox.Image).GetPixel((int)(e.X/_zoom), (int)(e.Y/_zoom));
+                        var c = ((Bitmap)_PictureBox.Image).GetPixel((int)(e.X / _zoom), (int)(e.Y / _zoom));
                         Pick_RGB(c);
                         break;
                     case Tools.Draw:
@@ -856,7 +908,7 @@ namespace Gmage
                         if (_isPressed)
                         {
                             Config.Model = FunctionType.PenDraw;
-                            
+
                             int[] iparameter = new int[] { no_of_points, (int)(e.X / _zoom), (int)(e.Y / _zoom) };
                             parameter.iParameter = iparameter;
                             parameter.Points = pt;
@@ -897,7 +949,7 @@ namespace Gmage
                         Config.Model = FunctionType.Cut;
                         int[] Location = new int[] { (int)(Cut_StartPoint.X / _zoom), (int)(Cut_StartPoint.Y / _zoom), (int)(mouse_wh.X / _zoom), (int)(mouse_wh.Y / _zoom) };
                         parameter.iParameter = Location;
-                        CopyImage = graphCommand.Execute(Config.Model, ResultImage, parameter,false).Clone() as Bitmap;
+                        CopyImage = graphCommand.Execute(Config.Model, ResultImage, parameter, false).Clone() as Bitmap;
                         isCutingUp = true;
                         break;
                     case Tools.Move:
@@ -972,7 +1024,8 @@ namespace Gmage
                 }
             };
             _PictureBox.MouseLeave += (sender, e) => {
-                MyMouseLeave(sender, e); };
+                MyMouseLeave(sender, e);
+            };
         }
         /// <summary>
         /// 获取[里控件]居中于[外控件]时的左上角坐标
@@ -1037,7 +1090,7 @@ namespace Gmage
             HashSet<string> hs_history = new HashSet<string>();
             for (int j = 0; j < _history_Count; j++)
             {
-                if (j > tsmi_History.DropDownItems.Count - 1 -2)
+                if (j > tsmi_History.DropDownItems.Count - 1 - 2)
                 {
                     SetHistory("history", $"history{index++}", "-1");
                     continue;
@@ -1053,7 +1106,7 @@ namespace Gmage
             for (int i = _history_Count - 1; i > 0; i--)
             {
                 var h = LoadHistory("history", $"history{i}", null);
-                if (!string.IsNullOrEmpty(h) && h!= "-1")
+                if (!string.IsNullOrEmpty(h) && h != "-1")
                 {
                     history.Enqueue(h);
                     AddHistoryItems(i, h);
@@ -1116,7 +1169,7 @@ namespace Gmage
                     continue;
                 tsmi_History.DropDownItems[j].Text = $"{j + 1} {tsmi_History.DropDownItems[j].Tag.ToString()}";
             }
-            
+
         }
 
         private void tsmi_Copy_Click(object sender, EventArgs e)
@@ -1298,7 +1351,7 @@ namespace Gmage
         }
 
         public PictureBox col = new PictureBox();
-  
+
         public PictureBox SelectedCol
         {
             set; get;
@@ -1318,7 +1371,7 @@ namespace Gmage
             ilv_Layer.Items.Clear();
             ResetBitmap();
             foreach (var item in IlvCollection[col.Name])
-                ilv_Layer.Items.Add(item.item,item.image);
+                ilv_Layer.Items.Add(item.item, item.image);
             ilv_Layer.Refresh();
         }
 
@@ -1332,7 +1385,6 @@ namespace Gmage
             config.IsCheckedControl(tsmi_Index, TabName);
             col = (PictureBox)SelectedTab.Controls.Find(selectedTabName, true)[0];
             GraphCommand.Graphics.CurrentWindow = col.Name;
-
             if (!(col.Image is null))
                 initBitmap = (Bitmap)col.Image;
         }
@@ -1365,7 +1417,7 @@ namespace Gmage
                 NameHash.Remove(TabName);
                 mTC_ImageTab.TabPages.Remove(SelectedTab);
                 //释放撤销和重做的栈
-                
+
             }
         }
 
@@ -1411,7 +1463,7 @@ namespace Gmage
         {
             ColorDialog dlgColor = new ColorDialog
             {
-                 
+
             };
             if (dlgColor.ShowDialog() == DialogResult.OK)
             {
@@ -1422,7 +1474,7 @@ namespace Gmage
                 Color_B = c.B;
             }
             var colors = dlgColor.CustomColors;
-            foreach(var c in colors)
+            foreach (var c in colors)
             {
                 GmageConfigXML.XmlHandle.SaveControlValue("MainForm", "CustomizeColor", "R", Color_R.ToString());
             }
@@ -1559,7 +1611,7 @@ namespace Gmage
             };
 
         }
-       
+
         private void InputLimit(object sender, KeyPressEventArgs e)
         {
             if (((int)e.KeyChar < 48 && (int)e.KeyChar != 8) || ((int)e.KeyChar > 57))
@@ -1576,9 +1628,9 @@ namespace Gmage
 
         #endregion
 
-       
 
-   
+
+
         #region 鼠标拾色
         Point p = MousePosition;
 
@@ -1666,7 +1718,7 @@ namespace Gmage
                 else if (e.Delta > 0)
                 {
                     Zoom(false, e.X, e.Y);
-                    
+
                 }
                 //图像原始尺寸是否大于所在画布，大于锚点缩放，小于则居中
                 if (col.Image.Width > col.Width)
@@ -1675,7 +1727,7 @@ namespace Gmage
                     SetAnchor(col, e, ow, oh);
             }
         }
-        
+
         /// <summary>
         /// 放大缩小
         /// </summary>
@@ -1814,7 +1866,7 @@ namespace Gmage
             col.Location = p;
         }
 
-        private void SetAnchor(PictureBox pb, MouseEventArgs e,int ow,int oh)
+        private void SetAnchor(PictureBox pb, MouseEventArgs e, int ow, int oh)
         {
             int x = e.Location.X;
             int y = e.Location.Y;
@@ -1827,17 +1879,18 @@ namespace Gmage
 
         private void tsmi_Channel_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void tsmi_CharImage_Click(object sender, EventArgs e)
         {
             var dia = MessageBox.Show("该滤镜暂未移植至该软件，会在未来的版本中加入，该滤镜软件源码地址\r\n'https://github.com/Iyui/CharImage',\r\n点击确定访问该网址，点击否复制到剪切板", "https://github.com/Iyui", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-            if (DialogResult.No== dia)
+            if (DialogResult.No == dia)
             {
                 Clipboard.Clear();
                 Clipboard.SetText("https://github.com/Iyui/CharImage");
-            }else if(DialogResult.Yes== dia)
+            }
+            else if (DialogResult.Yes == dia)
             {
                 System.Diagnostics.Process.Start("https://github.com/Iyui/CharImage");
             }
@@ -1858,6 +1911,74 @@ namespace Gmage
         private void AddImage_Click(object send, EventArgs ea)
         {
             var name = "图层" + $"{ ilv_Layer.Items.Count }";
+
+            var _PictureBox = PictureBox_Act(name);
+
+            if (ilv_Layer.Items.Count == 0)
+            {
+                ReadInitImage();
+                return;
+            }
+            OpenFileDialog oi = new OpenFileDialog
+            {
+                Filter = "所有图像文件 | *.bmp; *.pcx; *.png; *.jpg; *.gif;" +
+                   "*.tif; *.ico; *.dxf; *.cgm; *.cdr; *.wmf; *.eps; *.emf|" +
+                   "位图( *.bmp; *.jpg; *.png;...) | *.bmp; *.pcx; *.png; *.jpg; *.gif; *.tif; *.ico|" +
+                   "矢量图( *.wmf; *.eps; *.emf;...) | *.dxf; *.cgm; *.cdr; *.wmf; *.eps; *.emf",
+                RestoreDirectory = true,
+                FilterIndex = 1,
+                //Multiselect = true,
+            };
+
+            if (oi.ShowDialog() == DialogResult.OK)
+            {
+                var initImage = (Bitmap)Image.FromFile(oi.FileName);
+                var imgs = Gifs(initImage);
+                if (imgs is null)
+                {
+                    //RollBackMessage(oi.FileName);
+                    _PictureBox.Image = initImage.Clone() as Image;
+                    PB_AutoSize(_PictureBox, initImage.Width, initImage.Height);
+                    //name = "图层" + $"{ ilv_Layer.Items.Count }";
+                    AddLayer(name, initImage);
+                    _PictureBox.Tag = name;
+                    col.Controls.Add(_PictureBox);
+                }
+                else
+                {
+                    foreach (var img in imgs)
+                    {
+                        //RollBackMessage(oi.FileName);
+                        name = "图层" + $"{ ilv_Layer.Items.Count }";
+                        _PictureBox = PictureBox_Act(name);
+                        _PictureBox.Image = img.Clone() as Image;
+                        PB_AutoSize(_PictureBox, img.Width, img.Height);
+                        AddLayer(name, img);
+                        _PictureBox.Tag = name;
+                        col.Controls.Add(_PictureBox);
+                    }
+                }
+            }
+        }
+
+        private void PB_AutoSize(PictureBox pb, int w, int h)
+        {
+            pb.Width = w;
+            pb.Height = h;
+        }
+
+        private List<Image> Gifs(Image initImage)
+        {
+            List<Image> imgs = new List<Image>();
+            if (ImageAnimator.CanAnimate(initImage))
+                imgs = Split_Gif(initImage);
+            else
+                imgs = null;
+            return imgs;
+        }
+
+        private PictureBox PictureBox_Act(string name)
+        {
             PictureBox _PictureBox = new PictureBox()
             {
                 Name = name,
@@ -1944,10 +2065,10 @@ namespace Gmage
 
                         break;
                     case Tools.Move:
-                        
+
                         if (e.Button == MouseButtons.Left && canDrag)
                         {
-                            
+
                             _PictureBox.Location = new Point(_PictureBox.Left + e.X + mouse_down.X, _PictureBox.Top + e.Y + mouse_down.Y);
                         }
                         break;
@@ -1974,7 +2095,7 @@ namespace Gmage
                         }
                         break;
                     case Tools.Transform:
-                        
+
                         MyMouseMove(sender, e);
                         break;
                 }
@@ -2021,7 +2142,7 @@ namespace Gmage
                         {
                             isCuting = isCutingUp = false;
                             Config.Model = FunctionType.Cut;
-                            int[] Location = new int[] { (int)(Cut_StartPoint.X/_zoom), (int)(Cut_StartPoint.Y / _zoom), (int)(mouse_wh.X / _zoom), (int)(mouse_wh.Y / _zoom) };
+                            int[] Location = new int[] { (int)(Cut_StartPoint.X / _zoom), (int)(Cut_StartPoint.Y / _zoom), (int)(mouse_wh.X / _zoom), (int)(mouse_wh.Y / _zoom) };
                             parameter.iParameter = Location;
                             CopyImage = graphCommand.Execute(Config.Model, (Bitmap)_PictureBox.Image, parameter).Clone() as Bitmap;
                             _PictureBox.Image = CopyImage;
@@ -2037,36 +2158,17 @@ namespace Gmage
                 }
             };
             _PictureBox.MouseLeave += (sender, e) => {
-                MyMouseLeave(sender, e); };
+                MyMouseLeave(sender, e);
+            };
             _PictureBox.Paint += (sender, e) =>
             {
                 if (Tool == Tools.Transform && SelectedBrush)
                     ShowPanelSelect(e.Graphics, _PictureBox);
             };
-            OpenFileDialog oi = new OpenFileDialog
-            {
-                Filter = "所有图像文件 | *.bmp; *.pcx; *.png; *.jpg; *.gif;" +
-                   "*.tif; *.ico; *.dxf; *.cgm; *.cdr; *.wmf; *.eps; *.emf|" +
-                   "位图( *.bmp; *.jpg; *.png;...) | *.bmp; *.pcx; *.png; *.jpg; *.gif; *.tif; *.ico|" +
-                   "矢量图( *.wmf; *.eps; *.emf;...) | *.dxf; *.cgm; *.cdr; *.wmf; *.eps; *.emf",
-                RestoreDirectory = true,
-                FilterIndex = 1,
-                //Multiselect = true,
-            };
-           
-            if (oi.ShowDialog() == DialogResult.OK)
-            {
-                var initImage = (Bitmap)Image.FromFile(oi.FileName);
-                //RollBackMessage(oi.FileName);
-                _PictureBox.Image = initImage.Clone() as Image;
-                //name = "图层" + $"{ ilv_Layer.Items.Count }";
-                AddLayer(name, initImage);
-                _PictureBox.Tag = name;
-                col.Controls.Add(_PictureBox);
-            }
+            return _PictureBox;
         }
 
-        private void GetLayerImage(Image image,Point location,Size size )
+        private void GetLayerImage(Image image, Point location, Size size)
         {
             var name = "图层" + $"{ ilv_Layer.Items.Count }";
             PictureBox _PictureBox = new PictureBox()
@@ -2265,7 +2367,7 @@ namespace Gmage
             col.Controls.Add(_PictureBox);
         }
 
-        private void AddLayer(string file,Image image)
+        private void AddLayer(string file, Image image)
         {
             Manina.Windows.Forms.ImageListViewItem item = new Manina.Windows.Forms.ImageListViewItem()
             {
@@ -2534,7 +2636,7 @@ namespace Gmage
 
         private void ilv_Layer_ItemClick(object sender, Manina.Windows.Forms.ItemClickEventArgs e)
         {
-            foreach(var item in ilv_Layer.Items)
+            foreach (var item in ilv_Layer.Items)
             {
                 if (item.FileName == "背景")
                 {
@@ -2551,7 +2653,7 @@ namespace Gmage
                     SelectedBrush = false;
                 }
                 if (item.FileName != "背景")
-                SelectedCol.Refresh();
+                    SelectedCol.Refresh();
                 SelectedBrush = true;
             }
             lWidth.Text = "宽:" + SelectedCol.Width.ToString();

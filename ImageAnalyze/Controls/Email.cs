@@ -19,24 +19,24 @@ namespace Gmage.Controls
 
         private void btn_Send_Click(object sender, EventArgs e)
         {
-            try
-            {
-                program.UpSqlData(textBox1.Text, Config.HashId, Config.DiskId);
-            }
-            catch { };
-            SendMailLocalhost();
+            //try
+            //{
+            //    program.UpSqlData(textBox1.Text, Config.HashId, Config.DiskId);
+            //}
+            //catch { };
+            //SendMailLocalhost();
         }
-        iyui.sql.Program program = new iyui.sql.Program();
+        //iyui.sql.Program program = new iyui.sql.Program();
 
-        public void SendMailLocalhost()
-        {
+        //public void SendMailLocalhost()
+        //{
             
-            if (program.SendMail(textBox1.Text, $"[{textBox2.Text}][{_ip}]从Gmage发来的信件"))
-                MessageBox.Show("发送成功");
-            else
-                MessageBox.Show("发送失败");
+        //    if (program.SendMail(textBox1.Text, $"[{textBox2.Text}][{_ip}]从Gmage发来的信件"))
+        //        MessageBox.Show("发送成功");
+        //    else
+        //        MessageBox.Show("发送失败");
 
-        }
+        //}
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -46,19 +46,19 @@ namespace Gmage.Controls
         private void Email_Load(object sender, EventArgs e)
         {
             
-            if (program.isLimit("邮箱"))
-            {
-                try
-                {
-                    _ip = iyui.sql.Program.GetIpv4();
-                }
-                catch { };
-            }
-            else
-            {
-                MessageBox.Show("未能成功连接到服务器");
-                this.Close();
-            }
+            //if (program.isLimit("邮箱"))
+            //{
+            //    try
+            //    {
+            //        _ip = iyui.sql.Program.GetIpv4();
+            //    }
+            //    catch { };
+            //}
+            //else
+            //{
+            //    MessageBox.Show("未能成功连接到服务器");
+            //    this.Close();
+            //}
         }
 
         private void button1_Click_1(object sender, EventArgs e)

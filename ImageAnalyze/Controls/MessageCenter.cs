@@ -19,8 +19,8 @@ namespace Gmage.Controls
 
         private void MessageCenter_Load(object sender, EventArgs e)
         {
-            iyui.sql.Program program = new iyui.sql.Program();
-            program.ConditionQuery(dataGridView1, Config.DiskId, Config.HashId);
+            //iyui.sql.Program program = new iyui.sql.Program();
+            //program.ConditionQuery(dataGridView1, Config.DiskId, Config.HashId);
         }
     }
 }

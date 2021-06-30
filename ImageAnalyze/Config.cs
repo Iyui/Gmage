@@ -130,7 +130,7 @@ namespace Gmage
                 GmageConfigXML.XmlHandle.SetPreferences("Gmage", "HashID", val);
             }
             HashId = val;
-            DiskId = iyui.sql.Program.GetLocalHardDiskID();
+            //DiskId = iyui.sql.Program.GetLocalHardDiskID();
             return val;
         }
         #endregion

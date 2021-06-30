@@ -87,9 +87,8 @@
     <Reference Include="iyui.sql">
       <HintPath>..\..\iyui.sql\iyui.sql\bin\Debug\iyui.sql.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Administrator.DESKTOP-2D4UEC0\Desktop\Gmage-master\packages\MaterialSkin.dll</HintPath>
+    <Reference Include="MaterialSkin">
+      <HintPath>..\packages\MaterialSkin.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics, Version=4.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.9.1\lib\net461\MathNet.Numerics.dll</HintPath>
@@ -292,6 +291,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\ZPhotoEngine.lib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -315,6 +315,9 @@
     <Content Include="gmage.ico" />
     <Content Include="IconGmage.ico" />
     <Content Include="GraphCommand\ZPhotoEngine.dll" />
+    <Content Include="Resources\ImageListView.dll" />
+    <Content Include="Resources\MaterialSkin.dll" />
+    <Content Include="Resources\ZPhotoEngine.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Zphoto\" />

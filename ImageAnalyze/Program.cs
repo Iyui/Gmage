@@ -136,10 +136,10 @@ namespace Gmage
 
         private static void Upload()
         {
-            if(!iyui.sql.Program.Upload(Config.HashID()))
-            {
-                throw new Exception("");
-            }
+            //if(!iyui.sql.Program.Upload(Config.HashID()))
+            //{
+            //    throw new Exception("");
+            //}
             
         }
 
