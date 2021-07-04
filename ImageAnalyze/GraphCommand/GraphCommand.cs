@@ -371,7 +371,7 @@ namespace Gmage.GraphCommand
 
     #region 简单的像素处理
     /// <summary>
-    /// 反色 像素法
+    /// RGB通道
     /// </summary>
     public class RGBChannel : IGraphCommand
     {

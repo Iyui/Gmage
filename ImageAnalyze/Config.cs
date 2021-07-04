@@ -536,6 +536,7 @@ namespace Gmage
         Zoom,
         Transform,
         Lasso,
+        Magic,
     }
 
     #region 回调

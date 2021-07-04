@@ -295,7 +295,12 @@ namespace Gmage
         /// </summary>
         private void ToolsClickEvent()
         {
-            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] { mFB_Empty, mFB_ColorPicker, mFB_Move, mFB_Cut, mFB_Draw, mFB_Select, mFB_Transform, mFB_Lasso };
+            MaterialFlatButton[] flatButtons = new MaterialFlatButton[] 
+            {
+                mFB_Empty, mFB_ColorPicker,
+                mFB_Move, mFB_Cut, mFB_Draw, mFB_Select,
+                mFB_Transform, mFB_Lasso , mFB_Magic
+            };
             foreach (var flatButton in flatButtons)
             {
                 flatButton.Click += (sender, e) =>
@@ -993,6 +998,9 @@ namespace Gmage
                             }
                             col.Refresh();
                         }
+                        break;
+                    case Tools.Magic:
+                        ResultImage = FloodFill((Bitmap)_PictureBox.Image, new Point(e.X, e.Y), RGB(), 20);
                         break;
                 }
             };
@@ -3016,6 +3024,134 @@ namespace Gmage
         {
             PictureBox pb = new PictureBox();
             return pb;
+        }
+
+        public Bitmap FloodFill(Bitmap src, Point location, Color fillColor, int threshould)
+        {
+                Bitmap srcbmp = src;
+                Bitmap dstbmp = new Bitmap(src.Width, src.Height);
+                int w = srcbmp.Width;
+                int h = srcbmp.Height;
+                Stack<Point> fillPoints = new Stack<Point>(w * h);
+                BitmapData bmpData = srcbmp.LockBits(new Rectangle(0, 0, srcbmp.Width, srcbmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                BitmapData dstbmpData = dstbmp.LockBits(new Rectangle(0, 0, dstbmp.Width, dstbmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+                IntPtr ptr = bmpData.Scan0;
+                int stride = bmpData.Stride;
+                int bytes = bmpData.Stride * srcbmp.Height;
+                byte[] grayValues = new byte[bytes];
+                Marshal.Copy(ptr, grayValues, 0, bytes);
+                Color backColor = Color.FromArgb(grayValues[location.X * 3 + 2 + location.Y * stride], grayValues[location.X * 3 + 1 + location.Y * stride], grayValues[location.X * 3 + location.Y * stride]);
+
+                IntPtr dstptr = dstbmpData.Scan0;
+                byte[] temp = new byte[bytes];
+                Marshal.Copy(ptr, temp, 0, bytes);
+
+                int gray = (int)((backColor.R + backColor.G + backColor.B) / 3);
+                if (location.X < 0 || location.X >= w || location.Y < 0 || location.Y >= h) return null;
+                fillPoints.Push(new Point(location.X, location.Y));
+                int[,] mask = new int[w, h];
+
+                while (fillPoints.Count > 0)
+                {
+
+                    Point p = fillPoints.Pop();
+                    mask[p.X, p.Y] = 1;
+                    temp[3 * p.X + p.Y * stride] = (byte)fillColor.B;
+                    temp[3 * p.X + 1 + p.Y * stride] = (byte)fillColor.G;
+                    temp[3 * p.X + 2 + p.Y * stride] = (byte)fillColor.R;
+                    if (p.X > 0 && (Math.Abs(gray - (int)((grayValues[3 * (p.X - 1) + p.Y * stride] + grayValues[3 * (p.X - 1) + 1 + p.Y * stride] + grayValues[3 * (p.X - 1) + 2 + p.Y * stride]) / 3)) < threshould) && (mask[p.X - 1, p.Y] != 1))
+                    {
+                        temp[3 * (p.X - 1) + p.Y * stride] = (byte)fillColor.B;
+                        temp[3 * (p.X - 1) + 1 + p.Y * stride] = (byte)fillColor.G;
+                        temp[3 * (p.X - 1) + 2 + p.Y * stride] = (byte)fillColor.R;
+                        fillPoints.Push(new Point(p.X - 1, p.Y));
+                        mask[p.X - 1, p.Y] = 1;
+                    }
+                    if (p.X < w - 1 && (Math.Abs(gray - (int)((grayValues[3 * (p.X + 1) + p.Y * stride] + grayValues[3 * (p.X + 1) + 1 + p.Y * stride] + grayValues[3 * (p.X + 1) + 2 + p.Y * stride]) / 3)) < threshould) && (mask[p.X + 1, p.Y] != 1))
+                    {
+                        temp[3 * (p.X + 1) + p.Y * stride] = (byte)fillColor.B;
+                        temp[3 * (p.X + 1) + 1 + p.Y * stride] = (byte)fillColor.G;
+                        temp[3 * (p.X + 1) + 2 + p.Y * stride] = (byte)fillColor.R;
+                        fillPoints.Push(new Point(p.X + 1, p.Y));
+                        mask[p.X + 1, p.Y] = 1;
+                    }
+                    if (p.Y > 0 && (Math.Abs(gray - (int)((grayValues[3 * p.X + (p.Y - 1) * stride] + grayValues[3 * p.X + 1 + (p.Y - 1) * stride] + grayValues[3 * p.X + 2 + (p.Y - 1) * stride]) / 3)) < threshould) && (mask[p.X, p.Y - 1] != 1))
+                    {
+                        temp[3 * p.X + (p.Y - 1) * stride] = (byte)fillColor.B;
+                        temp[3 * p.X + 1 + (p.Y - 1) * stride] = (byte)fillColor.G;
+                        temp[3 * p.X + 2 + (p.Y - 1) * stride] = (byte)fillColor.R;
+                        fillPoints.Push(new Point(p.X, p.Y - 1));
+                        mask[p.X, p.Y - 1] = 1;
+                    }
+                    if (p.Y < h - 1 && (Math.Abs(gray - (int)((grayValues[3 * p.X + (p.Y + 1) * stride] + grayValues[3 * p.X + 1 + (p.Y + 1) * stride] + grayValues[3 * p.X + 2 + (p.Y + 1) * stride]) / 3)) < threshould) && (mask[p.X, p.Y + 1] != 1))
+                    {
+                        temp[3 * p.X + (p.Y + 1) * stride] = (byte)fillColor.B;
+                        temp[3 * p.X + 1 + (p.Y + 1) * stride] = (byte)fillColor.G;
+                        temp[3 * p.X + 2 + (p.Y + 1) * stride] = (byte)fillColor.R;
+                        fillPoints.Push(new Point(p.X, p.Y + 1));
+                        mask[p.X, p.Y + 1] = 1;
+                    }
+                }
+                fillPoints.Clear();
+
+                Marshal.Copy(temp, 0, dstptr, bytes);
+                srcbmp.UnlockBits(bmpData);
+                dstbmp.UnlockBits(dstbmpData);
+
+                return dstbmp;
+            
+          
+        }
+
+        public void floodFill8(int x, int y, int oldColor, Bitmap newbmp)
+        {
+            Color newColor = RGB(Color_R, Color_G, Color_B);
+            int w = newbmp.Width;
+            int h = newbmp.Height;
+
+            if (x >= 0 && x < w && y >= 0 && y < h &&
+            getPixel(getPixel(x, y)) == oldColor && getPixel(x, y) != newColor)
+            {
+                newbmp.SetPixel(x, y, newColor); //set color before starting recursion  
+                floodFill8(x + 1, y, oldColor, newbmp);
+                floodFill8(x - 1, y, oldColor, newbmp);
+                floodFill8(x, y + 1, oldColor, newbmp);
+                floodFill8(x, y - 1, oldColor, newbmp);
+                floodFill8(x + 1, y + 1, oldColor, newbmp);
+                floodFill8(x - 1, y - 1, oldColor, newbmp);
+                floodFill8(x - 1, y + 1, oldColor, newbmp);
+                floodFill8(x + 1, y - 1, oldColor, newbmp);
+            }
+        }
+
+        public Color GetXYPixel(MouseEventArgs e, PictureBox _PictureBox)
+        {
+            var c = ((Bitmap)_PictureBox.Image).GetPixel((int)(e.X / _zoom), (int)(e.Y / _zoom));
+            return c;
+        }
+
+        public Color getPixel(int i,int j)
+        {
+            Bitmap bitmap = ResultImage.Clone() as Bitmap;
+            Color c = bitmap.GetPixel(i, j);
+            //int rgb = (int)(c.R * .3 + c.G * .59 + c.B * .11);
+            return RGB(c.R,c.G,c.B);
+        }
+        public int getPixel(Color c)
+        {
+            int rgb = (int)(c.R * .3 + c.G * .59 + c.B * .11);
+            return rgb;
+        }
+
+        public Color RGB(int r,int g,int b)
+        {
+            return Color.FromArgb(r, g, b);
+        }
+
+        public Color RGB()
+        {
+            return Color.FromArgb(Color_R, Color_G, Color_B);
         }
 
     }
